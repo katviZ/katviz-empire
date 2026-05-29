@@ -52,12 +52,14 @@
   .panel{background:rgba(20,18,28,0.55);backdrop-filter:blur(6px);border:1px solid var(--border);border-radius:26px;padding:56px 44px;}
 
   /* hero */
-  #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:140px;}
+  #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:140px;position:relative;}
+  #hero::before{content:'';position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:min(960px,94vw);height:560px;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(11,11,16,0.80) 0%, rgba(11,11,16,0.52) 45%, rgba(11,11,16,0) 72%);}
   #hero .wordmark{font-family:var(--serif);font-weight:600;font-size:clamp(64px,15vw,168px);letter-spacing:3px;line-height:1;
     background:var(--grad-electrum);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:4px 0;
-    text-shadow:0 0 60px rgba(232,179,57,0.15);}
-  #hero .tag{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(18px,2.4vw,26px);color:var(--gold-hi);opacity:.9;}
-  #hero .sub{font-size:18px;color:var(--ash);max-width:560px;margin:26px auto 38px;}
+    filter:drop-shadow(0 4px 30px rgba(11,11,16,0.92)) drop-shadow(0 0 10px rgba(11,11,16,0.7));}
+  #hero .tag{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(18px,2.4vw,26px);color:var(--gold-hi);opacity:.95;text-shadow:0 2px 16px rgba(11,11,16,0.95),0 0 8px rgba(11,11,16,0.9);}
+  #hero .sub{font-size:18px;color:var(--starbone);max-width:560px;margin:26px auto 38px;text-shadow:0 2px 14px rgba(11,11,16,0.92);}
   .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
   .btn{font-family:var(--mono);font-size:13px;letter-spacing:1px;text-transform:uppercase;font-weight:600;padding:15px 30px;border-radius:100px;text-decoration:none;transition:transform .25s,box-shadow .25s,border-color .25s;}
   .btn.primary{color:var(--obsidian);background:var(--grad-electrum);}
@@ -285,7 +287,7 @@
   renderer.setSize(innerWidth, innerHeight);
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 100);
@@ -331,11 +333,12 @@
   });
   const galaxy = new THREE.Points(geo, pmat);
   galaxy.rotation.x = 0.5;
+  galaxy.position.y = -2.4;
   scene.add(galaxy);
 
   /* molten core */
-  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: 0xFFF1CF, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
-  core.scale.set(2.6, 2.6, 1); scene.add(core);
+  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: 0xFFE7A8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+  core.scale.set(2.0, 2.0, 1); core.position.y = -2.4; scene.add(core);
 
   /* distant star dust */
   const SD = 600, sp = new Float32Array(SD * 3);
@@ -351,7 +354,7 @@
   composer.addPass(new RenderPass(scene, camera));
   let bloom = null;
   if (!mobile) {
-    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.05, 0.55, 0.0);
+    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.75, 0.5, 0.08);
     composer.addPass(bloom);
   }
 
@@ -377,10 +380,10 @@
     galaxy.rotation.x = 0.5 + mouse.y * 0.35 - scroll * 0.6;
     dust.rotation.y = -t * 0.01;
 
-    const pulse = 2.6 + Math.sin(t * 1.6) * 0.12;
+    const pulse = 2.0 + Math.sin(t * 1.6) * 0.1;
     core.scale.set(pulse, pulse, 1);
-    core.material.opacity = 0.85 - scroll * 0.3;
-    pmat.opacity = 0.9 - scroll * 0.25;
+    core.material.opacity = 0.6 - scroll * 0.3;
+    pmat.opacity = 0.88 - scroll * 0.25;
 
     // dolly out + drift as you scroll into the content
     camera.position.z = 7 + scroll * 4.5;
