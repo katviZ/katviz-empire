@@ -1,7 +1,8 @@
 # Katviz — Brand Guidelines
-*Grimoire Nocturne · v1.0*
+*Celestial Alchemy · v1.0*
 
 **AI is the wand. You are the wizard.**
+*Raw input, struck into gold.*
 
 ---
 
@@ -9,49 +10,49 @@
 
 | Element | Answer |
 |---|---|
-| **Name** | Katviz — *Cat* (curious, agile, independent) + *Wizard* (mastery, arcane craft) |
-| **Tagline** | *"AI is the wand. You are the wizard."* |
-| **Vibe** | Mysterious but approachable. Premium but not cold. Tech-forward but human. |
-| **Personality** | Clever, confident, calm. Speaks in short sentences. A wise cat who knows more than it says. |
+| **Name** | Katviz |
+| **Idea** | Celestial alchemy — the night sky as a machine, and raw material transmuted into gold. |
+| **Vibe** | Arcane × futuristic. Dark, warm, expensive. Magic that looks like the future. |
+| **Personality** | Clever, confident, calm. Short sentences. Knows more than it says. |
 | **One-line** | AI-powered 3D visuals and automation, built by someone who does both. |
 
 ---
 
 ## 2. Logo
 
-Three files in `logo/`:
+Files in `logo/`:
 
 | File | Use |
 |---|---|
-| `katviz-mark.svg` | Primary mark, transparent. Web headers, decks, anywhere on dark. |
-| `katviz-avatar.svg` | Social avatar / app icon. Mark on the void, 1:1, rounded. |
-| `katviz-favicon.svg` | Simplified mark that survives 16px. Browser tabs, tiny icons. |
+| `katviz-mark.svg` | Primary mark, transparent. Anywhere on a dark surface. |
+| `katviz-avatar.svg` | Social avatar / app icon. Mark on obsidian, 1:1, rounded. |
+| `katviz-favicon.svg` | Simplified — survives 16px. Browser tabs, tiny icons. |
 
-**The mark reads three ways at once:** a wand (the vertical), a cat-ear crescent (upper arm), and a shooting-star trail ending in a star (lower arm) — together they form a **K**.
+**The mark reads three ways:** a **north-star** (you navigate by it) · an **alchemical sigil** in its vessel, etched like a circuit · a **molten gold-white core** at the center. Struck in electrum, set in obsidian.
+
+**Wordmark:** "KATVIZ" set in **Fraunces** (600), tracked +1, in the electrum gradient. Outline to paths before using as a final logo asset.
 
 **Rules**
-- Clear space: keep at least the height of the star around the mark.
-- Never recolor the gradients. Never stretch. Never add a drop shadow on light backgrounds — use the avatar version instead.
-- Below ~32px, always use the favicon version.
+- Clear space: keep at least the radius of the core ring around the mark.
+- Never recolor the electrum gradient. Never stretch. Never drop-shadow on light — use the avatar version.
+- Below ~32px, use the favicon version.
 
 ---
 
 ## 3. Color
 
-Full tokens in `tokens.css`. Core palette:
+Full tokens in `tokens.css`. The system is **fully warm — no cool/violet accent by design.**
 
 | Token | Hex | Role |
 |---|---|---|
-| Arcane Violet | `#7C3AED` | Primary — the signature |
-| Bio Cyan | `#00E5FF` | AI glow — the "K", links, highlights |
-| Spellspark Pink | `#FF6B9D` | Accent — sparse, for surprise |
-| Alchemist Gold | `#FFD700` | Results, stars, the payoff |
-| The Void | `#0A0A14` | Background |
-| Starlight | `#E2E8F0` | Primary text on dark |
+| Obsidian | `#0B0B10` | Background, the void |
+| Deep Space | `#14121C` | Cards |
+| Electrum | `#E8B339` | Primary accent — the signature |
+| Solar Amber | `#FF9E2C` | Warm glow, energy |
+| Copper | `#B5572A` | Deep metal, gradient anchor |
+| Starbone | `#EDE6D8` | Primary text |
 
-**Accessibility (do not skip):**
-- Body text = Starlight on Void (passes AAA).
-- **Gold and Cyan fail as text on white/light.** Use them as fills, borders, or glows only. For colored text on a light surface, use `--cyan-dark` / `--gold-dark`.
+**Accessibility:** Starbone on Obsidian is the text pairing (AAA). Electrum/amber/copper are **fills, borders, glows** — they fail as small text on light surfaces; use Copper for colored text on light.
 
 ---
 
@@ -59,12 +60,11 @@ Full tokens in `tokens.css`. Core palette:
 
 | Role | Font | Notes |
 |---|---|---|
-| Display | **Space Grotesk** (700) | Headlines, wordmark. Tight tracking. |
-| Serif | **Playfair Display** (700 italic) | Taglines, pull quotes only. |
-| Body | **Inter** (400/500) | Paragraphs, UI. |
+| Display / wordmark | **Fraunces** (600, high-contrast serif) | Headlines, the name. This carries the "alchemy" feel. |
+| Body | **Hanken Grotesk** (400/500) | Paragraphs, UI. |
 | Mono | **JetBrains Mono** (400) | Specs, labels, code. |
 
-All four are free (Google Fonts / OFL). Do not substitute paid fonts (e.g. SF Pro).
+All three are free (Google Fonts / OFL).
 
 ---
 
@@ -75,9 +75,8 @@ Write like a wizard who knows magic but chooses to speak plainly.
 | Do | Don't |
 |---|---|
 | "Your listings look flat. We fix that." | "We leverage AI to optimize visual assets." |
-| "I built this." | "We believe we can deliver value." |
+| "One photo in. Twenty campaign shots out." | "Our synergistic approach empowers stakeholders." |
 | Short sentences. Active voice. | Corporate jargon. Fluff. |
-| Confident, warm, calm. | Arrogant or cold. |
 | One accent emoji max (⭐). | 🔥🎯🚀💯 emoji storms. |
 
 ---
@@ -85,7 +84,7 @@ Write like a wizard who knows magic but chooses to speak plainly.
 ## 6. Quick reference
 
 ```
-Primary    #7C3AED   Cyan    #00E5FF   Pink   #FF6B9D
-Gold       #FFD700   Void    #0A0A14   Text   #E2E8F0
-Display: Space Grotesk · Body: Inter · Serif: Playfair · Mono: JetBrains Mono
+Obsidian #0B0B10   Electrum #E8B339   Amber #FF9E2C
+Copper   #B5572A   Starbone #EDE6D8
+Display: Fraunces · Body: Hanken Grotesk · Mono: JetBrains Mono
 ```

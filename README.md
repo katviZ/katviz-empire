@@ -17,7 +17,7 @@ The home base for **Katviz** — AI-powered 3D visuals and automation.
 - **Guidelines** — `brand-kit/BRAND.md`
 - **Showcase** — open `brand-kit/index.html` in a browser
 
-Brand system: **Grimoire Nocturne v1.0**.
+Brand system: **Celestial Alchemy v1.0** — obsidian night, molten electrum. *Raw input, struck into gold.*
 
 ---
 *Built with OMNI_JARVIS.*

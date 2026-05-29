@@ -3,101 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Katviz — Brand Kit · Grimoire Nocturne</title>
+<title>Katviz — Brand Kit · Celestial Alchemy</title>
 <link rel="icon" href="logo/katviz-favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--void); color: var(--starlight);
-    font-family: var(--font-body); line-height: 1.6;
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--obsidian);color:var(--starbone);font-family:var(--font-body);line-height:1.6;
     background-image:
-      radial-gradient(600px circle at 15% 10%, rgba(124,58,237,0.10), transparent 60%),
-      radial-gradient(500px circle at 85% 90%, rgba(0,229,255,0.06), transparent 60%);
-    background-attachment: fixed;
+      radial-gradient(680px circle at 50% -5%, rgba(232,179,57,0.10), transparent 60%),
+      radial-gradient(520px circle at 88% 92%, rgba(255,158,44,0.07), transparent 60%);
+    background-attachment:fixed;
   }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 64px 28px; }
-  header { text-align: center; padding: 48px 0 72px; }
-  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 4px;
-    color: var(--bio-cyan); opacity: 0.6; text-transform: uppercase; }
-  .wordmark { font-family: var(--font-display); font-weight: 700;
-    font-size: clamp(56px, 11vw, 120px); letter-spacing: -4px; line-height: 1; margin: 18px 0 8px; }
-  .wordmark .k { color: var(--bio-cyan); }
-  .wordmark .rest { background: linear-gradient(135deg, var(--starlight) 40%, var(--arcane-mist));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .tagline { font-family: var(--font-serif); font-style: italic; font-size: 20px;
-    color: var(--arcane-mist); letter-spacing: 1px; }
-  .rule { width: 64px; height: 1px; background: linear-gradient(90deg, var(--arcane-violet), transparent);
-    margin: 22px auto; }
+  .wrap{max-width:1000px;margin:0 auto;padding:64px 28px 96px;}
+  .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--electrum);opacity:.7;text-align:center;}
 
-  section { margin-bottom: 72px; }
-  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-  .sec-num { font-family: var(--font-mono); font-size: 12px; color: var(--bio-cyan); opacity: 0.6; letter-spacing: 2px; }
-  .sec-title { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.5px; }
-  .sec-head::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+  header{text-align:center;padding:36px 0 8px;}
+  .markbox{display:inline-flex;align-items:center;justify-content:center;width:200px;height:200px;position:relative;}
+  .markbox::after{content:'';position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle,rgba(232,179,57,.16),transparent 62%);filter:blur(6px);z-index:-1;}
+  .markbox img{width:168px;height:168px;}
+  .wordmark{font-family:var(--font-display);font-weight:600;font-size:clamp(52px,11vw,104px);letter-spacing:2px;line-height:1;margin:8px 0 6px;
+    background:var(--grad-electrum);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .tagline{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:20px;color:var(--gold-hi);opacity:.8;}
+  .rule{width:64px;height:1px;background:linear-gradient(90deg,var(--electrum),transparent);margin:40px auto;}
 
-  .logo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .logo-card { border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px;
-    background: var(--surface); transition: border-color .3s; }
-  .logo-card:hover { border-color: var(--arcane-violet); }
-  .logo-card.light { background: var(--ivory); }
-  .logo-card img { width: 120px; height: 120px; }
-  .logo-card .cap { font-family: var(--font-mono); font-size: 11px; color: var(--stardust);
-    letter-spacing: 1px; text-transform: uppercase; }
-  .logo-card.light .cap { color: var(--shadow); }
+  section{margin-bottom:68px;}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+  .sec-num{font-family:var(--font-mono);font-size:12px;color:var(--electrum);opacity:.6;letter-spacing:2px;}
+  .sec-title{font-family:var(--font-display);font-weight:600;font-size:26px;letter-spacing:-0.3px;}
+  .sec-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-  .sw { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
-  .sw .chip { height: 84px; }
-  .sw .meta { padding: 10px 12px; }
-  .sw .nm { font-family: var(--font-display); font-size: 12px; font-weight: 600; }
-  .sw .hx { font-family: var(--font-mono); font-size: 10px; color: var(--stardust); margin-top: 2px; }
+  .logo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .logo-card{border:1px solid var(--border);border-radius:var(--radius);padding:34px;display:flex;flex-direction:column;align-items:center;gap:14px;background:var(--space);transition:border-color .3s;}
+  .logo-card:hover{border-color:var(--electrum);}
+  .logo-card.light{background:var(--parchment);}
+  .logo-card img{width:108px;height:108px;}
+  .logo-card .cap{font-family:var(--font-mono);font-size:11px;color:var(--ash);letter-spacing:1px;text-transform:uppercase;}
+  .logo-card.light .cap{color:var(--shadow);}
 
-  .type-row { border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 28px;
-    background: var(--surface); margin-bottom: 14px; }
-  .type-row .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
-    text-transform: uppercase; color: var(--bio-cyan); opacity: 0.6; margin-bottom: 12px; }
-  .t-display { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -1px; }
-  .t-serif { font-family: var(--font-serif); font-style: italic; font-size: 28px; color: var(--arcane-mist); }
-  .t-body { font-family: var(--font-body); font-size: 16px; color: var(--stardust); }
-  .t-mono { font-family: var(--font-mono); font-size: 14px; color: var(--bio-cyan); }
+  .pal{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .sw{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--space);}
+  .sw .c{height:78px;}
+  .sw .m{padding:10px 11px;}
+  .sw .n{font-family:var(--font-display);font-size:12px;font-weight:600;}
+  .sw .h{font-family:var(--font-mono);font-size:9px;color:var(--ash);margin-top:2px;}
 
-  .voice { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .voice .col { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; background: var(--surface); }
-  .voice .do { border-left: 3px solid var(--bio-cyan); }
-  .voice .dont { border-left: 3px solid var(--spellspark); opacity: 0.7; }
-  .voice .vh { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
-  .voice .do .vh { color: var(--bio-cyan); }
-  .voice .dont .vh { color: var(--spellspark); }
-  .voice p { font-size: 14px; padding: 8px 0; }
-  .voice .dont p { text-decoration: line-through; color: var(--shadow); }
+  .type{border:1px solid var(--border);border-radius:var(--radius);background:var(--space);padding:30px 34px;}
+  .type .lab{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--electrum);opacity:.7;margin:20px 0 8px;}
+  .type .lab:first-child{margin-top:0;}
+  .t-disp{font-family:var(--font-display);font-weight:600;font-size:36px;line-height:1.1;}
+  .t-disp em{color:var(--gold-hi);}
+  .t-body{font-family:var(--font-body);font-size:16px;color:var(--ash);}
+  .t-mono{font-family:var(--font-mono);font-size:13px;color:var(--electrum);}
 
-  footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border);
-    font-family: var(--font-mono); font-size: 10px; color: var(--shadow); letter-spacing: 1px; }
+  .voice{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .voice .col{border:1px solid var(--border);border-radius:var(--radius);padding:24px;background:var(--space);}
+  .voice .do{border-left:3px solid var(--electrum);}
+  .voice .dont{border-left:3px solid var(--copper);opacity:.72;}
+  .voice .vh{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+  .voice .do .vh{color:var(--electrum);}
+  .voice .dont .vh{color:var(--copper);}
+  .voice p{font-size:14px;padding:8px 0;}
+  .voice .dont p{text-decoration:line-through;color:var(--shadow);}
 
-  @media (max-width: 820px) {
-    .logo-grid { grid-template-columns: 1fr; }
-    .swatches { grid-template-columns: repeat(3, 1fr); }
-    .voice { grid-template-columns: 1fr; }
-  }
+  footer{text-align:center;padding:40px 0;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:10px;color:var(--shadow);letter-spacing:1px;}
+
+  @media(max-width:820px){.logo-grid{grid-template-columns:1fr;}.pal{grid-template-columns:repeat(3,1fr);}.voice{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <p class="eyebrow">Grimoire Nocturne · Brand Kit v1.0</p>
-    <h1 class="wordmark"><span class="k">K</span><span class="rest">ATVIZ</span></h1>
-    <p class="tagline">"AI is the wand. You are the wizard."</p>
+    <p class="eyebrow">Celestial Alchemy · Brand Kit v1.0</p>
+    <div class="markbox"><img src="logo/katviz-mark.svg" alt="Katviz mark"></div>
+    <h1 class="wordmark">KATVIZ</h1>
+    <p class="tagline">Raw input, struck into gold.</p>
     <div class="rule"></div>
   </header>
 
   <section>
     <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">The Mark</h2></div>
+    <p style="color:var(--ash);font-size:14px;max-width:600px;margin-bottom:22px;">A north-star you navigate by · an alchemical sigil in its etched vessel · a molten gold-white core. Struck in electrum, set in obsidian.</p>
     <div class="logo-grid">
-      <div class="logo-card"><img src="logo/katviz-mark.svg" alt="Primary mark"><span class="cap">Primary · transparent</span></div>
+      <div class="logo-card"><img src="logo/katviz-mark.svg" alt="Primary"><span class="cap">Primary · transparent</span></div>
       <div class="logo-card"><img src="logo/katviz-avatar.svg" alt="Avatar"><span class="cap">Avatar · social</span></div>
       <div class="logo-card light"><img src="logo/katviz-favicon.svg" alt="Favicon"><span class="cap">Favicon · 16px-safe</span></div>
     </div>
@@ -105,29 +96,33 @@
 
   <section>
     <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Palette</h2></div>
-    <div class="swatches">
-      <div class="sw"><div class="chip" style="background:#7C3AED"></div><div class="meta"><div class="nm">Arcane Violet</div><div class="hx">#7C3AED</div></div></div>
-      <div class="sw"><div class="chip" style="background:#00E5FF"></div><div class="meta"><div class="nm">Bio Cyan</div><div class="hx">#00E5FF</div></div></div>
-      <div class="sw"><div class="chip" style="background:#FF6B9D"></div><div class="meta"><div class="nm">Spellspark</div><div class="hx">#FF6B9D</div></div></div>
-      <div class="sw"><div class="chip" style="background:#FFD700"></div><div class="meta"><div class="nm">Gold</div><div class="hx">#FFD700</div></div></div>
-      <div class="sw"><div class="chip" style="background:#0A0A14"></div><div class="meta"><div class="nm">The Void</div><div class="hx">#0A0A14</div></div></div>
-      <div class="sw"><div class="chip" style="background:#E2E8F0"></div><div class="meta"><div class="nm">Starlight</div><div class="hx">#E2E8F0</div></div></div>
+    <div class="pal">
+      <div class="sw"><div class="c" style="background:#0B0B10"></div><div class="m"><div class="n">Obsidian</div><div class="h">#0B0B10</div></div></div>
+      <div class="sw"><div class="c" style="background:#14121C"></div><div class="m"><div class="n">Deep Space</div><div class="h">#14121C</div></div></div>
+      <div class="sw"><div class="c" style="background:#E8B339"></div><div class="m"><div class="n">Electrum</div><div class="h">#E8B339</div></div></div>
+      <div class="sw"><div class="c" style="background:#FF9E2C"></div><div class="m"><div class="n">Solar Amber</div><div class="h">#FF9E2C</div></div></div>
+      <div class="sw"><div class="c" style="background:#B5572A"></div><div class="m"><div class="n">Copper</div><div class="h">#B5572A</div></div></div>
+      <div class="sw"><div class="c" style="background:#EDE6D8"></div><div class="m"><div class="n">Starbone</div><div class="h">#EDE6D8</div></div></div>
     </div>
   </section>
 
   <section>
     <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Type</h2></div>
-    <div class="type-row"><div class="lbl">Display · Space Grotesk</div><div class="t-display">The wand chooses the wizard.</div></div>
-    <div class="type-row"><div class="lbl">Serif · Playfair Display</div><div class="t-serif">"AI is the wand. You are the wizard."</div></div>
-    <div class="type-row"><div class="lbl">Body · Inter</div><div class="t-body">We build AI-powered 3D visuals and automation for businesses that want to look unforgettable — staging, product shots, walkthroughs, and the systems behind them.</div></div>
-    <div class="type-row"><div class="lbl">Mono · JetBrains Mono</div><div class="t-mono">ComfyUI · Unreal · n8n · Three.js → shipped</div></div>
+    <div class="type">
+      <div class="lab">Display / Wordmark · Fraunces</div>
+      <div class="t-disp">We strike <em>gold</em> from raw light.</div>
+      <div class="lab">Body · Hanken Grotesk</div>
+      <div class="t-body">AI-powered 3D visuals and automation for businesses that want to look unforgettable — staging, product shots, walkthroughs, and the systems behind them.</div>
+      <div class="lab">Mono · JetBrains Mono</div>
+      <div class="t-mono">ComfyUI · Unreal · n8n → shipped</div>
+    </div>
   </section>
 
   <section>
     <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Voice</h2></div>
     <div class="voice">
       <div class="col do">
-        <div class="vh">✦ The Grimoire Speaks</div>
+        <div class="vh">✦ The Wizard Speaks</div>
         <p>"Your listings look flat. We fix that."</p>
         <p>"One photo in. Twenty campaign shots out."</p>
         <p>"Built with ComfyUI. Wrapped in sorcery."</p>
@@ -141,7 +136,7 @@
     </div>
   </section>
 
-  <footer>KATVIZ · GRIMOIRE NOCTURNE v1.0 · CONJURED WITH PURPOSE</footer>
+  <footer>KATVIZ · CELESTIAL ALCHEMY v1.0 · STRUCK FROM THE VOID</footer>
 
 </div>
 </body>
