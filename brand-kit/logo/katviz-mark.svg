@@ -1,0 +1,43 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Katviz K-mark">
+  <title>Katviz — primary K-mark (transparent)</title>
+  <defs>
+    <linearGradient id="km-wand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+    <linearGradient id="km-ear" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="50%" stop-color="#00E5FF"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="km-trail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="40%" stop-color="#FF6B9D"/>
+      <stop offset="100%" stop-color="#FFD700"/>
+    </linearGradient>
+    <radialGradient id="km-starglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Wand crystal tip -->
+  <path d="M158 100L170 80L182 100L170 130L158 100Z" fill="url(#km-wand)"/>
+  <path d="M163 97L170 85L177 97L170 122L163 97Z" fill="#00E5FF" opacity="0.35"/>
+  <circle cx="170" cy="100" r="3" fill="#00E5FF" opacity="0.6"/>
+
+  <!-- Wand body (the vertical of the K) -->
+  <rect x="158" y="130" width="24" height="290" rx="6" fill="url(#km-wand)"/>
+
+  <!-- Upper arm: cat-ear crescent -->
+  <path d="M175 195 C210 130 270 85 335 95 C310 110 275 140 255 175 C240 200 195 210 175 195Z" fill="url(#km-ear)"/>
+  <path d="M185 190 C215 140 265 105 320 110 C300 120 270 145 255 170 C245 190 205 200 185 190Z" fill="#00E5FF" opacity="0.15"/>
+
+  <!-- Lower arm: shooting-star trail -->
+  <path d="M175 305 C240 305 300 340 365 395 C335 370 280 335 190 320Z" fill="url(#km-trail)"/>
+
+  <!-- Star at trail tip -->
+  <circle cx="365" cy="395" r="22" fill="url(#km-starglow)"/>
+  <path d="M365 373L371 390L388 396L371 402L365 419L359 402L342 396L359 390Z" fill="#FFD700"/>
+  <path d="M365 382L368 392L378 396L368 400L365 410L362 400L352 396L362 392Z" fill="#FFFFFF" opacity="0.55"/>
+</svg>

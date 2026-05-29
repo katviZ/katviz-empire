@@ -1,0 +1,67 @@
+/* ============================================================
+   KATVIZ — Grimoire Nocturne · Design Tokens
+   Copy into any project. Single source of truth for the brand.
+   ============================================================ */
+
+:root {
+  /* ---- Primary ---- */
+  --arcane-violet: #7C3AED;   /* primary — the wizard's signature */
+  --arcane-dark:   #4C1D95;   /* gradient anchor, deep shadow */
+  --arcane-mist:   #A78BFA;   /* soft violet, subheads, accents */
+
+  /* ---- Secondary ---- */
+  --bio-cyan:      #00E5FF;   /* AI glow — links, highlights, "K" */
+  --cyan-dark:     #0099CC;   /* cyan on light backgrounds */
+
+  /* ---- Accent ---- */
+  --spellspark:    #FF6B9D;   /* unexpected magic — sparse use */
+  --alchemist-gold:#FFD700;   /* results, stars, the payoff */
+  --gold-dark:     #B8960F;   /* gold on light backgrounds */
+
+  /* ---- Surfaces (dark / default) ---- */
+  --void:          #0A0A14;   /* page background */
+  --surface:       #131326;   /* cards */
+  --surface-2:     #1A1A35;   /* raised cards, inputs */
+  --border:        #1E1E3F;   /* dividers, hairlines */
+
+  /* ---- Text ---- */
+  --starlight:     #E2E8F0;   /* primary text on dark */
+  --stardust:      #94A3B8;   /* secondary text */
+  --shadow:        #64748B;   /* muted, captions */
+
+  /* ---- Light mode (when needed) ---- */
+  --ivory:         #F5F0EB;   /* light surface */
+  --ink:           #1A1430;   /* text on light */
+
+  /* ---- Functional roles ---- */
+  --bg:            var(--void);
+  --text:          var(--starlight);
+  --text-soft:     var(--stardust);
+  --primary:       var(--arcane-violet);
+  --accent:        var(--bio-cyan);
+  --highlight:     var(--alchemist-gold);
+
+  /* ---- Gradients ---- */
+  --grad-wand:  linear-gradient(180deg, #7C3AED 0%, #4C1D95 100%);
+  --grad-spell: linear-gradient(135deg, #7C3AED 0%, #00E5FF 100%);
+  --grad-aura:  linear-gradient(135deg, #7C3AED 0%, #FF6B9D 50%, #FFD700 100%);
+
+  /* ---- Type ---- */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;  /* headlines */
+  --font-serif:   'Playfair Display', Georgia, serif;      /* taglines, pull quotes */
+  --font-body:    'Inter', system-ui, sans-serif;          /* body, UI */
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;/* code, specs, labels */
+
+  /* ---- Radius & elevation ---- */
+  --radius-sm: 8px;
+  --radius:    16px;
+  --radius-lg: 24px;
+  --glow-violet: 0 8px 40px rgba(124, 58, 237, 0.25);
+  --glow-cyan:   0 8px 40px rgba(0, 229, 255, 0.20);
+}
+
+/* Accessibility note:
+   - Body text must use --starlight on dark, or --ink on light. Min 7:1.
+   - Gold (#FFD700) and Cyan (#00E5FF) FAIL as text on light/white.
+     Use them as fills, borders, or glows — never as small text on light.
+   - On light surfaces, swap to --cyan-dark / --gold-dark for any colored text. */

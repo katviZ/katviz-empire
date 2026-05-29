@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katviz — Brand Kit · Grimoire Nocturne</title>
+<link rel="icon" href="logo/katviz-favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--void); color: var(--starlight);
+    font-family: var(--font-body); line-height: 1.6;
+    background-image:
+      radial-gradient(600px circle at 15% 10%, rgba(124,58,237,0.10), transparent 60%),
+      radial-gradient(500px circle at 85% 90%, rgba(0,229,255,0.06), transparent 60%);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 64px 28px; }
+  header { text-align: center; padding: 48px 0 72px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 4px;
+    color: var(--bio-cyan); opacity: 0.6; text-transform: uppercase; }
+  .wordmark { font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(56px, 11vw, 120px); letter-spacing: -4px; line-height: 1; margin: 18px 0 8px; }
+  .wordmark .k { color: var(--bio-cyan); }
+  .wordmark .rest { background: linear-gradient(135deg, var(--starlight) 40%, var(--arcane-mist));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .tagline { font-family: var(--font-serif); font-style: italic; font-size: 20px;
+    color: var(--arcane-mist); letter-spacing: 1px; }
+  .rule { width: 64px; height: 1px; background: linear-gradient(90deg, var(--arcane-violet), transparent);
+    margin: 22px auto; }
+
+  section { margin-bottom: 72px; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .sec-num { font-family: var(--font-mono); font-size: 12px; color: var(--bio-cyan); opacity: 0.6; letter-spacing: 2px; }
+  .sec-title { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.5px; }
+  .sec-head::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+  .logo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .logo-card { border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    background: var(--surface); transition: border-color .3s; }
+  .logo-card:hover { border-color: var(--arcane-violet); }
+  .logo-card.light { background: var(--ivory); }
+  .logo-card img { width: 120px; height: 120px; }
+  .logo-card .cap { font-family: var(--font-mono); font-size: 11px; color: var(--stardust);
+    letter-spacing: 1px; text-transform: uppercase; }
+  .logo-card.light .cap { color: var(--shadow); }
+
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .sw { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); }
+  .sw .chip { height: 84px; }
+  .sw .meta { padding: 10px 12px; }
+  .sw .nm { font-family: var(--font-display); font-size: 12px; font-weight: 600; }
+  .sw .hx { font-family: var(--font-mono); font-size: 10px; color: var(--stardust); margin-top: 2px; }
+
+  .type-row { border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 28px;
+    background: var(--surface); margin-bottom: 14px; }
+  .type-row .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--bio-cyan); opacity: 0.6; margin-bottom: 12px; }
+  .t-display { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -1px; }
+  .t-serif { font-family: var(--font-serif); font-style: italic; font-size: 28px; color: var(--arcane-mist); }
+  .t-body { font-family: var(--font-body); font-size: 16px; color: var(--stardust); }
+  .t-mono { font-family: var(--font-mono); font-size: 14px; color: var(--bio-cyan); }
+
+  .voice { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .voice .col { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; background: var(--surface); }
+  .voice .do { border-left: 3px solid var(--bio-cyan); }
+  .voice .dont { border-left: 3px solid var(--spellspark); opacity: 0.7; }
+  .voice .vh { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+  .voice .do .vh { color: var(--bio-cyan); }
+  .voice .dont .vh { color: var(--spellspark); }
+  .voice p { font-size: 14px; padding: 8px 0; }
+  .voice .dont p { text-decoration: line-through; color: var(--shadow); }
+
+  footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 10px; color: var(--shadow); letter-spacing: 1px; }
+
+  @media (max-width: 820px) {
+    .logo-grid { grid-template-columns: 1fr; }
+    .swatches { grid-template-columns: repeat(3, 1fr); }
+    .voice { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Grimoire Nocturne · Brand Kit v1.0</p>
+    <h1 class="wordmark"><span class="k">K</span><span class="rest">ATVIZ</span></h1>
+    <p class="tagline">"AI is the wand. You are the wizard."</p>
+    <div class="rule"></div>
+  </header>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">The Mark</h2></div>
+    <div class="logo-grid">
+      <div class="logo-card"><img src="logo/katviz-mark.svg" alt="Primary mark"><span class="cap">Primary · transparent</span></div>
+      <div class="logo-card"><img src="logo/katviz-avatar.svg" alt="Avatar"><span class="cap">Avatar · social</span></div>
+      <div class="logo-card light"><img src="logo/katviz-favicon.svg" alt="Favicon"><span class="cap">Favicon · 16px-safe</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Palette</h2></div>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#7C3AED"></div><div class="meta"><div class="nm">Arcane Violet</div><div class="hx">#7C3AED</div></div></div>
+      <div class="sw"><div class="chip" style="background:#00E5FF"></div><div class="meta"><div class="nm">Bio Cyan</div><div class="hx">#00E5FF</div></div></div>
+      <div class="sw"><div class="chip" style="background:#FF6B9D"></div><div class="meta"><div class="nm">Spellspark</div><div class="hx">#FF6B9D</div></div></div>
+      <div class="sw"><div class="chip" style="background:#FFD700"></div><div class="meta"><div class="nm">Gold</div><div class="hx">#FFD700</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0A0A14"></div><div class="meta"><div class="nm">The Void</div><div class="hx">#0A0A14</div></div></div>
+      <div class="sw"><div class="chip" style="background:#E2E8F0"></div><div class="meta"><div class="nm">Starlight</div><div class="hx">#E2E8F0</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Type</h2></div>
+    <div class="type-row"><div class="lbl">Display · Space Grotesk</div><div class="t-display">The wand chooses the wizard.</div></div>
+    <div class="type-row"><div class="lbl">Serif · Playfair Display</div><div class="t-serif">"AI is the wand. You are the wizard."</div></div>
+    <div class="type-row"><div class="lbl">Body · Inter</div><div class="t-body">We build AI-powered 3D visuals and automation for businesses that want to look unforgettable — staging, product shots, walkthroughs, and the systems behind them.</div></div>
+    <div class="type-row"><div class="lbl">Mono · JetBrains Mono</div><div class="t-mono">ComfyUI · Unreal · n8n · Three.js → shipped</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Voice</h2></div>
+    <div class="voice">
+      <div class="col do">
+        <div class="vh">✦ The Grimoire Speaks</div>
+        <p>"Your listings look flat. We fix that."</p>
+        <p>"One photo in. Twenty campaign shots out."</p>
+        <p>"Built with ComfyUI. Wrapped in sorcery."</p>
+      </div>
+      <div class="col dont">
+        <div class="vh">✕ The Corporate Spellbook</div>
+        <p>"We leverage AI to optimize your visual asset pipeline."</p>
+        <p>"Our synergistic approach empowers stakeholders."</p>
+        <p>"I'm passionate about innovative solutions."</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>KATVIZ · GRIMOIRE NOCTURNE v1.0 · CONJURED WITH PURPOSE</footer>
+
+</div>
+</body>
+</html>
