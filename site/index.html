@@ -304,41 +304,39 @@
   const tex = glowTex();
 
   /* galaxy of particles — raw light spun into gold */
-  const COUNT = mobile ? 4200 : 11000;
+  const COUNT = mobile ? 5200 : 15000;
   const pos = new Float32Array(COUNT * 3);
   const col = new Float32Array(COUNT * 3);
-  const rnd = new Float32Array(COUNT);
-  const cInner = new THREE.Color('#FFF3D6'), cMid = new THREE.Color('#E8B339'), cOuter = new THREE.Color('#B5572A');
-  const BRANCHES = 4, RADIUS = 5.2, SPIN = 1.1;
+  const cIn = new THREE.Color('#FFF1D0'), cMid = new THREE.Color('#E8B339'), cOut = new THREE.Color('#8A3D1C');
+  const R_IN = 2.1, R_OUT = 6.6;
   for (let i = 0; i < COUNT; i++) {
     const i3 = i * 3;
-    const r = Math.pow(Math.random(), 1.6) * RADIUS;
-    const branch = (i % BRANCHES) / BRANCHES * Math.PI * 2;
-    const spin = r * SPIN;
-    const scatter = (Math.pow(Math.random(), 3) * (Math.random() < .5 ? 1 : -1)) * (0.45 + r * 0.12);
-    const a = branch + spin;
-    pos[i3]   = Math.cos(a) * r + scatter;
-    pos[i3+1] = (Math.random() - 0.5) * (0.4 + r * 0.04) + scatter * 0.4;
-    pos[i3+2] = Math.sin(a) * r + scatter;
-    const c = cInner.clone().lerp(cMid, Math.min(1, r / RADIUS * 1.4)).lerp(cOuter, Math.max(0, r / RADIUS - 0.55) * 2.2);
+    const t = Math.pow(Math.random(), 0.75);                 // bias inward → a brighter heart
+    const r = R_IN + t * (R_OUT - R_IN);
+    const a = Math.random() * Math.PI * 2;
+    const thick = (Math.random() - 0.5) * (0.08 + r * 0.045); // thin, clean disc
+    pos[i3]   = Math.cos(a) * r;
+    pos[i3+1] = thick;
+    pos[i3+2] = Math.sin(a) * r;
+    const f = (r - R_IN) / (R_OUT - R_IN);
+    const c = cIn.clone().lerp(cMid, Math.min(1, f * 1.8)).lerp(cOut, Math.max(0, f - 0.5) * 2);
     col[i3] = c.r; col[i3+1] = c.g; col[i3+2] = c.b;
-    rnd[i] = Math.random();
   }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
   const pmat = new THREE.PointsMaterial({
-    size: mobile ? 0.07 : 0.055, map: tex, vertexColors: true, transparent: true,
-    depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true, opacity: 0.9
+    size: mobile ? 0.05 : 0.038, map: tex, vertexColors: true, transparent: true,
+    depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true, opacity: 0.95
   });
   const galaxy = new THREE.Points(geo, pmat);
-  galaxy.rotation.x = 0.5;
-  galaxy.position.y = -2.4;
+  galaxy.rotation.x = 1.12;   // shallow tilt → an elegant elliptical ring
+  galaxy.position.y = -1.7;
   scene.add(galaxy);
 
   /* molten core */
-  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: 0xFFE7A8, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
-  core.scale.set(2.0, 2.0, 1); core.position.y = -2.4; scene.add(core);
+  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: 0xFFD98A, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false }));
+  core.scale.set(6.0, 6.0, 1); core.position.y = -1.7; scene.add(core);
 
   /* distant star dust */
   const SD = 600, sp = new Float32Array(SD * 3);
@@ -354,7 +352,7 @@
   composer.addPass(new RenderPass(scene, camera));
   let bloom = null;
   if (!mobile) {
-    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.75, 0.5, 0.08);
+    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.85, 0.6, 0.04);
     composer.addPass(bloom);
   }
 
@@ -376,14 +374,14 @@
     const t = clock.getElapsedTime();
     mouse.x += (mouse.tx - mouse.x) * 0.05; mouse.y += (mouse.ty - mouse.y) * 0.05;
 
-    galaxy.rotation.y = t * 0.06 + mouse.x * 0.5;
-    galaxy.rotation.x = 0.5 + mouse.y * 0.35 - scroll * 0.6;
-    dust.rotation.y = -t * 0.01;
+    galaxy.rotation.y = t * 0.045 + mouse.x * 0.3;
+    galaxy.rotation.x = 1.12 + mouse.y * 0.16 - scroll * 0.5;
+    dust.rotation.y = -t * 0.012;
 
-    const pulse = 2.0 + Math.sin(t * 1.6) * 0.1;
+    const pulse = 6.0 + Math.sin(t * 1.4) * 0.35;
     core.scale.set(pulse, pulse, 1);
-    core.material.opacity = 0.6 - scroll * 0.3;
-    pmat.opacity = 0.88 - scroll * 0.25;
+    core.material.opacity = 0.34 - scroll * 0.2;
+    pmat.opacity = 0.95 - scroll * 0.3;
 
     // dolly out + drift as you scroll into the content
     camera.position.z = 7 + scroll * 4.5;
