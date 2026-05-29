@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katviz — AI-powered 3D visuals & automation</title>
+<meta name="description" content="Katviz turns raw input into gold — AI-powered virtual staging, product shots, 3D walkthroughs, and the automation behind them.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --obsidian:#0B0B10; --space:#14121C; --surface-2:#1B1826; --border:#2A2435;
+    --electrum:#E8B339; --gold-hi:#FFE7A8; --amber:#FF9E2C; --copper:#B5572A;
+    --starbone:#EDE6D8; --ash:#9A93A6; --shadow:#6B6478;
+    --serif:'Fraunces',Georgia,serif; --body:'Hanken Grotesk',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+    --grad-electrum:linear-gradient(135deg,#FFE7A8 0%,#E8B339 45%,#B5572A 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--obsidian);color:var(--starbone);font-family:var(--body);line-height:1.65;overflow-x:hidden;}
+
+  /* atmosphere */
+  #stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(760px circle at 50% -8%, rgba(232,179,57,0.12), transparent 60%),
+      radial-gradient(620px circle at 90% 88%, rgba(255,158,44,0.08), transparent 60%);}
+  .content{position:relative;z-index:1;}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;backdrop-filter:blur(10px);background:rgba(11,11,16,0.55);border-bottom:1px solid transparent;transition:border-color .3s;}
+  nav.scrolled{border-bottom-color:var(--border);}
+  nav .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:1px;
+    background:var(--grad-electrum);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  nav .brand svg{width:28px;height:28px;}
+  nav a.cta{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--obsidian);
+    background:var(--grad-electrum);padding:10px 18px;border-radius:100px;text-decoration:none;font-weight:600;transition:transform .25s,box-shadow .25s;}
+  nav a.cta:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(232,179,57,.25);}
+
+  section{padding:120px 28px;position:relative;}
+  .inner{max-width:1080px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--electrum);opacity:.7;margin-bottom:18px;}
+  h2.title{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,48px);line-height:1.1;letter-spacing:-0.5px;margin-bottom:20px;}
+  h2.title em{color:var(--gold-hi);font-style:italic;}
+  .lead{font-size:18px;color:var(--ash);max-width:620px;}
+
+  /* hero */
+  #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:140px;}
+  #hero .mark{width:150px;height:150px;margin-bottom:8px;animation:spin 90s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #hero .wordmark{font-family:var(--serif);font-weight:600;font-size:clamp(64px,14vw,148px);letter-spacing:3px;line-height:1;
+    background:var(--grad-electrum);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:4px 0;}
+  #hero .tag{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(18px,2.4vw,26px);color:var(--gold-hi);opacity:.85;}
+  #hero .sub{font-size:18px;color:var(--ash);max-width:560px;margin:26px auto 38px;}
+  .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn{font-family:var(--mono);font-size:13px;letter-spacing:1px;text-transform:uppercase;font-weight:600;padding:15px 30px;border-radius:100px;text-decoration:none;transition:transform .25s,box-shadow .25s,border-color .25s;}
+  .btn.primary{color:var(--obsidian);background:var(--grad-electrum);}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(232,179,57,.28);}
+  .btn.ghost{color:var(--starbone);border:1px solid var(--border);}
+  .btn.ghost:hover{border-color:var(--electrum);transform:translateY(-2px);}
+  .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--shadow);}
+
+  /* pitch */
+  #pitch .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  .pcard{border:1px solid var(--border);border-radius:18px;padding:30px;background:var(--space);transition:border-color .3s,transform .3s;}
+  .pcard:hover{border-color:var(--electrum);transform:translateY(-4px);}
+  .pcard .ico{font-family:var(--serif);font-size:30px;color:var(--electrum);margin-bottom:14px;}
+  .pcard h3{font-family:var(--serif);font-weight:600;font-size:20px;margin-bottom:8px;}
+  .pcard p{font-size:14px;color:var(--ash);}
+
+  /* services */
+  #services .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  .tier{border:1px solid var(--border);border-radius:20px;padding:34px 30px;background:var(--space);position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+  .tier:hover{border-color:var(--electrum);transform:translateY(-4px);}
+  .tier::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-electrum);opacity:0;transition:opacity .3s;}
+  .tier:hover::before{opacity:1;}
+  .tier .tname{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--electrum);opacity:.7;margin-bottom:10px;}
+  .tier h3{font-family:var(--serif);font-weight:600;font-size:26px;margin-bottom:6px;}
+  .tier .price{font-family:var(--mono);font-size:13px;color:var(--gold-hi);margin-bottom:20px;}
+  .tier ul{list-style:none;}
+  .tier li{font-size:14px;color:var(--ash);padding:8px 0;border-bottom:1px solid rgba(42,36,53,.6);display:flex;gap:10px;align-items:flex-start;}
+  .tier li:last-child{border-bottom:none;}
+  .tier li::before{content:'✦';color:var(--electrum);font-size:10px;margin-top:4px;}
+  .tier.featured{border-color:rgba(232,179,57,.4);}
+
+  /* work / proof */
+  #work .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
+  .ph{border:1px dashed var(--border);border-radius:18px;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:
+    repeating-linear-gradient(45deg,rgba(232,179,57,0.03) 0 12px,transparent 12px 24px),var(--space);color:var(--shadow);text-align:center;padding:20px;}
+  .ph .pl{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+  .ph .pt{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ash);}
+
+  /* process */
+  #process .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px;position:relative;}
+  #process .steps::before{content:'';position:absolute;top:30px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,var(--copper),var(--electrum),var(--amber));opacity:.3;}
+  .step{text-align:center;position:relative;}
+  .step .n{width:60px;height:60px;border-radius:50%;border:1px solid var(--border);background:var(--space);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:var(--serif);font-weight:600;font-size:20px;color:var(--electrum);position:relative;z-index:1;transition:border-color .3s,box-shadow .3s;}
+  .step:hover .n{border-color:var(--electrum);box-shadow:0 0 26px rgba(232,179,57,.16);}
+  .step h4{font-family:var(--serif);font-weight:600;font-size:17px;margin-bottom:6px;}
+  .step p{font-size:13px;color:var(--ash);}
+
+  /* book */
+  #book{text-align:center;}
+  #book .big{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,64px);line-height:1.1;margin-bottom:14px;}
+  #book .big em{color:var(--gold-hi);font-style:italic;}
+  #book .sub{color:var(--ash);font-size:18px;margin-bottom:36px;}
+  #book .mailnote{margin-top:20px;font-family:var(--mono);font-size:12px;color:var(--shadow);}
+  #book .mailnote a{color:var(--electrum);text-decoration:none;}
+
+  footer{text-align:center;padding:48px 28px;border-top:1px solid var(--border);}
+  footer .fb{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:1px;background:var(--grad-electrum);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  footer p{font-family:var(--mono);font-size:10px;color:var(--shadow);letter-spacing:1px;margin-top:8px;}
+
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  @media(max-width:860px){
+    #pitch .grid,#services .svc,#work .gal{grid-template-columns:1fr;}
+    #process .steps{grid-template-columns:1fr 1fr;}
+    #process .steps::before{display:none;}
+    section{padding:90px 22px;}
+    nav .brand span{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glow"></div>
+
+<!-- inline mark, reused in nav + hero -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="el" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#FFE7A8"/><stop offset="42%" stop-color="#E8B339"/><stop offset="100%" stop-color="#B5572A"/>
+    </linearGradient>
+    <radialGradient id="cr" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFBF0"/><stop offset="45%" stop-color="#FFE7A8"/><stop offset="100%" stop-color="#E8B339" stop-opacity="0"/>
+    </radialGradient>
+    <g id="katmark">
+      <circle cx="100" cy="100" r="82" stroke="#E8B339" stroke-width="1" opacity="0.22"/>
+      <circle cx="100" cy="100" r="72" stroke="#E8B339" stroke-width="3" opacity="0.16" stroke-dasharray="1.5 13" stroke-linecap="round"/>
+      <circle cx="100" cy="18" r="2" fill="#FFE7A8" opacity="0.85"/>
+      <circle cx="171" cy="142" r="1.6" fill="#E8B339" opacity="0.5"/>
+      <circle cx="33" cy="150" r="1.6" fill="#FF9E2C" opacity="0.45"/>
+      <path d="M100 24 C104 78 122 96 176 100 C122 104 104 122 100 176 C96 122 78 104 24 100 C78 96 96 78 100 24 Z" fill="url(#el)"/>
+      <path d="M100 50 C102 86 114 98 150 100 C114 102 102 114 100 150 C98 114 86 102 50 100 C86 98 98 86 100 50 Z" fill="#FFF6DD" opacity="0.18"/>
+      <circle cx="100" cy="100" r="16" fill="url(#cr)"/>
+      <circle cx="100" cy="100" r="4" fill="#FFFBF0"/>
+    </g>
+  </defs>
+</svg>
+
+<div class="content">
+
+  <nav id="nav">
+    <div class="brand"><svg viewBox="0 0 200 200"><use href="#katmark"/></svg><span>KATVIZ</span></div>
+    <a class="cta" href="#book">Book a free audit</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <svg class="mark" viewBox="0 0 200 200"><use href="#katmark"/></svg>
+    <h1 class="wordmark">KATVIZ</h1>
+    <p class="tag">Raw input, struck into gold.</p>
+    <p class="sub">AI-powered 3D visuals and the automation behind them — virtual staging, product shots, photoreal walkthroughs. Built by someone who actually does both.</p>
+    <div class="btns">
+      <a class="btn primary" href="#book">Book a free visual audit</a>
+      <a class="btn ghost" href="#work">See the work</a>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <!-- PITCH -->
+  <section id="pitch">
+    <div class="inner">
+      <p class="eyebrow reveal">✦ The edge</p>
+      <h2 class="title reveal">Most studios make pretty pictures.<br>Most AI shops make chatbots.<br><em>We do both — and bridge them.</em></h2>
+      <p class="lead reveal">Photoreal 3D, generated and automated. The visuals that make a brand look unforgettable, plus the systems that capture every lead they bring in.</p>
+      <div class="grid">
+        <div class="pcard reveal"><div class="ico">✦</div><h3>AI Visuals</h3><p>Virtual staging, product shots, ArchViz walkthroughs — ComfyUI, Unreal, Blender.</p></div>
+        <div class="pcard reveal"><div class="ico">◇</div><h3>Automation</h3><p>Lead capture, follow-up, booking, CRM sync — n8n pipelines that never sleep.</p></div>
+        <div class="pcard reveal"><div class="ico">⟁</div><h3>One Pipeline</h3><p>The rare combination: visuals and systems, designed to work as a single machine.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="inner">
+      <p class="eyebrow reveal">✦ The offerings</p>
+      <h2 class="title reveal">Three ways to <em>strike gold</em>.</h2>
+      <p class="lead reveal">Start with a single spell. Scale to the whole system. No lock-in.</p>
+      <div class="svc">
+        <div class="tier reveal">
+          <div class="tname">Spark</div>
+          <h3>Visual Staging</h3>
+          <div class="price">from $499</div>
+          <ul>
+            <li>Empty room → fully staged listing</li>
+            <li>One product photo → 20 campaign shots</li>
+            <li>Multiple styles &amp; lighting</li>
+            <li>48-hour turnaround</li>
+          </ul>
+        </div>
+        <div class="tier featured reveal">
+          <div class="tname">Conjure</div>
+          <h3>ArchViz &amp; 3D</h3>
+          <div class="price">from $3,000</div>
+          <ul>
+            <li>Photoreal walkthrough videos</li>
+            <li>Interactive web 3D configurators</li>
+            <li>AI-enhanced rendering pipeline</li>
+            <li>Pre-sales &amp; marketing-ready</li>
+          </ul>
+        </div>
+        <div class="tier reveal">
+          <div class="tname">Ascend</div>
+          <h3>Full Pipeline</h3>
+          <div class="price">custom</div>
+          <ul>
+            <li>Everything in Conjure</li>
+            <li>AI receptionist + lead follow-up</li>
+            <li>CRM &amp; booking automation</li>
+            <li>Dedicated build, ongoing support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="inner">
+      <p class="eyebrow reveal">✦ The work</p>
+      <h2 class="title reveal">Before. <em>After.</em> Astonished.</h2>
+      <p class="lead reveal">Live before/after pieces land here next — the first batch is being conjured now.</p>
+      <div class="gal">
+        <div class="ph reveal"><span class="pl">Coming soon</span><span class="pt">Virtual staging</span></div>
+        <div class="ph reveal"><span class="pl">Coming soon</span><span class="pt">Product visualization</span></div>
+        <div class="ph reveal"><span class="pl">Coming soon</span><span class="pt">ArchViz walkthrough</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="inner">
+      <p class="eyebrow reveal">✦ The ritual</p>
+      <h2 class="title reveal">Four steps to <em>transmutation</em>.</h2>
+      <div class="steps">
+        <div class="step reveal"><div class="n">01</div><h4>Discovery</h4><p>We learn your brand, your goals, your stack. One short call.</p></div>
+        <div class="step reveal"><div class="n">02</div><h4>Design</h4><p>A plan within 24 hours. You approve before we build.</p></div>
+        <div class="step reveal"><div class="n">03</div><h4>Build</h4><p>We do the work. Visuals rendered, systems wired.</p></div>
+        <div class="step reveal"><div class="n">04</div><h4>Launch</h4><p>Delivered, live, and supported. Then you fly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK -->
+  <section id="book">
+    <div class="inner">
+      <p class="eyebrow reveal">✦ The invocation</p>
+      <h2 class="big reveal">Ready to turn raw input<br>into <em>gold</em>?</h2>
+      <p class="sub reveal">Book a free visual audit. I'll show you exactly what's possible for your brand — no obligation.</p>
+      <!-- TODO: swap href for the Google Calendar appointment-scheduling link -->
+      <a class="btn primary reveal" href="mailto:katvisualrhyme@gmail.com?subject=Free%20Visual%20Audit%20%E2%80%94%20Katviz" data-book>Book a free visual audit</a>
+      <p class="mailnote reveal">or email <a href="mailto:katvisualrhyme@gmail.com">katvisualrhyme@gmail.com</a></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fb">KATVIZ</div>
+    <p>CELESTIAL ALCHEMY · AI is the wand. You are the wizard.</p>
+  </footer>
+
+</div>
+
+<script>
+  // nav border on scroll
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20));
+
+  // reveal on scroll
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // starfield — warm electrum dust
+  const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
+  let stars = [], w, h;
+  const COLORS = ['#E8B339','#FF9E2C','#FFE7A8','#B5572A'];
+  function resize(){ w = cv.width = innerWidth; h = cv.height = innerHeight; build(); }
+  function build(){
+    const n = Math.min(140, Math.floor(w*h/14000));
+    stars = Array.from({length:n}, () => ({
+      x:Math.random()*w, y:Math.random()*h,
+      r:Math.random()*1.4+0.3, a:Math.random()*0.5+0.15,
+      tw:Math.random()*0.02+0.004, dy:Math.random()*0.06+0.01,
+      c:COLORS[Math.floor(Math.random()*COLORS.length)], p:Math.random()*Math.PI*2
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      s.p += s.tw; s.y -= s.dy; if(s.y < -2){ s.y = h+2; s.x = Math.random()*w; }
+      const a = s.a * (0.6 + 0.4*Math.sin(s.p));
+      ctx.globalAlpha = a; ctx.fillStyle = s.c;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  addEventListener('resize', resize); resize(); draw();
+</script>
+</body>
+</html>
