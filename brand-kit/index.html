@@ -7,7 +7,7 @@
 <link rel="icon" href="logo/katviz-favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -28,7 +28,7 @@
     background:radial-gradient(circle at 38% 50%, rgba(107,228,255,0.10), transparent 60%),
                radial-gradient(circle at 66% 50%, rgba(255,107,193,0.10), transparent 60%);}
   .markbox img{width:176px;height:176px;}
-  .wordmark{font-family:var(--font-display);font-weight:700;font-size:clamp(52px,11vw,100px);letter-spacing:4px;line-height:1;margin:10px 0 8px;
+  .wordmark{font-family:var(--font-display);font-weight:700;font-size:clamp(52px,11vw,100px);letter-spacing:2px;line-height:1;margin:10px 0 8px;
     color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .tagline{font-family:var(--font-display);font-weight:500;font-size:20px;color:var(--silver);letter-spacing:0.5px;}
   .tagline em{font-style:normal;color:var(--chrome);}
@@ -37,7 +37,7 @@
   section{margin-bottom:72px;}
   .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
   .sec-num{font-family:var(--font-mono);font-size:12px;color:var(--silver);letter-spacing:2px;}
-  .sec-title{font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-0.3px;}
+  .sec-title{font-family:var(--font-display);font-weight:600;font-size:26px;letter-spacing:-0.4px;}
   .sec-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
 
   .logo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
@@ -55,13 +55,13 @@
   .sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);}
   .sw .c{height:74px;}
   .sw .m{padding:10px 12px;}
-  .sw .n{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:.3px;}
+  .sw .n{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.3px;}
   .sw .h{font-family:var(--font-mono);font-size:9px;color:var(--silver);margin-top:2px;}
   .sw .r{font-size:10px;color:var(--dim);margin-top:2px;}
 
   .grad-demo{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:30px 34px;display:grid;gap:22px;margin-top:18px;}
   .grad-bar{height:14px;border-radius:7px;background:var(--grad-spectral);}
-  .grad-text{font-family:var(--font-display);font-weight:700;font-size:40px;line-height:1.1;
+  .grad-text{font-family:var(--font-display);font-weight:600;font-size:40px;line-height:1.1;
     color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .grad-note{font-family:var(--font-mono);font-size:11px;color:var(--silver);letter-spacing:.5px;}
   .edge-demo{display:flex;gap:14px;flex-wrap:wrap;}
@@ -73,7 +73,7 @@
   .type{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:30px 34px;}
   .type .lab{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--silver);margin:22px 0 8px;}
   .type .lab:first-child{margin-top:0;}
-  .t-disp{font-family:var(--font-display);font-weight:700;font-size:36px;line-height:1.12;letter-spacing:-0.5px;}
+  .t-disp{font-family:var(--font-display);font-weight:600;font-size:36px;line-height:1.12;letter-spacing:-0.6px;}
   .t-disp span{color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .t-body{font-family:var(--font-body);font-size:16px;color:var(--silver);max-width:560px;}
   .t-mono{font-family:var(--font-mono);font-size:13px;color:var(--silver);}
@@ -169,11 +169,11 @@
   <section>
     <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Type</h2></div>
     <div class="type">
-      <p class="lab">Display — Space Grotesk 700</p>
+      <p class="lab">Display — Geist 600 · wordmark 700</p>
       <p class="t-disp">Raw input enters.<br>A <span>spectrum</span> leaves.</p>
-      <p class="lab">Body — Inter 400</p>
+      <p class="lab">Body — Geist 400</p>
       <p class="t-body">Photoreal 3D, generated and automated. The visuals that make a brand unforgettable, and the systems that capture every lead they bring in. Short sentences. Active voice.</p>
-      <p class="lab">Mono — JetBrains Mono 400</p>
+      <p class="lab">Mono — Geist Mono 400</p>
       <p class="t-mono">RENDER_PIPELINE :: comfyui → unreal → n8n · 48H TURNAROUND</p>
     </div>
   </section>
@@ -204,7 +204,7 @@
 <b>Cyan</b>   #6BE4FF   <b>Violet</b>  #9D7BFF   <b>Magenta</b> #FF6BC1
 <b>Chrome</b> #EDEDF2   <b>Silver</b>  #9B9BA8   <b>Dim</b>     #62626E
 <b>Gradient</b>  110deg cyan → violet → magenta · display text ≥ 24px only
-<b>Display</b> Space Grotesk · <b>Body</b> Inter · <b>Mono</b> JetBrains Mono</pre>
+<b>Display</b> Geist 600/700 · <b>Body</b> Geist 400/500 · <b>Mono</b> Geist Mono</pre>
   </section>
 
   <footer>Prism Noir · Light, bent to your will.</footer>

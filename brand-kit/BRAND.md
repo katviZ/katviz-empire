@@ -29,7 +29,7 @@ Files in `logo/`:
 
 **The mark reads three ways:** a **prism** (the machine) · a **white beam** entering it (your raw input) · a **spectral fan** leaving it (the full range of deliverables). One beam in, every wavelength out.
 
-**Wordmark:** "KATVIZ" set in **Space Grotesk** (700), tracked +2, in solid `--chrome` — with the spectral gradient clip allowed at display sizes only. Outline to paths before using as a final logo asset.
+**Wordmark:** "KATVIZ" set in **Geist** (700), tracked +2, in solid `--chrome` — with the spectral gradient clip allowed at display sizes only. Outline to paths before using as a final logo asset.
 
 **Rules**
 - Clear space: keep at least the height of the prism's base edge around the mark.
@@ -63,11 +63,11 @@ Full tokens in `tokens.css`. The system is **a near-black noir with three spectr
 
 | Role | Font | Notes |
 |---|---|---|
-| Display / wordmark | **Space Grotesk** (500/700) | Headlines, the name. Geometric with just enough character — this carries the lab-luxury feel. |
-| Body | **Inter** (400/500/600) | Paragraphs, UI. Invisible in the best way. |
-| Mono | **JetBrains Mono** (400/500) | Specs, labels, code. The instrument readout. |
+| Display / wordmark | **Geist** (600/700) | Headlines at 600 — cleaner than 700-everywhere. 700 is reserved for the wordmark and lockups. Geist runs tighter than a grotesk: ease wide tracking on big all-caps settings. |
+| Body | **Geist** (400/500) | Paragraphs, UI. One family across display and body keeps the lab-luxury feel seamless. |
+| Mono | **Geist Mono** (400/500) | Specs, labels, code. The instrument readout. |
 
-All three are free (Google Fonts / OFL). Load with preconnect to `fonts.googleapis.com` and `fonts.gstatic.com` (crossorigin), `display=swap`, and real fallback stacks.
+Both are free (Google Fonts / OFL). Load with preconnect to `fonts.googleapis.com` and `fonts.gstatic.com` (crossorigin), `display=swap`, and real fallback stacks.
 
 ---
 
@@ -92,5 +92,5 @@ Void   #0A0A0E   Panel   #121218   Line    #26262F
 Cyan   #6BE4FF   Violet  #9D7BFF   Magenta #FF6BC1
 Chrome #EDEDF2   Silver  #9B9BA8   Dim     #62626E
 Gradient: 110deg cyan -> violet -> magenta (display text >= 24px only)
-Display: Space Grotesk · Body: Inter · Mono: JetBrains Mono
+Display: Geist 600/700 · Body: Geist 400/500 · Mono: Geist Mono 400/500
 ```

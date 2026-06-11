@@ -36,10 +36,10 @@
   --grad-edge: linear-gradient(135deg, rgba(107,228,255,0.6), rgba(157,123,255,0.45), rgba(255,107,193,0.6));
   --grad-beam: linear-gradient(90deg, rgba(237,237,242,0) 0%, rgba(237,237,242,0.9) 50%, rgba(237,237,242,0) 100%);
 
-  /* ---- Type ---- */
-  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;   /* headlines, wordmark — 500/700 */
-  --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;           /* body, UI — 400/500/600 */
-  --font-mono:    'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace; /* labels, specs, code */
+  /* ---- Type (one family, two voices: Geist for everything proportional, Geist Mono for the readout) ---- */
+  --font-display: 'Geist', system-ui, sans-serif;        /* headlines 600 · wordmark 700 */
+  --font-body:    'Geist', system-ui, sans-serif;        /* body, UI — 400/500 */
+  --font-mono:    'Geist Mono', ui-monospace, monospace; /* labels, specs, code — 400/500 */
 
   /* ---- Radius ---- */
   --radius-sm: 10px;
