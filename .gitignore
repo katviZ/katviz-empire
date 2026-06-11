@@ -12,3 +12,7 @@ node_modules/
 dist/
 .env
 .env.local
+
+# QC / build intermediates
+_qc_*.png
+_og_card_src.html

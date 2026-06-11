@@ -1,57 +1,77 @@
 /* ============================================================
-   KATVIZ — Celestial Alchemy · Design Tokens
-   Obsidian night, molten electrum. Raw input, struck into gold.
+   KATVIZ — Prism Noir · Design Tokens · v2.0
+   AI-lab luxury. A white beam enters; a spectrum leaves.
+   Light, bent to your will.
    ============================================================ */
 
 :root {
-  /* ---- Surfaces (obsidian night) ---- */
-  --obsidian:   #0B0B10;   /* page background, the void */
-  --space:      #14121C;   /* cards */
-  --surface-2:  #1B1826;   /* raised cards, inputs */
-  --border:     #2A2435;   /* dividers, hairlines */
+  /* ---- Surfaces (the void) ---- */
+  --void:     #0A0A0E;   /* page background */
+  --panel:    #121218;   /* cards */
+  --panel-2:  #1A1A24;   /* raised cards, inputs */
+  --line:     #26262F;   /* dividers, hairlines */
 
-  /* ---- Metal (the gold line) ---- */
-  --electrum:   #E8B339;   /* primary accent — the signature */
-  --gold-hi:    #FFE7A8;   /* highlight, gradient top */
-  --amber:      #FF9E2C;   /* warm glow, energy */
-  --copper:     #B5572A;   /* gradient anchor, deep metal */
+  /* ---- Spectral accents (never flat on large areas) ---- */
+  --cyan:     #6BE4FF;   /* short wavelength — precision, tech */
+  --violet:   #9D7BFF;   /* mid wavelength — the signature */
+  --magenta:  #FF6BC1;   /* long wavelength — energy, warmth */
 
   /* ---- Text ---- */
-  --starbone:   #EDE6D8;   /* primary text (warm off-white) */
-  --ash:        #9A93A6;   /* secondary text */
-  --shadow:     #6B6478;   /* muted, captions */
-
-  /* ---- Light mode (when needed) ---- */
-  --parchment:  #F4EFE6;   /* light surface */
-  --ink:        #1A1622;   /* text on light */
+  --chrome:   #EDEDF2;   /* primary text */
+  --silver:   #9B9BA8;   /* secondary text */
+  --dim:      #62626E;   /* muted, captions, decorative only */
 
   /* ---- Functional roles ---- */
-  --bg:         var(--obsidian);
-  --text:       var(--starbone);
-  --text-soft:  var(--ash);
-  --primary:    var(--electrum);
-  --accent:     var(--amber);
+  --bg:         var(--void);
+  --surface:    var(--panel);
+  --surface-2:  var(--panel-2);
+  --border:     var(--line);
+  --text:       var(--chrome);
+  --text-soft:  var(--silver);
+  --accent:     var(--violet);
 
-  /* ---- Gradients ---- */
-  --grad-electrum: linear-gradient(135deg, #FFE7A8 0%, #E8B339 45%, #B5572A 100%);
-  --grad-core:     radial-gradient(circle, #FFFBF0 0%, #FFE7A8 45%, rgba(232,179,57,0) 100%);
-  --grad-aura:     linear-gradient(135deg, #FFE7A8 0%, #FF9E2C 50%, #B5572A 100%);
+  /* ---- Gradients (how iridescence enters the system) ---- */
+  --grad-spectral: linear-gradient(110deg, #6BE4FF 0%, #9D7BFF 50%, #FF6BC1 100%);
+  --grad-spectral-v: linear-gradient(180deg, #6BE4FF 0%, #9D7BFF 50%, #FF6BC1 100%);
+  --grad-edge: linear-gradient(135deg, rgba(107,228,255,0.6), rgba(157,123,255,0.45), rgba(255,107,193,0.6));
+  --grad-beam: linear-gradient(90deg, rgba(237,237,242,0) 0%, rgba(237,237,242,0.9) 50%, rgba(237,237,242,0) 100%);
 
   /* ---- Type ---- */
-  --font-display: 'Fraunces', Georgia, serif;               /* headlines, wordmark — high-contrast serif */
-  --font-body:    'Hanken Grotesk', system-ui, sans-serif;  /* body, UI */
-  --font-mono:    'JetBrains Mono', ui-monospace, monospace; /* specs, labels, code */
+  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;   /* headlines, wordmark — 500/700 */
+  --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;           /* body, UI — 400/500/600 */
+  --font-mono:    'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace; /* labels, specs, code */
 
-  /* ---- Radius & glow ---- */
+  /* ---- Radius ---- */
   --radius-sm: 10px;
   --radius:    18px;
   --radius-lg: 26px;
-  --glow-gold: 0 8px 40px rgba(232, 179, 57, 0.16);
+
+  /* ---- Glows (split, never single-color halos on big areas) ---- */
+  --glow-cyan:    0 8px 40px rgba(107, 228, 255, 0.14);
+  --glow-magenta: 0 8px 40px rgba(255, 107, 193, 0.14);
+  --glow-split:   -12px 0 36px -16px rgba(107, 228, 255, 0.45),
+                   12px 0 36px -16px rgba(255, 107, 193, 0.45);
 }
 
-/* Accessibility:
-   - On obsidian, body text = --starbone (passes AAA). Electrum gold on obsidian
-     passes for large/medium text and is great for accents.
-   - On LIGHT/parchment surfaces, electrum/amber/gold FAIL as small text.
-     Use them as fills, borders, or glows only; for colored text on light, use --copper.
-   - No cool/violet accent in this system by design — the brand is fully warm. */
+/* ============================================================
+   ACCESSIBILITY — contrast on --void #0A0A0E (and --panel)
+   ------------------------------------------------------------
+   PASSES 4.5:1 (safe for any text size):
+     --chrome  #EDEDF2  ≈ 17.4:1  (AAA — primary body pairing)
+     --silver  #9B9BA8  ≈  7.0:1  (AA+ — secondary text, mono labels)
+     --cyan    #6BE4FF  ≈ 13.1:1
+     --violet  #9D7BFF  ≈  6.2:1
+     --magenta #FF6BC1  ≈  7.5:1
+   FAILS 4.5:1:
+     --dim     #62626E  ≈  3.3:1  — decorative captions and
+     scroll cues only; never for information-carrying text.
+
+   GRADIENT-TEXT RULE: --grad-spectral may be clipped to text
+   ONLY at display sizes (>= 24px), and every background-clip
+   element must declare a solid color (--chrome) BEFORE the
+   clip rules as fallback. Body and mono labels stay solid
+   --chrome / --silver. Single accent stops (cyan / violet /
+   magenta) are for borders, glows, and small accents — never
+   flat fills on large areas: iridescence is always a gradient,
+   a chromatic edge, or a split glow.
+   ============================================================ */

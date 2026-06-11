@@ -1,8 +1,7 @@
 # Katviz — Brand Guidelines
-*Celestial Alchemy · v1.0*
+*Prism Noir · v2.0*
 
-**AI is the wand. You are the wizard.**
-*Raw input, struck into gold.*
+**Light, bent to your will.**
 
 ---
 
@@ -11,8 +10,8 @@
 | Element | Answer |
 |---|---|
 | **Name** | Katviz |
-| **Idea** | Celestial alchemy — the night sky as a machine, and raw material transmuted into gold. |
-| **Vibe** | Arcane × futuristic. Dark, warm, expensive. Magic that looks like the future. |
+| **Idea** | Refraction — a white beam enters the prism; a spectrum leaves. Raw input goes in, a polished spectrum of deliverables comes out. |
+| **Vibe** | AI-lab luxury. What an AI research lab would look like if it hired a fashion house. Dark, precise, expensive. |
 | **Personality** | Clever, confident, calm. Short sentences. Knows more than it says. |
 | **One-line** | AI-powered 3D visuals and automation, built by someone who does both. |
 
@@ -25,34 +24,38 @@ Files in `logo/`:
 | File | Use |
 |---|---|
 | `katviz-mark.svg` | Primary mark, transparent. Anywhere on a dark surface. |
-| `katviz-avatar.svg` | Social avatar / app icon. Mark on obsidian, 1:1, rounded. |
-| `katviz-favicon.svg` | Simplified — survives 16px. Browser tabs, tiny icons. |
+| `katviz-avatar.svg` | Social avatar / app icon. Mark on the void, 1:1, rounded. |
+| `katviz-favicon.svg` | Simplified silhouette — survives 16px. Browser tabs, tiny icons. |
 
-**The mark reads three ways:** a **north-star** (you navigate by it) · an **alchemical sigil** in its vessel, etched like a circuit · a **molten gold-white core** at the center. Struck in electrum, set in obsidian.
+**The mark reads three ways:** a **prism** (the machine) · a **white beam** entering it (your raw input) · a **spectral fan** leaving it (the full range of deliverables). One beam in, every wavelength out.
 
-**Wordmark:** "KATVIZ" set in **Fraunces** (600), tracked +1, in the electrum gradient. Outline to paths before using as a final logo asset.
+**Wordmark:** "KATVIZ" set in **Space Grotesk** (700), tracked +2, in solid `--chrome` — with the spectral gradient clip allowed at display sizes only. Outline to paths before using as a final logo asset.
 
 **Rules**
-- Clear space: keep at least the radius of the core ring around the mark.
-- Never recolor the electrum gradient. Never stretch. Never drop-shadow on light — use the avatar version.
+- Clear space: keep at least the height of the prism's base edge around the mark.
+- Never recolor the spectral gradient. Never stretch. Never rotate the beam direction — light always enters from the left.
+- Never place the transparent mark on light surfaces; use the avatar version instead.
 - Below ~32px, use the favicon version.
 
 ---
 
 ## 3. Color
 
-Full tokens in `tokens.css`. The system is **fully warm — no cool/violet accent by design.**
+Full tokens in `tokens.css`. The system is **a near-black noir with three spectral accents — iridescence is never flat.**
 
 | Token | Hex | Role |
 |---|---|---|
-| Obsidian | `#0B0B10` | Background, the void |
-| Deep Space | `#14121C` | Cards |
-| Electrum | `#E8B339` | Primary accent — the signature |
-| Solar Amber | `#FF9E2C` | Warm glow, energy |
-| Copper | `#B5572A` | Deep metal, gradient anchor |
-| Starbone | `#EDE6D8` | Primary text |
+| Void | `#0A0A0E` | Background, the dark chamber |
+| Panel | `#121218` | Cards |
+| Panel 2 | `#1A1A24` | Raised cards, inputs |
+| Line | `#26262F` | Borders, hairlines |
+| Cyan | `#6BE4FF` | Spectral accent — precision |
+| Violet | `#9D7BFF` | Spectral accent — the signature |
+| Magenta | `#FF6BC1` | Spectral accent — energy |
+| Chrome | `#EDEDF2` | Primary text |
+| Silver | `#9B9BA8` | Secondary text |
 
-**Accessibility:** Starbone on Obsidian is the text pairing (AAA). Electrum/amber/copper are **fills, borders, glows** — they fail as small text on light surfaces; use Copper for colored text on light.
+**Accessibility:** Chrome on Void is the text pairing (≈17:1, AAA). Silver passes AA+ (≈7:1). All three spectral accents pass 4.5:1 on Void, but they live as **gradients, chromatic edges, and split glows** — never flat single-color fills on large areas, and never as small text below 4.5:1. The spectral gradient may be clipped to text **only at ≥24px**, always with a solid `--chrome` fallback declared first. `--dim` (#62626E) is decorative only.
 
 ---
 
@@ -60,31 +63,34 @@ Full tokens in `tokens.css`. The system is **fully warm — no cool/violet accen
 
 | Role | Font | Notes |
 |---|---|---|
-| Display / wordmark | **Fraunces** (600, high-contrast serif) | Headlines, the name. This carries the "alchemy" feel. |
-| Body | **Hanken Grotesk** (400/500) | Paragraphs, UI. |
-| Mono | **JetBrains Mono** (400) | Specs, labels, code. |
+| Display / wordmark | **Space Grotesk** (500/700) | Headlines, the name. Geometric with just enough character — this carries the lab-luxury feel. |
+| Body | **Inter** (400/500/600) | Paragraphs, UI. Invisible in the best way. |
+| Mono | **JetBrains Mono** (400/500) | Specs, labels, code. The instrument readout. |
 
-All three are free (Google Fonts / OFL).
+All three are free (Google Fonts / OFL). Load with preconnect to `fonts.googleapis.com` and `fonts.gstatic.com` (crossorigin), `display=swap`, and real fallback stacks.
 
 ---
 
 ## 5. Voice
 
-Write like a wizard who knows magic but chooses to speak plainly.
+Write like a physicist who moonlights as a creative director. Precise, then surprising.
 
 | Do | Don't |
 |---|---|
 | "Your listings look flat. We fix that." | "We leverage AI to optimize visual assets." |
 | "One photo in. Twenty campaign shots out." | "Our synergistic approach empowers stakeholders." |
 | Short sentences. Active voice. | Corporate jargon. Fluff. |
-| One accent emoji max (⭐). | 🔥🎯🚀💯 emoji storms. |
+| Refraction metaphors, used sparingly. | Mixed metaphors, magic-speak, hype. |
+| One accent symbol max (◆). | Emoji storms. |
 
 ---
 
 ## 6. Quick reference
 
 ```
-Obsidian #0B0B10   Electrum #E8B339   Amber #FF9E2C
-Copper   #B5572A   Starbone #EDE6D8
-Display: Fraunces · Body: Hanken Grotesk · Mono: JetBrains Mono
+Void   #0A0A0E   Panel   #121218   Line    #26262F
+Cyan   #6BE4FF   Violet  #9D7BFF   Magenta #FF6BC1
+Chrome #EDEDF2   Silver  #9B9BA8   Dim     #62626E
+Gradient: 110deg cyan -> violet -> magenta (display text >= 24px only)
+Display: Space Grotesk · Body: Inter · Mono: JetBrains Mono
 ```
