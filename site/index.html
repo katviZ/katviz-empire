@@ -215,12 +215,66 @@
   .frame.tile.noimg img,.frame.tile.noimg figcaption{display:none;}
   .frame.tile.noimg .fb{display:flex;}
 
+  /* split-text headline reveals — .w spans exist only after JS splits, and the
+     hiding rule is html.js-scoped: no JS → untouched, fully visible markup */
+  html.js .split .w{display:inline-block;opacity:0;transform:translateY(.55em);filter:blur(7px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),filter .8s cubic-bezier(.16,1,.3,1);
+    transition-delay:calc(var(--i,0)*40ms);}
+  html.js .split.in .w{opacity:1;transform:none;filter:none;}
+
+  /* process choreography — connector draws via --draw, numbers ignite per-step.
+     Without JS the original static line (non-html.js rule above) stands. */
+  html.js #process .steps::before{transform:scaleX(var(--draw,0));transform-origin:0 50%;opacity:calc(.15 + var(--draw,0)*.45);}
+  html.js .step .n{transition:box-shadow .5s,background .5s,color .5s,text-shadow .5s;}
+  html.js .step.lit .n{background:linear-gradient(var(--panel-2),var(--panel-2)) padding-box,var(--grad-spectral) border-box;box-shadow:var(--glow-split);}
+  html.js .step.lit:nth-child(1) .n{color:var(--cyan);}
+  html.js .step.lit:nth-child(2) .n{color:var(--violet);}
+  html.js .step.lit:nth-child(3) .n{color:var(--magenta);}
+  html.js .step.lit:nth-child(4) .n{color:var(--chrome);text-shadow:0 0 18px rgba(237,237,242,.55);}
+
+  /* spectral keyword strip — CSS owns the drift (works no-JS), JS adds a
+     velocity nudge on .mq-pan only on desktop */
+  .marquee{position:relative;z-index:2;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:15px 0;background:rgba(10,10,14,0.35);}
+  .mq-track{display:flex;width:max-content;white-space:nowrap;animation:mq-drift 52s linear infinite;will-change:transform;}
+  .mq-set{font-family:var(--mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);padding-right:14px;}
+  .mq-set b{font-weight:400;margin:0 14px;}
+  .mq-set b.c1{color:rgba(107,228,255,.55);}
+  .mq-set b.c2{color:rgba(157,123,255,.55);}
+  .mq-set b.c3{color:rgba(255,107,193,.55);}
+  @keyframes mq-drift{to{transform:translateX(-50%);}}
+
+  /* depth parallax — Chromium scroll timelines (zero JS, transform-only);
+     other engines get the JS lerp fallback. Desktop + motion-OK only. */
+  @supports (animation-timeline: view()){
+    @media (min-width:861px) and (prefers-reduced-motion: no-preference){
+      section .eyebrow{animation:px-rise linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
+      section .lead{animation:px-sink linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
+      #pitch .grid,#services .svc,#work .gal{animation:px-deep linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
+    }
+  }
+  @keyframes px-rise{from{transform:translateY(-6px);}to{transform:translateY(6px);}}
+  @keyframes px-sink{from{transform:translateY(10px);}to{transform:translateY(-10px);}}
+  @keyframes px-deep{from{transform:translateY(14px);}to{transform:translateY(-14px);}}
+
+  /* footer signature */
+  footer .legal{color:var(--silver);margin-top:22px;}
+  footer .credit{letter-spacing:2.5px;margin-top:7px;}
+  footer .credit span{background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+
   @media (prefers-reduced-motion: reduce){
     nav .status i{animation:none;opacity:1;}
     .ripple{display:none;}
     .mag{transition:none;}
     .frame.tile img{transition:none;}
     html.js .reveal{opacity:1;transform:none;transition:none;}
+    html.js .split .w{opacity:1;transform:none;filter:none;transition:none;}
+    html.js #process .steps::before{transform:none;opacity:.25;}
+    html.js .step .n{transition:none;}
+    .mq-track{animation:none;}
+    .mq-pan{transform:none!important;}
+    section .inner,section .eyebrow,section .lead,
+    #pitch .grid,#services .svc,#work .gal{transform:none!important;animation:none!important;}
   }
 
   @media(max-width:860px){
@@ -230,6 +284,7 @@
     section{padding:96px 22px;}
     .panel{padding:44px 26px;}
     nav .brand span{display:none;}
+    html.js .split .w{transition-delay:calc(var(--i,0)*26ms);}
   }
   @media(max-width:600px){
     nav .status{display:none;}
@@ -409,6 +464,13 @@
     </div>
   </section>
 
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-pan"><div class="mq-track">
+      <span class="mq-set">Virtual staging <b class="c1">✦</b> Product shots <b class="c2">✦</b> ArchViz <b class="c3">✦</b> Walkthroughs <b class="c1">✦</b> Automation <b class="c2">✦</b> Lead capture <b class="c3">✦</b> 3D configurators <b class="c1">✦</b> AI pipelines <b class="c2">✦</b></span>
+      <span class="mq-set">Virtual staging <b class="c1">✦</b> Product shots <b class="c2">✦</b> ArchViz <b class="c3">✦</b> Walkthroughs <b class="c1">✦</b> Automation <b class="c2">✦</b> Lead capture <b class="c3">✦</b> 3D configurators <b class="c1">✦</b> AI pipelines <b class="c2">✦</b></span>
+    </div></div>
+  </div>
+
   <section id="process">
     <div class="inner">
       <p class="eyebrow reveal"><b>◆</b>The method</p>
@@ -436,6 +498,8 @@
   <footer>
     <div class="fb"><svg viewBox="0 0 200 200"><use href="#kmark"/></svg>KATVIZ</div>
     <p>Prism Noir · Light, bent to your will.</p>
+    <p class="legal">© 2026 KATVIZ · Kathan Mehta. All rights reserved.</p>
+    <p class="credit">Engineered by <span>J.A.R.V.I.S.</span></p>
   </footer>
 
 </div>
@@ -542,6 +606,135 @@
   })();
 </script>
 
+<!-- scroll choreography layer: plain script, cached metrics, one self-sleeping rAF.
+     reduced motion: returns immediately — CSS overrides keep everything visible. -->
+<script>
+  (function () {
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    var mobile = matchMedia('(max-width: 860px)').matches;
+    var cssScroll = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline: view()');
+    var vh = innerHeight;
+
+    /* ---- split-text headlines: per-word rise + blur→sharp, staggered, once.
+       Markup is never pre-split; <em> phrases travel as one gradient unit. ---- */
+    var heads = document.querySelectorAll('h2.title.reveal, h2.big.reveal');
+    [].slice.call(heads).forEach(function (h) {
+      var idx = 0;
+      [].slice.call(h.childNodes).forEach(function (ch) {
+        if (ch.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          ch.textContent.split(/(\s+)/).forEach(function (p) {
+            if (!p) return;
+            if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var s = document.createElement('span');
+            s.className = 'w'; s.textContent = p; s.style.setProperty('--i', idx++);
+            frag.appendChild(s);
+          });
+          h.replaceChild(frag, ch);
+        } else if (ch.nodeType === 1 && ch.tagName === 'EM') {
+          var nx = ch.nextSibling;        /* fold trailing punctuation into the em — no orphan wraps */
+          if (nx && nx.nodeType === 3) {
+            var m = nx.textContent.match(/^[.,!?;:…]+/);
+            if (m) { ch.appendChild(document.createTextNode(m[0])); nx.textContent = nx.textContent.slice(m[0].length); }
+          }
+          ch.classList.add('w'); ch.style.setProperty('--i', idx++);
+        }
+      });
+      h.classList.remove('reveal');       /* words carry the reveal now */
+      h.classList.add('split');           /* resilience-layer IO still adds .in → cascade fires */
+    });
+
+    /* ---- process: connector line draws, steps ignite — scroll-scrubbed ---- */
+    var steps = document.querySelector('#process .steps');
+    var stepEls = steps ? [].slice.call(steps.children) : [];
+    var stepsTop = 0, stepsH = 1;
+
+    /* ---- depth parallax (JS lerp fallback; Chromium uses CSS scroll timelines) ---- */
+    var px = [];
+    if (!mobile && !cssScroll) {
+      var add = function (el, depth) {
+        px.push({ el: el, d: depth, c: 0, y: 0 });
+        el.style.transitionProperty = 'opacity';   /* reveal keeps its fade; parallax owns transform */
+      };
+      [].slice.call(document.querySelectorAll('section .eyebrow')).forEach(function (el) { add(el, -6); });
+      [].slice.call(document.querySelectorAll('section .lead')).forEach(function (el) { add(el, 10); });
+      [].slice.call(document.querySelectorAll('#pitch .grid, #services .svc, #work .gal')).forEach(function (el) { add(el, 14); });
+    }
+
+    /* ---- velocity skew + marquee nudge targets (desktop only) ---- */
+    var inners = mobile ? [] : [].slice.call(document.querySelectorAll('section .inner'));
+    var pan = mobile ? null : document.querySelector('.mq-pan');
+
+    /* layout reads happen here only — never inside the scroll path */
+    function measure() {
+      vh = innerHeight;
+      if (steps) { var r = steps.getBoundingClientRect(); stepsTop = r.top + scrollY; stepsH = r.height; }
+      px.forEach(function (p) { var r = p.el.getBoundingClientRect(); p.c = r.top + scrollY + r.height / 2; });
+    }
+    measure();
+    addEventListener('resize', function () { requestAnimationFrame(measure); }, { passive: true });
+    addEventListener('load', function () { measure(); scrub(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); scrub(); });
+
+    function scrub() {
+      if (!steps) return;
+      var p = ((scrollY + vh * 0.85) - stepsTop) / (stepsH + vh * 0.4);
+      p = Math.max(0, Math.min(1, p));
+      steps.style.setProperty('--draw', p.toFixed(3));
+      for (var i = 0; i < stepEls.length; i++) stepEls[i].classList.toggle('lit', p >= (i + 0.55) / 4);
+    }
+
+    /* ---- the engine: one rAF for skew + parallax + marquee, sleeps at rest ---- */
+    var lastY = scrollY, sv = 0, curSk = 0, curPan = 0, running = false, lastMove = 0;
+    function frame(t) {
+      var v = scrollY - lastY; lastY = scrollY;
+      if (v) lastMove = t;
+      sv += (v - sv) * 0.1;
+      var busy = false;
+
+      if (inners.length) {
+        var sk = Math.max(-1.5, Math.min(1.5, sv * 0.012));
+        if (Math.abs(sk) < 0.02) sk = 0;
+        if (sk !== curSk) {
+          curSk = sk;
+          var tf = sk ? 'skewY(' + sk.toFixed(3) + 'deg)' : '';
+          for (var i = 0; i < inners.length; i++) inners[i].style.transform = tf;
+        }
+      }
+      if (pan) {
+        var tp = Math.max(-70, Math.min(70, -sv * 1.6));
+        curPan += (tp - curPan) * 0.08;
+        if (!tp && Math.abs(curPan) < 0.2) curPan = 0;
+        pan.style.transform = curPan ? 'translate3d(' + curPan.toFixed(2) + 'px,0,0)' : '';
+        if (Math.abs(tp - curPan) > 0.2) busy = true;
+      }
+      for (var j = 0; j < px.length; j++) {
+        var p = px[j];
+        var rel = Math.max(-1, Math.min(1, (p.c - scrollY - vh / 2) / vh));
+        var ty = -rel * p.d;
+        p.y += (ty - p.y) * 0.12;
+        p.el.style.transform = 'translate3d(0,' + p.y.toFixed(2) + 'px,0)';
+        if (Math.abs(ty - p.y) > 0.25) busy = true;
+      }
+
+      if (t - lastMove < 240 || Math.abs(sv) > 0.05 || curSk !== 0 || busy) requestAnimationFrame(frame);
+      else running = false;
+    }
+
+    var hasEngine = !!(inners.length || pan || px.length);
+    var queued = false;
+    addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; scrub(); }); }
+      if (hasEngine && !running) { running = true; lastY = scrollY; lastMove = performance.now(); requestAnimationFrame(frame); }
+    }, { passive: true });
+
+    scrub();
+    if (hasEngine) { running = true; lastMove = performance.now(); requestAnimationFrame(frame); }
+  })();
+</script>
+
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -628,7 +821,7 @@
     const FAN = mobile ? 950 : 2100;                 // mobile ≤ half of desktop
     const fPos = new Float32Array(FAN * 3), fCol = new Float32Array(FAN * 3);
     const fDir = new Float32Array(FAN * 3), fBase = new Float32Array(FAN * 3);
-    const fSpd = new Float32Array(FAN), fOff = new Float32Array(FAN);
+    const fSpd = new Float32Array(FAN), fOff = new Float32Array(FAN), fU = new Float32Array(FAN);
     const cCyan = new THREE.Color('#6BE4FF'), cViolet = new THREE.Color('#9D7BFF'), cMagenta = new THREE.Color('#FF6BC1');
     const SPREAD = 0.95, FAN_LEN = 7.2;
     const ORIGIN = new THREE.Vector3(1.05, FOCUS.y, 0);
@@ -639,6 +832,7 @@
       tmp.set(Math.cos(a), Math.sin(a) * 0.85, (Math.random() - 0.5) * 0.34).normalize();
       fDir[i3] = tmp.x; fDir[i3 + 1] = tmp.y; fDir[i3 + 2] = tmp.z;
       const u = a / SPREAD + 0.5;                                // 0 bottom → 1 top
+      fU[i] = u;                                                 // hue coordinate for the journey emphasis
       const c = u < 0.5 ? cMagenta.clone().lerp(cViolet, u * 2) : cViolet.clone().lerp(cCyan, (u - 0.5) * 2);
       fBase[i3] = c.r; fBase[i3 + 1] = c.g; fBase[i3 + 2] = c.b;
       fSpd[i] = 0.10 + Math.random() * 0.13;
@@ -660,6 +854,9 @@
     fanGroup.add(fan);
     scene.add(fanGroup);
 
+    /* hueTarget: which band of the fan burns brightest — 1 = cyan (top of page),
+       0 = magenta (final CTA). Driven by scroll in tick(). */
+    let hueTarget = 1;
     function updateFan(t) {
       for (let i = 0; i < FAN; i++) {
         const i3 = i * 3;
@@ -668,7 +865,8 @@
         fPos[i3]     = fDir[i3] * r;
         fPos[i3 + 1] = fDir[i3 + 1] * r;
         fPos[i3 + 2] = fDir[i3 + 2] * r;
-        const b = Math.sin(p * Math.PI);                         // fade in, fade out
+        const du = fU[i] - hueTarget;                            // gaussian emphasis around the journey hue
+        const b = Math.sin(p * Math.PI) * (0.55 + 0.7 * Math.exp(-du * du * 9));
         fCol[i3] = fBase[i3] * b; fCol[i3 + 1] = fBase[i3 + 1] * b; fCol[i3 + 2] = fBase[i3 + 2] * b;
       }
       fPosAttr.needsUpdate = true; fColAttr.needsUpdate = true;
@@ -711,6 +909,9 @@
 
     /* spectrum burst — hero click/tap injects energy that decays over ~1.2s */
     let burst = 0, fanPhase = 0, lastT = 0;
+    /* scroll narrative state: accumulated prism phase, smoothed velocity turbulence, journey hue */
+    let prismPhase = 0, prevScroll = 0, turb = 0, dustPhase = 0;
+    const jc = new THREE.Color();
     const heroEl = document.getElementById('hero');
     if (heroEl && !reduce) heroEl.addEventListener('click', () => { burst = 1; });
 
@@ -730,24 +931,40 @@
       const dt = Math.min(Math.max(t - lastT, 0), 0.05); lastT = t;
       mouse.x += (mouse.tx - mouse.x) * 0.05; mouse.y += (mouse.ty - mouse.y) * 0.05;
 
+      // scroll velocity → clamped turbulence (smoothed, never exceeds 1)
+      const svRaw = Math.min(Math.abs(scroll - prevScroll) / Math.max(dt, 0.001) * 3, 1);
+      prevScroll = scroll;
+      turb += (svRaw - turb) * 0.08;
+
       // burst energy: instant attack on click, exponential ease-out over ~1.2s
       burst *= Math.exp(-2.5 * dt);
-      fanPhase += dt * (1 + burst * 1.9);
+      fanPhase += dt * (1 + burst * 1.9 + turb * 1.7);
 
-      // prism turns toward the cursor (lerped target), spin keeps breathing underneath
-      prism.rotation.y = t * 0.16 + mouse.x * 0.6;
+      // journey hue: cyan at the top of the page → violet mid → magenta at the CTA
+      if (scroll < 0.5) jc.copy(cCyan).lerp(cViolet, scroll * 2);
+      else jc.copy(cViolet).lerp(cMagenta, (scroll - 0.5) * 2);
+      rim.color.copy(jc);
+      edgeCyan.material.color.copy(jc);                          // inner wire rides the journey hue
+      hueTarget = 1 - scroll;                                    // fan emphasis follows it
+
+      // prism spins faster the deeper you travel (accumulated phase — no rate jumps)
+      prismPhase += dt * (0.16 + scroll * 0.3 + burst * 0.35 + turb * 0.15);
+      prism.rotation.y = prismPhase + mouse.x * 0.6;
       prism.rotation.x = 0.18 + Math.sin(t * 0.32) * 0.07 + mouse.y * 0.4;
       prism.rotation.z = Math.sin(t * 0.21) * 0.05;
 
       // the spectrum fan re-aims with the pointer (±0.15rad at viewport edges)
       fanGroup.rotation.z = -mouse.y * 0.3;
+      // ...and opens wider as the journey deepens; fast scroll flares it slightly
+      fan.scale.set(1 + scroll * 0.3, 1 + scroll * 0.45 + turb * 0.06, 1);
 
       updateFan(fanPhase);
-      dust.rotation.y = -t * 0.01;
+      dustPhase += dt * (0.01 + turb * 0.02);                    // dust drifts harder under velocity
+      dust.rotation.y = -dustPhase;
 
       // light dims and the camera pulls back as you scroll into the content
       const fade = Math.max(0, 1 - scroll * 1.4);
-      beamMat.opacity = 0.85 * fade; beamGlowMat.opacity = 0.10 * fade;
+      beamMat.opacity = 0.85 * fade; beamGlowMat.opacity = 0.10 * fade * (1 + turb * 0.5);
       entry.material.opacity = Math.min(1, 0.55 * fade * (1 + burst * 1.2));
       const flareScale = 1.5 * (1 + burst * 0.45);
       entry.scale.set(flareScale, flareScale, 1);
