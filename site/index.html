@@ -55,6 +55,24 @@
     background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,10,14,0.6) 100%);}
   .content{position:relative;z-index:2;}
 
+  /* static portrait fallback — shown only when the WebGL face scene cannot run
+     (no WebGL / CDN dead / image 404). Hidden until the catch path enables it. */
+  #facefb{position:fixed;inset:0;z-index:0;pointer-events:none;display:none;
+    align-items:center;justify-content:center;}
+  #facefb.show{display:flex;}
+  #facefb .pf{position:relative;width:min(46vh,360px);aspect-ratio:852/1024;border-radius:24px;overflow:hidden;
+    transform:translateY(-4vh);
+    box-shadow:0 0 0 1px rgba(157,123,255,.35),0 30px 80px -30px rgba(0,0,0,.9),var(--glow-split);}
+  #facefb .pf::before{content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;
+    padding:1px;background:var(--grad-spectral);opacity:.7;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;}
+  #facefb .pf::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(120% 90% at 50% 35%,transparent 45%,rgba(10,10,14,.55) 100%),
+      linear-gradient(180deg,rgba(10,10,14,0) 55%,rgba(10,10,14,.6) 100%);
+    mix-blend-mode:normal;}
+  #facefb .pf img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.02);}
+
   nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
     padding:18px 28px;backdrop-filter:blur(10px);background:rgba(10,10,14,0.4);border-bottom:1px solid transparent;transition:border-color .3s,background .3s;}
   nav.scrolled{border-bottom-color:var(--line);background:rgba(10,10,14,0.72);}
@@ -76,8 +94,8 @@
 
   /* hero */
   #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:140px;position:relative;}
-  #hero::before{content:'';position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:min(980px,94vw);height:580px;z-index:-1;pointer-events:none;
-    background:radial-gradient(ellipse at center, rgba(10,10,14,0.82) 0%, rgba(10,10,14,0.5) 45%, rgba(10,10,14,0) 72%);}
+  #hero::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1100px,98vw);height:680px;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse 64% 74% at 50% 56%, rgba(10,10,14,0.42) 0%, rgba(10,10,14,0.20) 50%, rgba(10,10,14,0) 82%);}
   #hero .kicker{font-family:var(--mono);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--silver);margin-bottom:14px;}
   #hero .wordmark{font-family:var(--display);font-weight:700;font-size:clamp(64px,15vw,172px);letter-spacing:3px;line-height:1;margin:4px 0;
     color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
@@ -269,6 +287,8 @@
     .frame.tile img{transition:none;}
     html.js .reveal{opacity:1;transform:none;transition:none;}
     html.js .split .w{opacity:1;transform:none;filter:none;transition:none;}
+    html.js #pre{transition:none!important;}
+    html.js #pre.gone{display:none!important;}
     html.js #process .steps::before{transform:none;opacity:.25;}
     html.js .step .n{transition:none;}
     .mq-track{animation:none;}
@@ -299,7 +319,8 @@
   <div class="pl">refracting</div>
 </div>
 
-<canvas id="webgl"></canvas>
+<canvas id="webgl" aria-hidden="true"></canvas>
+<div id="facefb"><div class="pf"><img src="face/color.jpg" alt="Kathan Mehta, founder of Katviz" decoding="async"></div></div>
 <div class="vignette"></div>
 <div id="prog" aria-hidden="true"></div>
 
@@ -735,6 +756,20 @@
   })();
 </script>
 
+<!-- module watchdog: if the ES module never boots (e.g. three CDN 404 / no importmap support),
+     no try/catch inside it can run — so a plain script reveals the static portrait fallback. -->
+<script>
+  (function () {
+    window.__faceBooted = false;
+    setTimeout(function () {
+      if (window.__faceBooted) return;
+      var c = document.getElementById('webgl'); if (c) c.style.display = 'none';
+      var fb = document.getElementById('facefb'); if (fb) fb.classList.add('show');
+      var pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
+    }, 9000);   // last-resort backstop for a fully-dead module/CDN; real WebGL failures hit the in-module catch instantly
+  })();
+</script>
+
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -744,9 +779,8 @@
 
 <script type="module">
   import * as THREE from 'three';
-  import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-  import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-  import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+  window.__faceBooted = true;   // module executed → stand the watchdog down
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = matchMedia('(max-width: 860px)').matches;
@@ -763,226 +797,228 @@
     } catch (_) { /* native scroll is fine */ }
   }
 
-  /* ---------- scene (decorative — failure degrades to the static noir page) ---------- */
+  /* ---------- FACE OF LIGHT (decorative — any failure degrades to the static portrait) ----------
+     The founder's face, reconstructed from particles of light. Everything is baked on the CPU
+     at build time (no vertex-texture fetch) so a GTX-1070-class GPU runs it at 60fps:
+       1. color.jpg + depth.jpg are drawn into offscreen 2D canvases and read ONCE via getImageData.
+       2. A grid of points is built; each cell samples depth (cull below threshold / outside a soft
+          radial mask) and color (baked into an attribute). homePos = relief, cloudPos = dispersed fan.
+       3. A ShaderMaterial lerps cloud→home by uProgress, breathes, tints toward the spectral ramp,
+          and draws each point as a soft round glow sprite.
+     uProgress: 0 = dispersed cloud, 1 = resolved face. Load tween 0→1 (~1.4s), then bound to scroll. */
+  const FALLBACK = () => {
+    const c = document.getElementById('webgl'); if (c) c.style.display = 'none';
+    const fb = document.getElementById('facefb'); if (fb) fb.classList.add('show');
+    const pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
+  };
+
+  /* load an <img> with a hard timeout so the preloader can never hang on a 404/slow CDN */
+  const loadImg = (src, ms) => new Promise((resolve, reject) => {
+    const im = new Image(); im.crossOrigin = 'anonymous'; let done = false;
+    const to = setTimeout(() => { if (!done) { done = true; reject(new Error('timeout ' + src)); } }, ms);
+    im.onload = () => { if (!done) { done = true; clearTimeout(to); resolve(im); } };
+    im.onerror = () => { if (!done) { done = true; clearTimeout(to); reject(new Error('404 ' + src)); } };
+    im.src = src;
+  });
+
   try {
+    /* ---- load + sample the two textures on the CPU (single getImageData each) ---- */
+    const [colorImg, depthImg] = await Promise.all([
+      loadImg('face/color.jpg', 2500),
+      loadImg('face/depth.jpg', 2500),
+    ]);
+    const SW = 256, SH = Math.round(SW * colorImg.height / colorImg.width);   // sampling resolution
+    const sample = (img) => {
+      const cv = document.createElement('canvas'); cv.width = SW; cv.height = SH;
+      const cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.drawImage(img, 0, 0, SW, SH);
+      return cx.getImageData(0, 0, SW, SH).data;
+    };
+    const colorPix = sample(colorImg);
+    const depthPix = sample(depthImg);
+
     const canvas = document.getElementById('webgl');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 8);
+    const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 9);
 
-    /* soft neutral radial sprite — vertex colors do the tinting */
-    function glowTex() {
-      const c = document.createElement('canvas'); c.width = c.height = 128;
-      const g = c.getContext('2d'); const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-      grd.addColorStop(0, 'rgba(255,255,255,1)'); grd.addColorStop(0.3, 'rgba(255,255,255,0.55)');
-      grd.addColorStop(0.65, 'rgba(255,255,255,0.12)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
-      g.fillStyle = grd; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
-    }
-    const tex = glowTex();
+    /* ---- bake the particle grid on the CPU ---- */
+    const GX = mobile ? 90 : 180;          // grid columns
+    const GY = mobile ? 120 : 240;         // grid rows
+    const aspect = SW / SH;
+    const FACE_H = 7.6;                     // world height of the relief
+    const FACE_W = FACE_H * aspect;
+    const DISP = 2.4;                       // z displacement scale (near pops toward camera)
+    const THRESH = 0.50;                    // depth cull threshold (white=near=keep)
+    const FOCUS_Y = -0.55;                  // sit the bust slightly low/behind the wordmark
 
-    const FOCUS = new THREE.Vector3(0, -1.15, 0);  // the prism sits below the hero copy
-
-    /* ---- the prism: flat-shaded octahedron + chromatic wire edges ---- */
-    const prism = new THREE.Group();
-    const pGeo = new THREE.OctahedronGeometry(1.35);
-    prism.add(new THREE.Mesh(pGeo, new THREE.MeshStandardMaterial({
-      color: 0x14141C, metalness: 0.55, roughness: 0.3, flatShading: true
-    })));
-    const edges = new THREE.EdgesGeometry(pGeo);
-    const edgeCyan = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x6BE4FF, transparent: true, opacity: 0.85 }));
-    edgeCyan.scale.setScalar(1.004);
-    const edgeMagenta = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xFF6BC1, transparent: true, opacity: 0.45 }));
-    edgeMagenta.scale.setScalar(1.024);
-    prism.add(edgeCyan, edgeMagenta);
-    prism.position.copy(FOCUS);
-    scene.add(prism);
-
-    scene.add(new THREE.AmbientLight(0x46465A, 1.6));
-    const key = new THREE.PointLight(0xEDEDF2, 42, 0, 2); key.position.set(-6, -0.7, 2.5); scene.add(key);
-    const rim = new THREE.PointLight(0x9D7BFF, 16, 0, 2); rim.position.set(4.5, -1.0, 1.8); scene.add(rim);
-
-    /* ---- the white beam, entering from the left ---- */
-    const beamMat = new THREE.MeshBasicMaterial({ color: 0xEDEDF2, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false });
-    const beam = new THREE.Mesh(new THREE.PlaneGeometry(8, 0.045), beamMat);
-    beam.position.set(-5.1, FOCUS.y, 0); scene.add(beam);
-    const beamGlowMat = new THREE.MeshBasicMaterial({ color: 0xEDEDF2, transparent: true, opacity: 0.10, blending: THREE.AdditiveBlending, depthWrite: false });
-    const beamGlow = new THREE.Mesh(new THREE.PlaneGeometry(8, 0.5), beamGlowMat);
-    beamGlow.position.copy(beam.position); scene.add(beamGlow);
-    const entry = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: 0xFFFFFF, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }));
-    entry.scale.set(1.5, 1.5, 1); entry.position.set(-1.15, FOCUS.y, 0); scene.add(entry);
-
-    /* ---- the spectrum: a fan of particles leaving the right face ---- */
-    const FAN = mobile ? 950 : 2100;                 // mobile ≤ half of desktop
-    const fPos = new Float32Array(FAN * 3), fCol = new Float32Array(FAN * 3);
-    const fDir = new Float32Array(FAN * 3), fBase = new Float32Array(FAN * 3);
-    const fSpd = new Float32Array(FAN), fOff = new Float32Array(FAN), fU = new Float32Array(FAN);
-    const cCyan = new THREE.Color('#6BE4FF'), cViolet = new THREE.Color('#9D7BFF'), cMagenta = new THREE.Color('#FF6BC1');
-    const SPREAD = 0.95, FAN_LEN = 7.2;
-    const ORIGIN = new THREE.Vector3(1.05, FOCUS.y, 0);
-    const tmp = new THREE.Vector3();
-    for (let i = 0; i < FAN; i++) {
-      const i3 = i * 3;
-      const a = (Math.random() - 0.5) * SPREAD;                 // vertical fan angle
-      tmp.set(Math.cos(a), Math.sin(a) * 0.85, (Math.random() - 0.5) * 0.34).normalize();
-      fDir[i3] = tmp.x; fDir[i3 + 1] = tmp.y; fDir[i3 + 2] = tmp.z;
-      const u = a / SPREAD + 0.5;                                // 0 bottom → 1 top
-      fU[i] = u;                                                 // hue coordinate for the journey emphasis
-      const c = u < 0.5 ? cMagenta.clone().lerp(cViolet, u * 2) : cViolet.clone().lerp(cCyan, (u - 0.5) * 2);
-      fBase[i3] = c.r; fBase[i3 + 1] = c.g; fBase[i3 + 2] = c.b;
-      fSpd[i] = 0.10 + Math.random() * 0.13;
-      fOff[i] = Math.random();
-    }
-    const fGeo = new THREE.BufferGeometry();
-    const fPosAttr = new THREE.BufferAttribute(fPos, 3).setUsage(THREE.DynamicDrawUsage);
-    const fColAttr = new THREE.BufferAttribute(fCol, 3).setUsage(THREE.DynamicDrawUsage);
-    fGeo.setAttribute('position', fPosAttr);
-    fGeo.setAttribute('color', fColAttr);
-    const fMat = new THREE.PointsMaterial({
-      size: mobile ? 0.11 : 0.085, map: tex, vertexColors: true, transparent: true,
-      depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true, opacity: 0.95
-    });
-    const fan = new THREE.Points(fGeo, fMat);
-    /* parent group at the exit face — lets the whole fan re-aim toward the pointer */
-    const fanGroup = new THREE.Group();
-    fanGroup.position.copy(ORIGIN);
-    fanGroup.add(fan);
-    scene.add(fanGroup);
-
-    /* hueTarget: which band of the fan burns brightest — 1 = cyan (top of page),
-       0 = magenta (final CTA). Driven by scroll in tick(). */
-    let hueTarget = 1;
-    function updateFan(t) {
-      for (let i = 0; i < FAN; i++) {
-        const i3 = i * 3;
-        const p = (t * fSpd[i] + fOff[i]) % 1;
-        const r = 0.15 + p * FAN_LEN;
-        fPos[i3]     = fDir[i3] * r;
-        fPos[i3 + 1] = fDir[i3 + 1] * r;
-        fPos[i3 + 2] = fDir[i3 + 2] * r;
-        const du = fU[i] - hueTarget;                            // gaussian emphasis around the journey hue
-        const b = Math.sin(p * Math.PI) * (0.55 + 0.7 * Math.exp(-du * du * 9));
-        fCol[i3] = fBase[i3] * b; fCol[i3 + 1] = fBase[i3 + 1] * b; fCol[i3 + 2] = fBase[i3 + 2] * b;
+    // first pass: decide which cells survive the depth + radial mask, so arrays are tight
+    const keep = [];
+    const bilinear = (pix, fx, fy, ch) => {           // sample with smoothing to kill speckle
+      const x = fx * (SW - 1), y = fy * (SH - 1);
+      const x0 = Math.floor(x), y0 = Math.floor(y);
+      const x1 = Math.min(x0 + 1, SW - 1), y1 = Math.min(y0 + 1, SH - 1);
+      const tx = x - x0, ty = y - y0;
+      const i00 = (y0 * SW + x0) * 4 + ch, i10 = (y0 * SW + x1) * 4 + ch;
+      const i01 = (y1 * SW + x0) * 4 + ch, i11 = (y1 * SW + x1) * 4 + ch;
+      const a = pix[i00] * (1 - tx) + pix[i10] * tx;
+      const b = pix[i01] * (1 - tx) + pix[i11] * tx;
+      return (a * (1 - ty) + b * ty) / 255;
+    };
+    for (let gy = 0; gy < GY; gy++) {
+      for (let gx = 0; gx < GX; gx++) {
+        const u = gx / (GX - 1), v = gy / (GY - 1);
+        const d = bilinear(depthPix, u, v, 0);              // 0..1, 1 = near
+        // soft radial center-weight: bust is centered, windows hug the edges
+        const rx = (u - 0.5) * 1.9, ry = (v - 0.46) * 1.5;
+        const radial = 1 - Math.min(1, Math.sqrt(rx * rx + ry * ry));   // 1 center → 0 edge
+        const score = d + radial * 0.30;
+        if (score < THRESH + 0.18 || d < 0.42) continue;   // cull background / far
+        keep.push(gx, gy, d);
       }
-      fPosAttr.needsUpdate = true; fColAttr.needsUpdate = true;
+    }
+    const N = keep.length / 3;
+
+    const aHome = new Float32Array(N * 3);
+    const aCloud = new Float32Array(N * 3);
+    const aColor = new Float32Array(N * 3);
+    const aRand = new Float32Array(N);
+    const aSpec = new Float32Array(N);     // 0..1 screen-x key for the spectral ramp
+    const aLum = new Float32Array(N);      // luminance → highlight glow boost
+
+    const srgb = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)); // to linear
+    // spectral tint baked on the CPU (keeps the fragment trivial → renders on every GL backend)
+    const _CY = [0x6B/255, 0xE4/255, 0xFF/255], _VI = [0x9D/255, 0x7B/255, 0xFF/255], _MA = [0xFF/255, 0x6B/255, 0xC1/255];
+    const ramp = (t) => { t = Math.max(0, Math.min(1, t));
+      if (t < 0.5) { const k = t*2; return [_CY[0]+(_VI[0]-_CY[0])*k, _CY[1]+(_VI[1]-_CY[1])*k, _CY[2]+(_VI[2]-_CY[2])*k]; }
+      const k = (t-0.5)*2; return [_VI[0]+(_MA[0]-_VI[0])*k, _VI[1]+(_MA[1]-_VI[1])*k, _VI[2]+(_MA[2]-_VI[2])*k]; };
+    const TINT = 0.42;
+    for (let k = 0; k < N; k++) {
+      const gx = keep[k * 3], gy = keep[k * 3 + 1], d = keep[k * 3 + 2];
+      const u = gx / (GX - 1), v = gy / (GY - 1);
+      const k3 = k * 3;
+      // home (face relief): centered, y flipped (image v grows downward), z from depth
+      aHome[k3]     = (u - 0.5) * FACE_W;
+      aHome[k3 + 1] = (0.5 - v) * FACE_H + FOCUS_Y;
+      aHome[k3 + 2] = (d - 0.5) * DISP;
+      // cloud (dispersed fan from the prism origin to the left) — randomized sphere + leftward bias
+      const ang = Math.random() * Math.PI * 2, rad = 3 + Math.random() * 7;
+      const ph = Math.acos(2 * Math.random() - 1);
+      aCloud[k3]     = Math.sin(ph) * Math.cos(ang) * rad - 4.0;
+      aCloud[k3 + 1] = Math.cos(ph) * rad * 0.7 + FOCUS_Y;
+      aCloud[k3 + 2] = Math.sin(ph) * Math.sin(ang) * rad - 2.0;
+      // baked color = photo mixed toward the spectral ramp + highlight glow (display-ready sRGB)
+      const r = bilinear(colorPix, u, v, 0), g = bilinear(colorPix, u, v, 1), b = bilinear(colorPix, u, v, 2);
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      const sp = ramp(u * 0.92 + 0.04);
+      // face reconstructed FROM light: brightness carries the facial structure, hue carries the brand spectrum
+      const base = 0.42 + lum * 1.30;                          // forehead/nose/cheek highlights glow brightest
+      aColor[k3]     = Math.min(1, sp[0] * base + r * 0.18);   // spectral light shaped by the face + a hint of true skin
+      aColor[k3 + 1] = Math.min(1, sp[1] * base + g * 0.18);
+      aColor[k3 + 2] = Math.min(1, sp[2] * base + b * 0.18);
+      aRand[k] = Math.random();
+      aSpec[k] = u;                                       // cyan(left) → magenta(right)
+      aLum[k] = 0.299 * r + 0.587 * g + 0.114 * b;        // perceptual luminance
     }
 
-    /* ---- chromatic star dust, far field ---- */
-    const SD = mobile ? 220 : 480;
-    const sPos = new Float32Array(SD * 3), sCol = new Float32Array(SD * 3);
-    const dustTints = [new THREE.Color('#5A5A68'), new THREE.Color('#6BE4FF'), new THREE.Color('#9D7BFF'), new THREE.Color('#FF6BC1')];
-    for (let i = 0; i < SD; i++) {
-      const i3 = i * 3, rr = 12 + Math.random() * 20;
-      const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
-      sPos[i3] = rr * Math.sin(ph) * Math.cos(th);
-      sPos[i3 + 1] = rr * Math.sin(ph) * Math.sin(th);
-      sPos[i3 + 2] = rr * Math.cos(ph);
-      const tint = dustTints[Math.random() < 0.6 ? 0 : 1 + Math.floor(Math.random() * 3)];
-      const dimmer = 0.35 + Math.random() * 0.5;
-      sCol[i3] = tint.r * dimmer; sCol[i3 + 1] = tint.g * dimmer; sCol[i3 + 2] = tint.b * dimmer;
-    }
-    const sGeo = new THREE.BufferGeometry();
-    sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
-    sGeo.setAttribute('color', new THREE.BufferAttribute(sCol, 3));
-    const dust = new THREE.Points(sGeo, new THREE.PointsMaterial({
-      size: 0.07, map: tex, vertexColors: true, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending
-    }));
-    scene.add(dust);
+    /* live positions = lerp(cloud → home); driven on the CPU each frame.
+       PointsMaterial + a soft sprite texture renders on every GL backend (no custom
+       point-sprite shader, which some drivers/software-GL render black). */
+    const aLive = aHome.slice();
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(aLive, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(aColor, 3));
 
-    /* ---- post: bloom on desktop only ---- */
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    let bloom = null;
-    if (!mobile) {
-      bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.7, 0.55, 0.1);
-      composer.addPass(bloom);
-    }
+    const sprite = (() => {
+      const c = document.createElement('canvas'); c.width = c.height = 64;
+      const x = c.getContext('2d'); const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.5, 'rgba(255,255,255,0.72)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      x.fillStyle = g; x.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
 
-    /* ---- interaction ---- */
+    const mat = new THREE.PointsMaterial({
+      map: sprite, vertexColors: true, transparent: true, depthWrite: false,
+      blending: THREE.NormalBlending, sizeAttenuation: true,
+      size: mobile ? 0.072 : 0.060,
+    });
+    const points = new THREE.Points(geo, mat);
+    const group = new THREE.Group();        // pointer rotation rides the group
+    group.add(points);
+    scene.add(group);
+
+    const posAttr = geo.attributes.position;
+    const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+    /* write live positions for a global progress p (0 = dispersed cloud → 1 = resolved face),
+       with a per-particle stagger and (when animating) a subtle breathing wobble. */
+    const setProgress = (p, t) => {
+      for (let i = 0; i < N; i++) {
+        const i3 = i * 3, off = aRand[i] * 0.35;
+        let pp = (p - off) / (1 - off); pp = pp < 0 ? 0 : pp > 1 ? 1 : pp; pp = easeOut(pp);
+        const cx = aCloud[i3], cy = aCloud[i3 + 1], cz = aCloud[i3 + 2];
+        let x = cx + (aHome[i3] - cx) * pp;
+        let y = cy + (aHome[i3 + 1] - cy) * pp;
+        let z = cz + (aHome[i3 + 2] - cz) * pp;
+        if (t) { z += Math.sin(t * 0.9 + aRand[i] * 6.28) * 0.045 * pp;
+                 x += Math.sin(t * 0.6 + aRand[i] * 5.0) * 0.018 * pp; }
+        aLive[i3] = x; aLive[i3 + 1] = y; aLive[i3 + 2] = z;
+      }
+      posAttr.needsUpdate = true;
+    };
+
+    /* ---- interaction: pointer-aware rotation (fine pointers, motion-OK only) ---- */
+    const fine = matchMedia('(pointer: fine)').matches;
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-    addEventListener('pointermove', e => { mouse.tx = (e.clientX / innerWidth - 0.5); mouse.ty = (e.clientY / innerHeight - 0.5); }, { passive: true });
+    if (fine && !mobile && !reduce) {
+      addEventListener('pointermove', e => {
+        mouse.tx = (e.clientX / innerWidth - 0.5);
+        mouse.ty = (e.clientY / innerHeight - 0.5);
+      }, { passive: true });
+    }
 
-    /* spectrum burst — hero click/tap injects energy that decays over ~1.2s */
-    let burst = 0, fanPhase = 0, lastT = 0;
-    /* scroll narrative state: accumulated prism phase, smoothed velocity turbulence, journey hue */
-    let prismPhase = 0, prevScroll = 0, turb = 0, dustPhase = 0;
-    const jc = new THREE.Color();
-    const heroEl = document.getElementById('hero');
-    if (heroEl && !reduce) heroEl.addEventListener('click', () => { burst = 1; });
-
-    let scroll = 0;
-    function onScroll() { const max = document.body.scrollHeight - innerHeight; scroll = max > 0 ? scrollY / max : 0; }
-    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    /* ---- scroll bind: face dissolves as the hero leaves, reforms on scroll up ---- */
+    let scrollFrac = 0;     // 0 at top → 1 once hero is fully scrolled away
+    function onScroll() { scrollFrac = Math.max(0, Math.min(1, scrollY / (innerHeight * 0.9))); }
+    if (!reduce) { addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
 
     addEventListener('resize', () => {
       camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
-      if (bloom) bloom.setSize(innerWidth, innerHeight);
-    });
+      renderer.setSize(innerWidth, innerHeight);
+    }, { passive: true });
 
-    const clock = new THREE.Clock();
-    function tick() {
-      const t = clock.getElapsedTime();
-      const dt = Math.min(Math.max(t - lastT, 0), 0.05); lastT = t;
-      mouse.x += (mouse.tx - mouse.x) * 0.05; mouse.y += (mouse.ty - mouse.y) * 0.05;
+    /* textures are ready → dismiss the preloader now (don't wait for the 900ms blanket timer) */
+    const pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
 
-      // scroll velocity → clamped turbulence (smoothed, never exceeds 1)
-      const svRaw = Math.min(Math.abs(scroll - prevScroll) / Math.max(dt, 0.001) * 3, 1);
-      prevScroll = scroll;
-      turb += (svRaw - turb) * 0.08;
-
-      // burst energy: instant attack on click, exponential ease-out over ~1.2s
-      burst *= Math.exp(-2.5 * dt);
-      fanPhase += dt * (1 + burst * 1.9 + turb * 1.7);
-
-      // journey hue: cyan at the top of the page → violet mid → magenta at the CTA
-      if (scroll < 0.5) jc.copy(cCyan).lerp(cViolet, scroll * 2);
-      else jc.copy(cViolet).lerp(cMagenta, (scroll - 0.5) * 2);
-      rim.color.copy(jc);
-      edgeCyan.material.color.copy(jc);                          // inner wire rides the journey hue
-      hueTarget = 1 - scroll;                                    // fan emphasis follows it
-
-      // prism spins faster the deeper you travel (accumulated phase — no rate jumps)
-      prismPhase += dt * (0.16 + scroll * 0.3 + burst * 0.35 + turb * 0.15);
-      prism.rotation.y = prismPhase + mouse.x * 0.6;
-      prism.rotation.x = 0.18 + Math.sin(t * 0.32) * 0.07 + mouse.y * 0.4;
-      prism.rotation.z = Math.sin(t * 0.21) * 0.05;
-
-      // the spectrum fan re-aims with the pointer (±0.15rad at viewport edges)
-      fanGroup.rotation.z = -mouse.y * 0.3;
-      // ...and opens wider as the journey deepens; fast scroll flares it slightly
-      fan.scale.set(1 + scroll * 0.3, 1 + scroll * 0.45 + turb * 0.06, 1);
-
-      updateFan(fanPhase);
-      dustPhase += dt * (0.01 + turb * 0.02);                    // dust drifts harder under velocity
-      dust.rotation.y = -dustPhase;
-
-      // light dims and the camera pulls back as you scroll into the content
-      const fade = Math.max(0, 1 - scroll * 1.4);
-      beamMat.opacity = 0.85 * fade; beamGlowMat.opacity = 0.10 * fade * (1 + turb * 0.5);
-      entry.material.opacity = Math.min(1, 0.55 * fade * (1 + burst * 1.2));
-      const flareScale = 1.5 * (1 + burst * 0.45);
-      entry.scale.set(flareScale, flareScale, 1);
-      fMat.opacity = Math.min(1, (0.95 - scroll * 0.45) * (1 + burst * 0.5));
-      if (bloom) bloom.strength = 0.7 + burst * 0.4;
-
-      camera.position.z = 8 + scroll * 4.2;
-      camera.position.x += (mouse.x * 1.3 - camera.position.x) * 0.04;
-      camera.position.y += (-mouse.y * 0.9 + scroll * 1.1 - camera.position.y) * 0.04;
-      camera.lookAt(0, -0.6, 0);
-
-      composer.render();
-      if (!reduce) requestAnimationFrame(tick);   // reduced motion: exactly one still frame, no loop
+    /* ---- reduced motion: render exactly one resolved frame, no loop ---- */
+    if (reduce) {
+      setProgress(1, 0);
+      renderer.render(scene, camera);
+    } else {
+      const clock = new THREE.Clock();
+      const ASSEMBLE = 1.4;             // seconds
+      function tick() {
+        const t = clock.getElapsedTime();
+        const assemble = Math.min(1, t / ASSEMBLE);
+        setProgress(assemble * (1 - scrollFrac * 0.92), t);
+        // pointer parallax + look-at-you rotation (max ~±0.21rad)
+        mouse.x += (mouse.tx - mouse.x) * 0.06; mouse.y += (mouse.ty - mouse.y) * 0.06;
+        group.rotation.y = mouse.x * 0.42;       // ±0.21rad at viewport edge
+        group.rotation.x = mouse.y * 0.30;
+        group.position.x = mouse.x * 0.5;        // slight parallax
+        group.position.y = -mouse.y * 0.3 - scrollFrac * 1.2;
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      tick();
     }
-    tick();
   } catch (err) {
-    // WebGL unavailable — hide the canvas; the page stands on its own
-    const c = document.getElementById('webgl'); if (c) c.style.display = 'none';
+    // WebGL / image load failed — hide the canvas, reveal the framed static portrait
+    try { FALLBACK(); } catch (_) {}
   }
 </script>
 </body>
