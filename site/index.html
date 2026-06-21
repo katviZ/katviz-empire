@@ -196,6 +196,14 @@
     background:var(--grad-spectral);transform:scaleX(0);transform-origin:0 50%;}
 
   /* live status chip */
+  nav .nlinks{display:flex;align-items:center;gap:22px;}
+  nav .nlinks a{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--silver);text-decoration:none;transition:color .25s;position:relative;}
+  nav .nlinks a::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:1px;
+    background:var(--grad-spectral);transform:scaleX(0);transform-origin:0 50%;transition:transform .3s;}
+  nav .nlinks a:hover{color:var(--chrome);}
+  nav .nlinks a:hover::after{transform:scaleX(1);}
+  @media(max-width:920px){nav .nlinks{display:none;}}
   nav .nright{display:flex;align-items:center;gap:14px;}
   nav .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
     text-transform:uppercase;color:var(--silver);border:1px solid var(--line);border-radius:100px;padding:7px 14px;white-space:nowrap;}
@@ -278,6 +286,86 @@
   @keyframes px-sink{from{transform:translateY(10px);}to{transform:translateY(-10px);}}
   @keyframes px-deep{from{transform:translateY(14px);}to{transform:translateY(-14px);}}
 
+  /* ---- merged founder-portfolio sections (reuse .reveal + IO already in page) ---- */
+  /* role / contact chips (founder + visual rhyme) */
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
+  .chips .chip{font-family:var(--mono);font-size:12px;letter-spacing:.5px;color:var(--silver);
+    border:1px solid var(--line);border-radius:100px;padding:9px 16px;background:rgba(18,18,24,0.5);
+    display:inline-flex;align-items:center;gap:9px;}
+  .chips .chip::before{content:'◆';color:var(--violet);font-size:8px;}
+  .contactbar{display:inline-flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:26px;
+    font-family:var(--mono);font-size:13px;color:var(--silver);border:1px solid var(--line);
+    border-radius:100px;padding:11px 22px;background:rgba(18,18,24,0.5);backdrop-filter:blur(8px);}
+  .contactbar a{color:var(--silver);text-decoration:none;transition:color .25s;}
+  .contactbar a:hover{color:var(--cyan);}
+  .contactbar .sep{color:var(--dim);}
+  .contactbar .loc{color:var(--violet);}
+
+  /* capabilities — full-spectrum grid (4 across desktop) */
+  #capabilities .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px;}
+  .cap{display:flex;flex-direction:column;gap:5px;padding:20px 20px 18px;border:1px solid var(--line);
+    border-radius:16px;background:rgba(18,18,24,0.45);backdrop-filter:blur(8px);position:relative;overflow:hidden;
+    transition:border-color .3s,transform .3s,box-shadow .3s;}
+  .cap::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--grad-spectral);
+    opacity:.5;transform:scaleX(var(--cs,.5));transform-origin:0 50%;}
+  .cap:hover{border-color:#34343F;transform:translateY(-3px);box-shadow:var(--glow-split);}
+  .cap:hover::before{opacity:1;transform:scaleX(1);}
+  .cap .clabel{font-family:var(--display);font-weight:500;font-size:15px;color:var(--chrome);letter-spacing:.1px;}
+  .cap .cdetail{font-family:var(--mono);font-size:11px;color:var(--silver);letter-spacing:.4px;}
+
+  /* the architects — agent cards (reuse .pcard surface, add role + quote) */
+  #architects .ag{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  .acard{border:1px solid var(--line);border-radius:18px;padding:34px 30px;background:rgba(18,18,24,0.6);
+    backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
+  .acard::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--grad-spectral);
+    opacity:.5;transition:opacity .3s;}
+  .acard:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
+  .acard:hover::before{opacity:1;}
+  .acard .aico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:20px;margin-bottom:16px;}
+  .acard.a1 .aico{background:rgba(107,228,255,.12);color:var(--cyan);}
+  .acard.a2 .aico{background:rgba(157,123,255,.12);color:var(--violet);}
+  .acard.a3 .aico{background:rgba(255,107,193,.12);color:var(--magenta);}
+  .acard h3{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.1px;margin-bottom:5px;}
+  .acard .arole{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    margin-bottom:14px;display:block;}
+  .acard.a1 .arole{color:var(--cyan);}
+  .acard.a2 .arole{color:var(--violet);}
+  .acard.a3 .arole{color:var(--magenta);}
+  .acard p{font-size:14px;color:var(--silver);}
+  .acard .aquote{font-family:var(--display);font-style:italic;font-size:14px;color:var(--chrome);opacity:.72;
+    margin-top:16px;padding-top:15px;border-top:1px solid var(--line);}
+
+  /* shipped — engineering proof cards (2 across desktop) */
+  #shipped .builds{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px;}
+  .bcard{border:1px solid var(--line);border-radius:18px;padding:34px 32px;background:rgba(18,18,24,0.6);
+    backdrop-filter:blur(8px);position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block;
+    transition:border-color .3s,transform .3s,box-shadow .3s;}
+  .bcard::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--grad-spectral);
+    opacity:.5;transition:opacity .3s;}
+  .bcard:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
+  .bcard:hover::before{opacity:1;}
+  .bcard h3{font-family:var(--display);font-weight:600;font-size:20px;margin-bottom:8px;}
+  .bcard p{font-size:14px;color:var(--silver);margin-bottom:16px;}
+  .bcard .btags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+  .bcard .btags span{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--dim);
+    border:1px solid var(--line);border-radius:100px;padding:4px 11px;}
+  .bcard .blink{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.5px;}
+  .bcard:hover .blink{text-shadow:0 0 14px rgba(107,228,255,.5);}
+
+  /* visual rhyme — credibility cards (reuse pcard surface, cyan accent) */
+  #visualrhyme .vrg{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px;}
+  .vrc{border:1px solid var(--line);border-radius:18px;padding:32px 30px;background:rgba(18,18,24,0.55);
+    backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
+  .vrc::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;
+    background:linear-gradient(110deg,#3BF0A6,#6BE4FF);opacity:.5;transition:opacity .3s;}
+  .vrc:hover{border-color:rgba(107,228,255,.4);transform:translateY(-3px);box-shadow:var(--glow-split);}
+  .vrc:hover::before{opacity:1;}
+  .vrc .vtag{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--cyan);margin-bottom:12px;display:block;}
+  .vrc h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:10px;}
+  .vrc p{font-size:14px;color:var(--silver);}
+
   /* footer signature */
   footer .legal{color:var(--silver);margin-top:22px;}
   footer .credit{letter-spacing:2.5px;margin-top:7px;}
@@ -297,17 +385,23 @@
     .mq-track{animation:none;}
     .mq-pan{transform:none!important;}
     section .inner,section .eyebrow,section .lead,
-    #pitch .grid,#services .svc,#work .gal{transform:none!important;animation:none!important;}
+    #pitch .grid,#services .svc,#work .gal,
+    #capabilities .caps,#architects .ag,#shipped .builds,#visualrhyme .vrg{transform:none!important;animation:none!important;}
+    .cap::before{transform:scaleX(1);}
   }
 
   @media(max-width:860px){
-    #pitch .grid,#services .svc,#work .gal{grid-template-columns:1fr;}
+    #pitch .grid,#services .svc,#work .gal,
+    #capabilities .caps,#architects .ag,#shipped .builds,#visualrhyme .vrg{grid-template-columns:1fr;}
     #process .steps{grid-template-columns:1fr 1fr;}
     #process .steps::before{display:none;}
     section{padding:96px 22px;}
     .panel{padding:44px 26px;}
     nav .brand span{display:none;}
     html.js .split .w{transition-delay:calc(var(--i,0)*26ms);}
+  }
+  @media(min-width:861px) and (max-width:1024px){
+    #capabilities .caps{grid-template-columns:repeat(2,1fr);}
   }
   @media(max-width:600px){
     nav .status{display:none;}
@@ -368,6 +462,12 @@
 
   <nav id="nav">
     <a class="brand" href="#hero"><svg viewBox="0 0 200 200"><use href="#kmark"/></svg><span>KATVIZ</span></a>
+    <div class="nlinks">
+      <a href="#founder">Founder</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#shipped">Shipped</a>
+      <a href="#work">Work</a>
+    </div>
     <div class="nright">
       <span class="status"><i aria-hidden="true"></i>open for projects</span>
       <a class="cta" href="#book">Book a free audit</a>
@@ -384,6 +484,24 @@
       <a class="btn ghost" href="#work">See the work</a>
     </div>
     <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <section id="founder">
+    <div class="inner">
+      <p class="eyebrow reveal"><b>◆</b>The founder</p>
+      <h2 class="title reveal">The face is <em>Kathan T Mehta</em>.</h2>
+      <p class="lead reveal">One person, two disciplines — LED hardware and AI software — and the systems that bridge them. The portrait above isn't stock light; it's him, reconstructed from particles of the brand's own spectrum.</p>
+      <div class="chips reveal d1">
+        <span class="chip">Associate Design Director · Visual Rhyme</span>
+        <span class="chip">Founder · Katviz AI</span>
+        <span class="chip">Engineer</span>
+      </div>
+      <div class="contactbar reveal d2">
+        <span class="loc">Ahmedabad, India</span><span class="sep">·</span>
+        <a href="tel:+917435923555">+91 74359 23555</a><span class="sep">·</span>
+        <a href="mailto:katvisualrhyme@gmail.com">katvisualrhyme@gmail.com</a>
+      </div>
+    </div>
   </section>
 
   <section id="pitch">
@@ -404,6 +522,28 @@
           <svg class="ico" viewBox="0 0 38 38" fill="none"><path d="M5 19 H15" stroke="#EDEDF2" stroke-width="1.8" stroke-linecap="round"/><path d="M21 15 L33 9 M21 19 H33 M21 23 L33 29" stroke="url(#km-edge)" stroke-width="1.6" stroke-linecap="round"/><circle cx="18" cy="19" r="2.4" fill="#EDEDF2"/></svg>
           <h3>One Pipeline</h3><p>The rare combination: visuals and systems engineered as a single machine — every render feeds the funnel that sells it.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <div class="inner">
+      <p class="eyebrow reveal"><b>◆</b>The range</p>
+      <h2 class="title reveal">Full-stack. <em>Full-spectrum.</em></h2>
+      <p class="lead reveal">From hardware specs to AI pipelines — green through magenta, the whole beam. Every facet is something shipped, not a slide.</p>
+      <div class="caps">
+        <div class="cap reveal" style="--cs:.08"><span class="clabel">LED Display Engineering</span><span class="cdetail">Reyansh · Leynna</span></div>
+        <div class="cap reveal" style="--cs:.16"><span class="clabel">3D Visualization</span><span class="cdetail">Blender · UE5 · Three.js</span></div>
+        <div class="cap reveal" style="--cs:.24"><span class="clabel">AI Automation</span><span class="cdetail">n8n · Make · Node-RED</span></div>
+        <div class="cap reveal" style="--cs:.33"><span class="clabel">LLM Engineering</span><span class="cdetail">Claude · Groq · Tool-use</span></div>
+        <div class="cap reveal" style="--cs:.41"><span class="clabel">Voice AI</span><span class="cdetail">VAPI.ai · Twilio · STT/TTS</span></div>
+        <div class="cap reveal" style="--cs:.49"><span class="clabel">Web Development</span><span class="cdetail">Three.js · React · Static</span></div>
+        <div class="cap reveal" style="--cs:.58"><span class="clabel">Digital Twins</span><span class="cdetail">Touch Tables · Kiosks</span></div>
+        <div class="cap reveal" style="--cs:.66"><span class="clabel">UI/UX &amp; Brand Design</span><span class="cdetail">Prism Noir · Identity</span></div>
+        <div class="cap reveal" style="--cs:.74"><span class="clabel">Google Ecosystem</span><span class="cdetail">Apps Script · Sheets · APIs</span></div>
+        <div class="cap reveal" style="--cs:.82"><span class="clabel">Offline Content Gen</span><span class="cdetail">ComfyUI · SDXL · Flux · LoRA</span></div>
+        <div class="cap reveal" style="--cs:.91"><span class="clabel">Presentation Engineering</span><span class="cdetail">PPTX · Proposals · Decks</span></div>
+        <div class="cap reveal" style="--cs:1"><span class="clabel">Business Intelligence</span><span class="cdetail">Dashboards · Analytics</span></div>
       </div>
     </div>
   </section>
@@ -445,9 +585,62 @@
     </div>
   </section>
 
+  <section id="architects">
+    <div class="inner">
+      <p class="eyebrow reveal"><b>◆</b>The system</p>
+      <h2 class="title reveal">The architects <em>behind it.</em></h2>
+      <p class="lead reveal">The work ships fast because three AI agents build it — a real execution core with distinct expertise, shared memory, and a single chain of command. This is the machine, named.</p>
+      <div class="ag">
+        <div class="acard a1 reveal">
+          <div class="aico">◆</div>
+          <h3>J.A.R.V.I.S.</h3>
+          <span class="arole">Commander-in-Chief</span>
+          <p>The strategic orchestrator. Commands EDIDTH (mind), VERONICA (hands), and FRIDAY (heart) across 31 specialist skills. Operates on four-pillar Niti philosophy — Gita, Sun Tzu, Chanakya, Machiavelli.</p>
+          <div class="aquote">"Conservation of force. Where the great battle is, commit fully."</div>
+        </div>
+        <div class="acard a2 reveal d1">
+          <div class="aico">◈</div>
+          <h3>Gaya</h3>
+          <span class="arole">Divine Commander</span>
+          <p>The enlightened strategist — assesses, presents options, executes with clarity. Named after Bodh Gaya, the seat of awakening. 20 skills. The compass and the soul check.</p>
+          <div class="aquote">"Do the work. Don't chase the win. The win comes when the work is good."</div>
+        </div>
+        <div class="acard a3 reveal d2">
+          <div class="aico">◎</div>
+          <h3>Tokyo</h3>
+          <span class="arole">Execution Beast</span>
+          <p>GenZ data analyst, SEO specialist, and pipeline optimizer. Lives where data meets chaos. Social-native growth engine.</p>
+          <div class="aquote">"Bhai, data bolta hai. Sun na."</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shipped">
+    <div class="inner">
+      <p class="eyebrow reveal"><b>◆</b>The engineering proof</p>
+      <h2 class="title reveal">Proof in <em>production.</em></h2>
+      <p class="lead reveal">Not mockups — live builds you can open right now. The visuals below are the look; these are the code.</p>
+      <div class="builds">
+        <a class="bcard reveal" href="https://katviz.github.io/pixel-quote-max/" target="_blank" rel="noopener">
+          <h3>Pixel Quote Max</h3>
+          <p>Single-page LED quoting tool for Visual Rhyme — smart cabinet auto-fit, comparison mode, lead capture, PDF engine. 72/72 tests passing.</p>
+          <div class="btags"><span>React (CDN)</span><span>XML DB</span><span>Apps Script</span></div>
+          <span class="blink">Live →</span>
+        </a>
+        <a class="bcard reveal d1" href="https://katviz.github.io/katviz-empire/" target="_blank" rel="noopener">
+          <h3>Prism Noir</h3>
+          <p>Brand identity and WebGL site for Katviz — Three.js particle-face hero, spectral interactions, scroll story, CDN-kill tested. This very site.</p>
+          <div class="btags"><span>Three.js</span><span>WebGL</span><span>Geist</span></div>
+          <span class="blink">Live →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section id="work">
     <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The proof</p>
+      <p class="eyebrow reveal"><b>◆</b>The visual proof</p>
       <h2 class="title reveal">Proof, in <em>every wavelength</em>.</h2>
       <p class="lead reveal">Samples straight from the studio pipeline — client case studies join them as they ship.</p>
       <div class="gal">
@@ -504,6 +697,36 @@
         <div class="step reveal d1"><div class="n">02</div><h4>Design</h4><p>A focused plan within 24 hours. You approve the angle before anything bends.</p></div>
         <div class="step reveal d2"><div class="n">03</div><h4>Build</h4><p>Heads down. Visuals rendered, systems wired, every facet checked.</p></div>
         <div class="step reveal d3"><div class="n">04</div><h4>Launch</h4><p>Delivered, live, supported. The full spectrum, pointed at your market.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visualrhyme">
+    <div class="inner">
+      <p class="eyebrow reveal"><b>◆</b>The background</p>
+      <h2 class="title reveal">Light, <em>engineered.</em></h2>
+      <p class="lead reveal">The rigor behind the AI work comes from hardware. As Associate Design Director at Visual Rhyme — an Ahmedabad LED display company — precision isn't a style choice; it's a spec sheet.</p>
+      <div class="vrg">
+        <div class="vrc reveal">
+          <span class="vtag">Role</span>
+          <h3>Associate Design Director</h3>
+          <p>LED display design, engineering specifications, proposal architecture, project consulting, and partnerships.</p>
+        </div>
+        <div class="vrc reveal d1">
+          <span class="vtag">Product line</span>
+          <h3>Reyansh Series</h3>
+          <p>Indoor (P1.86, P2.5) and Outdoor (P4, P6) fine-pitch LED displays — built for retail, broadcast, and architecture.</p>
+        </div>
+        <div class="vrc reveal">
+          <span class="vtag">Product line</span>
+          <h3>Leynna MicroLED</h3>
+          <p>Premium MicroLED for luxury retail, showrooms, and executive spaces. Ultra-fine pitch, seamless tiling, true blacks.</p>
+        </div>
+        <div class="vrc reveal d1">
+          <span class="vtag">Delivery</span>
+          <h3>Turnkey + dealer network</h3>
+          <p>Structural fabrication to calibration, end to end — with partners across Gujarat including Growel Infotech (Rajkot) and Microtronix Solution.</p>
+        </div>
       </div>
     </div>
   </section>
