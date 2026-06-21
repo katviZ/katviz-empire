@@ -28,12 +28,12 @@
   :root{
     --void:#0A0A0E; --panel:#121218; --panel-2:#1A1A24; --line:#26262F;
     --chrome:#EDEDF2; --silver:#9B9BA8; --dim:#62626E;
-    --cyan:#6BE4FF; --violet:#9D7BFF; --magenta:#FF6BC1;
+    --green:#3BF0A6; --cyan:#6BE4FF; --violet:#9D7BFF; --magenta:#FF6BC1;
     --display:'Geist',system-ui,sans-serif;
     --body:'Geist',system-ui,sans-serif;
     --mono:'Geist Mono',ui-monospace,monospace;
-    --grad-spectral:linear-gradient(110deg,#6BE4FF 0%,#9D7BFF 50%,#FF6BC1 100%);
-    --glow-split:-12px 0 36px -16px rgba(107,228,255,.45),12px 0 36px -16px rgba(255,107,193,.45);
+    --grad-spectral:linear-gradient(110deg,#3BF0A6 0%,#6BE4FF 34%,#9D7BFF 67%,#FF6BC1 100%);
+    --glow-split:-12px 0 36px -16px rgba(59,240,166,.45),12px 0 36px -16px rgba(255,107,193,.45);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html.lenis,html.lenis body{height:auto;}
@@ -199,7 +199,7 @@
   nav .nright{display:flex;align-items:center;gap:14px;}
   nav .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
     text-transform:uppercase;color:var(--silver);border:1px solid var(--line);border-radius:100px;padding:7px 14px;white-space:nowrap;}
-  nav .status i{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px rgba(107,228,255,.8);
+  nav .status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(59,240,166,.9);
     animation:chip-pulse 2.8s ease-in-out infinite;}
   @keyframes chip-pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
 
@@ -248,10 +248,10 @@
   html.js #process .steps::before{transform:scaleX(var(--draw,0));transform-origin:0 50%;opacity:calc(.15 + var(--draw,0)*.45);}
   html.js .step .n{transition:box-shadow .5s,background .5s,color .5s,text-shadow .5s;}
   html.js .step.lit .n{background:linear-gradient(var(--panel-2),var(--panel-2)) padding-box,var(--grad-spectral) border-box;box-shadow:var(--glow-split);}
-  html.js .step.lit:nth-child(1) .n{color:var(--cyan);}
-  html.js .step.lit:nth-child(2) .n{color:var(--violet);}
-  html.js .step.lit:nth-child(3) .n{color:var(--magenta);}
-  html.js .step.lit:nth-child(4) .n{color:var(--chrome);text-shadow:0 0 18px rgba(237,237,242,.55);}
+  html.js .step.lit:nth-child(1) .n{color:var(--green);}
+  html.js .step.lit:nth-child(2) .n{color:var(--cyan);}
+  html.js .step.lit:nth-child(3) .n{color:var(--violet);}
+  html.js .step.lit:nth-child(4) .n{color:var(--magenta);text-shadow:0 0 18px rgba(255,107,193,.5);}
 
   /* spectral keyword strip — CSS owns the drift (works no-JS), JS adds a
      velocity nudge on .mq-pan only on desktop */
@@ -330,13 +330,13 @@
 <!-- shared mark -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="km-edge" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%" stop-color="#6BE4FF"/><stop offset="55%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
+    <stop offset="0%" stop-color="#3BF0A6"/><stop offset="38%" stop-color="#6BE4FF"/><stop offset="69%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
   </linearGradient>
   <linearGradient id="km-body" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0%" stop-color="#1C1C26"/><stop offset="100%" stop-color="#0E0E13"/>
   </linearGradient>
   <linearGradient id="km-fan" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="#6BE4FF"/><stop offset="50%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
+    <stop offset="0%" stop-color="#3BF0A6"/><stop offset="36%" stop-color="#6BE4FF"/><stop offset="68%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
   </linearGradient>
   <linearGradient id="km-rc" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0%" stop-color="#6BE4FF" stop-opacity="0.95"/><stop offset="100%" stop-color="#6BE4FF" stop-opacity="0.28"/>
@@ -895,10 +895,13 @@
 
     const srgb = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)); // to linear
     // spectral tint baked on the CPU (keeps the fragment trivial → renders on every GL backend)
-    const _CY = [0x6B/255, 0xE4/255, 0xFF/255], _VI = [0x9D/255, 0x7B/255, 0xFF/255], _MA = [0xFF/255, 0x6B/255, 0xC1/255];
-    const ramp = (t) => { t = Math.max(0, Math.min(1, t));
-      if (t < 0.5) { const k = t*2; return [_CY[0]+(_VI[0]-_CY[0])*k, _CY[1]+(_VI[1]-_CY[1])*k, _CY[2]+(_VI[2]-_CY[2])*k]; }
-      const k = (t-0.5)*2; return [_VI[0]+(_MA[0]-_VI[0])*k, _VI[1]+(_MA[1]-_VI[1])*k, _VI[2]+(_MA[2]-_VI[2])*k]; };
+    const _GR = [0x3B/255, 0xF0/255, 0xA6/255], _CY = [0x6B/255, 0xE4/255, 0xFF/255], _VI = [0x9D/255, 0x7B/255, 0xFF/255], _MA = [0xFF/255, 0x6B/255, 0xC1/255];
+    const _lerp3 = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+    // full spectrum: green → cyan → violet → magenta (the prism, completed)
+    const ramp = (t) => { t = Math.max(0, Math.min(1, t)) * 3;
+      if (t < 1) return _lerp3(_GR, _CY, t);
+      if (t < 2) return _lerp3(_CY, _VI, t - 1);
+      return _lerp3(_VI, _MA, t - 2); };
     const TINT = 0.42;
     for (let k = 0; k < N; k++) {
       const gx = keep[k * 3], gy = keep[k * 3 + 1], d = keep[k * 3 + 2];

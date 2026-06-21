@@ -11,7 +11,8 @@
   --panel-2:  #1A1A24;   /* raised cards, inputs */
   --line:     #26262F;   /* dividers, hairlines */
 
-  /* ---- Spectral accents (never flat on large areas) ---- */
+  /* ---- Spectral accents (the full prism — never flat on large areas) ---- */
+  --green:    #3BF0A6;   /* spring emerald — growth, "go", availability */
   --cyan:     #6BE4FF;   /* short wavelength — precision, tech */
   --violet:   #9D7BFF;   /* mid wavelength — the signature */
   --magenta:  #FF6BC1;   /* long wavelength — energy, warmth */
@@ -31,9 +32,9 @@
   --accent:     var(--violet);
 
   /* ---- Gradients (how iridescence enters the system) ---- */
-  --grad-spectral: linear-gradient(110deg, #6BE4FF 0%, #9D7BFF 50%, #FF6BC1 100%);
-  --grad-spectral-v: linear-gradient(180deg, #6BE4FF 0%, #9D7BFF 50%, #FF6BC1 100%);
-  --grad-edge: linear-gradient(135deg, rgba(107,228,255,0.6), rgba(157,123,255,0.45), rgba(255,107,193,0.6));
+  --grad-spectral: linear-gradient(110deg, #3BF0A6 0%, #6BE4FF 34%, #9D7BFF 67%, #FF6BC1 100%);
+  --grad-spectral-v: linear-gradient(180deg, #3BF0A6 0%, #6BE4FF 34%, #9D7BFF 67%, #FF6BC1 100%);
+  --grad-edge: linear-gradient(135deg, rgba(59,240,166,0.55), rgba(107,228,255,0.5), rgba(157,123,255,0.45), rgba(255,107,193,0.6));
   --grad-beam: linear-gradient(90deg, rgba(237,237,242,0) 0%, rgba(237,237,242,0.9) 50%, rgba(237,237,242,0) 100%);
 
   /* ---- Type (one family, two voices: Geist for everything proportional, Geist Mono for the readout) ---- */
@@ -49,7 +50,7 @@
   /* ---- Glows (split, never single-color halos on big areas) ---- */
   --glow-cyan:    0 8px 40px rgba(107, 228, 255, 0.14);
   --glow-magenta: 0 8px 40px rgba(255, 107, 193, 0.14);
-  --glow-split:   -12px 0 36px -16px rgba(107, 228, 255, 0.45),
+  --glow-split:   -12px 0 36px -16px rgba(59, 240, 166, 0.45),
                    12px 0 36px -16px rgba(255, 107, 193, 0.45);
 }
 
@@ -59,6 +60,7 @@
    PASSES 4.5:1 (safe for any text size):
      --chrome  #EDEDF2  ≈ 17.4:1  (AAA — primary body pairing)
      --silver  #9B9BA8  ≈  7.0:1  (AA+ — secondary text, mono labels)
+     --green   #3BF0A6  ≈ 12.4:1
      --cyan    #6BE4FF  ≈ 13.1:1
      --violet  #9D7BFF  ≈  6.2:1
      --magenta #FF6BC1  ≈  7.5:1
@@ -70,8 +72,9 @@
    ONLY at display sizes (>= 24px), and every background-clip
    element must declare a solid color (--chrome) BEFORE the
    clip rules as fallback. Body and mono labels stay solid
-   --chrome / --silver. Single accent stops (cyan / violet /
-   magenta) are for borders, glows, and small accents — never
+   --chrome / --silver. Single accent stops (green / cyan /
+   violet / magenta) are for borders, glows, small accents —
+   green also carries "available / go" status — never
    flat fills on large areas: iridescence is always a gradient,
    a chromatic edge, or a split glow.
    ============================================================ */

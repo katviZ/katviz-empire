@@ -41,7 +41,7 @@ Files in `logo/`:
 
 ## 3. Color
 
-Full tokens in `tokens.css`. The system is **a near-black noir with three spectral accents — iridescence is never flat.**
+Full tokens in `tokens.css`. The system is **a near-black noir carrying the full spectral range — green through magenta — iridescence is never flat.**
 
 | Token | Hex | Role |
 |---|---|---|
@@ -49,13 +49,14 @@ Full tokens in `tokens.css`. The system is **a near-black noir with three spectr
 | Panel | `#121218` | Cards |
 | Panel 2 | `#1A1A24` | Raised cards, inputs |
 | Line | `#26262F` | Borders, hairlines |
+| Green | `#3BF0A6` | Spectral accent — growth; also the "available / go" status signal |
 | Cyan | `#6BE4FF` | Spectral accent — precision |
 | Violet | `#9D7BFF` | Spectral accent — the signature |
 | Magenta | `#FF6BC1` | Spectral accent — energy |
 | Chrome | `#EDEDF2` | Primary text |
 | Silver | `#9B9BA8` | Secondary text |
 
-**Accessibility:** Chrome on Void is the text pairing (≈17:1, AAA). Silver passes AA+ (≈7:1). All three spectral accents pass 4.5:1 on Void, but they live as **gradients, chromatic edges, and split glows** — never flat single-color fills on large areas, and never as small text below 4.5:1. The spectral gradient may be clipped to text **only at ≥24px**, always with a solid `--chrome` fallback declared first. `--dim` (#62626E) is decorative only.
+**Accessibility:** Chrome on Void is the text pairing (≈17:1, AAA). Silver passes AA+ (≈7:1). All four spectral accents pass 4.5:1 on Void, but they live as **gradients, chromatic edges, and split glows** — never flat single-color fills on large areas, and never as small text below 4.5:1. The spectral gradient may be clipped to text **only at ≥24px**, always with a solid `--chrome` fallback declared first. `--dim` (#62626E) is decorative only.
 
 ---
 
@@ -88,9 +89,9 @@ Write like a physicist who moonlights as a creative director. Precise, then surp
 ## 6. Quick reference
 
 ```
-Void   #0A0A0E   Panel   #121218   Line    #26262F
-Cyan   #6BE4FF   Violet  #9D7BFF   Magenta #FF6BC1
-Chrome #EDEDF2   Silver  #9B9BA8   Dim     #62626E
-Gradient: 110deg cyan -> violet -> magenta (display text >= 24px only)
+Void   #0A0A0E   Panel  #121218   Line    #26262F
+Green  #3BF0A6   Cyan   #6BE4FF   Violet  #9D7BFF   Magenta #FF6BC1
+Chrome #EDEDF2   Silver #9B9BA8   Dim     #62626E
+Gradient: 110deg green -> cyan -> violet -> magenta (display text >= 24px only)
 Display: Geist 600/700 · Body: Geist 400/500 · Mono: Geist Mono 400/500
 ```
