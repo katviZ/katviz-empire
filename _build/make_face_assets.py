@@ -9,8 +9,9 @@ Outputs into site/face/.
 import os, sys, numpy as np
 from PIL import Image, ImageOps, ImageFilter
 
-SRC = r"C:\Users\Ronak\Downloads\1000000988.jpg"
-OUT = r"C:\Users\Ronak\katviz-empire\site\face"
+HERE = os.path.dirname(os.path.abspath(__file__))
+SRC = os.path.normpath(os.path.join(HERE, "..", "..", "40_SOURCE-ASSETS", "1000000988.jpg"))
+OUT = os.path.normpath(os.path.join(HERE, "..", "site", "face"))
 os.makedirs(OUT, exist_ok=True)
 
 print("loading image...", flush=True)
