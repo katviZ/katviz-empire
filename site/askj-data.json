@@ -1,0 +1,498 @@
+{
+  "idle": "I'm J. Ask me how any of this works.",
+  "miss": "That one's not in my set. Send it to Kathan below.",
+  "featured": [
+    "build",
+    "audit",
+    "cost",
+    "own",
+    "data",
+    "start"
+  ],
+  "items": [
+    {
+      "id": "build",
+      "q": "What does Katviiz AI build?",
+      "keys": [
+        "build",
+        "offer",
+        "service",
+        "services",
+        "product",
+        "products",
+        "systems",
+        "develop",
+        "create",
+        "system"
+      ],
+      "a": [
+        "Software for what your team still does by hand: quotes, follow-ups, stock, reports, 3D.",
+        "The repetitive stuff: quotes, follow-ups, re-typing. Each becomes a system your team runs."
+      ],
+      "next": [
+        "audit",
+        "cost"
+      ],
+      "link": {
+        "text": "What we build",
+        "href": "#build"
+      }
+    },
+    {
+      "id": "audit",
+      "q": "How does the audit work?",
+      "keys": [
+        "audit",
+        "process",
+        "method",
+        "steps",
+        "mapping",
+        "step",
+        "map",
+        "hours"
+      ],
+      "a": [
+        "We sit with the people doing the work and map their hours, citing what they actually say.",
+        "Listening, mostly. We find the biggest leak in your week, and that's where the build starts."
+      ],
+      "next": [
+        "time",
+        "cost"
+      ],
+      "link": {
+        "text": "How it works",
+        "href": "#how"
+      }
+    },
+    {
+      "id": "time",
+      "q": "How long does it take?",
+      "keys": [
+        "long",
+        "time",
+        "take",
+        "duration",
+        "week",
+        "month",
+        "fast",
+        "quick",
+        "timeline",
+        "soon"
+      ],
+      "a": [
+        "Depends on the build. A quote tool isn't a digital twin, and the audit sizes it first.",
+        "Hard to say before we've seen your work. It hangs on which system pays back first."
+      ],
+      "next": [
+        "cost",
+        "start"
+      ],
+      "link": {
+        "text": "How it works",
+        "href": "#how"
+      }
+    },
+    {
+      "id": "cost",
+      "q": "What does it cost?",
+      "keys": [
+        "cost",
+        "price",
+        "pricing",
+        "fee",
+        "charge",
+        "much",
+        "budget",
+        "rate",
+        "expensive",
+        "cheap",
+        "pay",
+        "rupee",
+        "money"
+      ],
+      "a": [
+        "Quoted after the audit, against what the system will carry for you. Sooner would be a guess.",
+        "No list price. It's quoted after the audit, against what the system will carry for you."
+      ],
+      "next": [
+        "small",
+        "start"
+      ]
+    },
+    {
+      "id": "own",
+      "q": "Who owns the system after handover?",
+      "keys": [
+        "own",
+        "owner",
+        "ownership",
+        "handover",
+        "belong",
+        "keep",
+        "mine",
+        "yours",
+        "code",
+        "licence",
+        "license",
+        "after",
+        "support",
+        "maintain",
+        "maintenance",
+        "stay",
+        "break"
+      ],
+      "a": "You do: the code, the data, the accounts. We stay 6 months after handover so it holds.",
+      "next": [
+        "data",
+        "existing"
+      ],
+      "link": {
+        "text": "How it works",
+        "href": "#how"
+      }
+    },
+    {
+      "id": "data",
+      "q": "What happens to my data?",
+      "keys": [
+        "data",
+        "privacy",
+        "private",
+        "secure",
+        "security",
+        "safe",
+        "train",
+        "trained",
+        "confidential",
+        "repo",
+        "store",
+        "information"
+      ],
+      "a": "It stays yours. Nothing is trained on it, and audit material never enters our repositories.",
+      "next": [
+        "own",
+        "real"
+      ],
+      "link": {
+        "text": "Privacy and cookies",
+        "href": "privacy.html"
+      }
+    },
+    {
+      "id": "tools",
+      "q": "What tools can you connect?",
+      "keys": [
+        "tool",
+        "connect",
+        "integrate",
+        "integration",
+        "tally",
+        "zoho",
+        "sheet",
+        "sheets",
+        "google",
+        "whatsapp",
+        "email",
+        "website",
+        "erp",
+        "crm",
+        "excel",
+        "api"
+      ],
+      "a": "Tally, Zoho, Google Sheets, WhatsApp, email, your website. Anything else gets checked first.",
+      "next": [
+        "existing",
+        "whatsapp"
+      ]
+    },
+    {
+      "id": "existing",
+      "q": "Can it work with the software we already use?",
+      "keys": [
+        "existing",
+        "already",
+        "current",
+        "software",
+        "replace",
+        "compatible",
+        "legacy",
+        "old",
+        "switch",
+        "migrate"
+      ],
+      "a": "That's the point. We link the tools you have, so each number is entered once and flows on.",
+      "next": [
+        "tools",
+        "own"
+      ],
+      "link": {
+        "text": "What we build",
+        "href": "#build"
+      }
+    },
+    {
+      "id": "jarvis",
+      "q": "Who is J.A.R.V.I.S?",
+      "keys": [
+        "jarvis",
+        "j.a.r.v.i.s",
+        "agent system",
+        "who is j",
+        "agent",
+        "agents",
+        "gate",
+        "four",
+        "robot",
+        "bot"
+      ],
+      "a": "Me, more or less: four agents, and no build ships until it clears their gate.",
+      "next": [
+        "real",
+        "build"
+      ],
+      "link": {
+        "text": "J.A.R.V.I.S",
+        "href": "#j"
+      }
+    },
+    {
+      "id": "real",
+      "q": "Is J a real AI?",
+      "keys": [
+        "real",
+        "ai",
+        "scripted",
+        "chatbot",
+        "chatgpt",
+        "gpt",
+        "llm",
+        "human",
+        "person",
+        "alive",
+        "fake"
+      ],
+      "a": "Not here: I'm scripted. The real J.A.R.V.I.S plans and checks our builds.",
+      "next": [
+        "jarvis",
+        "data"
+      ]
+    },
+    {
+      "id": "where",
+      "q": "Where are you based?",
+      "keys": [
+        "where",
+        "based",
+        "location",
+        "city",
+        "office",
+        "ahmedabad",
+        "gujarat",
+        "india",
+        "remote",
+        "visit",
+        "travel",
+        "abroad",
+        "country"
+      ],
+      "a": "Ahmedabad, India. We work remotely or at your site, whichever the job needs.",
+      "next": [
+        "clients",
+        "start"
+      ]
+    },
+    {
+      "id": "founder",
+      "q": "Who is the founder?",
+      "keys": [
+        "founder",
+        "kathan",
+        "mehta",
+        "owner",
+        "ceo",
+        "behind",
+        "team",
+        "experience",
+        "background",
+        "years"
+      ],
+      "a": "Kathan Mehta. He builds the systems B2B firms run on: faster quotes, less re-typing.",
+      "next": [
+        "jarvis",
+        "start"
+      ],
+      "link": {
+        "text": "Founder",
+        "href": "#founder"
+      }
+    },
+    {
+      "id": "3d",
+      "q": "Do you do 3D and digital twins?",
+      "keys": [
+        "3d",
+        "twin",
+        "twins",
+        "digital",
+        "visualisation",
+        "visualization",
+        "render",
+        "tower",
+        "showroom",
+        "immersive",
+        "unreal",
+        "blender",
+        "mockup",
+        "real estate",
+        "realestate",
+        "estate"
+      ],
+      "a": "We do. One's on this page: a 33-floor tower you can search unit by unit.",
+      "next": [
+        "build",
+        "cost"
+      ],
+      "link": {
+        "text": "See the digital twin",
+        "href": "#twin"
+      }
+    },
+    {
+      "id": "whatsapp",
+      "q": "Can you build a WhatsApp assistant?",
+      "keys": [
+        "whatsapp",
+        "assistant",
+        "chat",
+        "reply",
+        "answer",
+        "enquiry",
+        "enquiries",
+        "inquiry",
+        "follow",
+        "followup"
+      ],
+      "a": "Yes. It replies, sends the quote and chases the follow-up, trained on your products.",
+      "next": [
+        "tools",
+        "cost"
+      ],
+      "link": {
+        "text": "What we build",
+        "href": "#build"
+      }
+    },
+    {
+      "id": "start",
+      "q": "How do I start?",
+      "keys": [
+        "start",
+        "begin",
+        "book",
+        "call",
+        "contact",
+        "reach",
+        "talk",
+        "meet",
+        "demo",
+        "hire",
+        "engage",
+        "phone"
+      ],
+      "a": [
+        "Email katviz.ai5@gmail.com or WhatsApp +91 74359 23555, and Kathan books the call.",
+        "One message to Kathan: WhatsApp +91 74359 23555 or katviz.ai5@gmail.com."
+      ],
+      "next": [
+        "audit",
+        "where"
+      ],
+      "link": {
+        "text": "Book the audit call",
+        "href": "#founder"
+      }
+    },
+    {
+      "id": "clients",
+      "q": "Who do you work with?",
+      "keys": [
+        "work with",
+        "client",
+        "clients",
+        "customer",
+        "customers",
+        "industry",
+        "industries",
+        "sector",
+        "factory",
+        "factories",
+        "manufacturer",
+        "manufacturers",
+        "printer",
+        "printers",
+        "dealer",
+        "dealers",
+        "builder",
+        "builders",
+        "sme",
+        "business",
+        "businesses",
+        "type"
+      ],
+      "a": "Indian SMEs first: printers, manufacturers, dealers, builders. Not on the list? Ask anyway.",
+      "next": [
+        "small",
+        "where"
+      ]
+    },
+    {
+      "id": "small",
+      "q": "Are we too small for this?",
+      "keys": [
+        "small",
+        "size",
+        "big",
+        "enough",
+        "minimum",
+        "staff",
+        "employees",
+        "people",
+        "turnover",
+        "startup",
+        "shop",
+        "sme"
+      ],
+      "a": "No minimum size. Hours are the test, and the check just above counts yours.",
+      "next": [
+        "audit",
+        "start"
+      ],
+      "link": {
+        "text": "Where do your hours go?",
+        "href": "#self-check"
+      }
+    },
+    {
+      "id": "hello",
+      "q": "Hello",
+      "keys": [
+        "hello",
+        "hi",
+        "hey",
+        "namaste",
+        "good morning",
+        "good evening",
+        "thanks",
+        "thank"
+      ],
+      "a": [
+        "Ask away.",
+        "Still here, whenever you're ready."
+      ],
+      "next": [
+        "build",
+        "audit"
+      ]
+    }
+  ]
+}

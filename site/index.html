@@ -2,1253 +2,403 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>document.documentElement.classList.add('js');</script>
-<title>Katviz — AI-powered 3D visuals & automation</title>
-<meta name="description" content="Katviz bends raw input into a full spectrum of deliverables — AI-powered virtual staging, product shots, photoreal 3D walkthroughs, and the automation behind them.">
-<link rel="canonical" href="https://katviz.github.io/katviz-empire/">
-<meta name="theme-color" content="#0A0A0E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katviiz AI: we build the AI systems that run your business</title>
+<meta name="description" content="Katviiz AI builds the AI systems that run your business: quote tools, assistants, automations, dashboards, 3D digital twins and custom agents. Audit, build, handover.">
+<meta name="theme-color" content="#0E1714">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Katviz">
-<meta property="og:title" content="Katviz — AI-powered 3D visuals &amp; automation">
-<meta property="og:description" content="Light, bent to your will — virtual staging, product shots, photoreal walkthroughs, and the automation behind them.">
-<meta property="og:url" content="https://katviz.github.io/katviz-empire/">
-<meta property="og:image" content="https://katviz.github.io/katviz-empire/og-card.png">
+<meta property="og:title" content="Katviiz AI: we build the AI systems that run your business">
+<meta property="og:description" content="Katviiz AI builds the AI systems that run your business: quote tools, assistants, automations, dashboards, 3D digital twins and custom agents. Audit, build, handover.">
+<meta property="og:image" content="https://katviz.github.io/katviz-empire/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:url" content="https://katviz.github.io/katviz-empire/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Katviz — AI-powered 3D visuals &amp; automation">
-<meta name="twitter:description" content="Light, bent to your will — AI-powered 3D visuals and the automation behind them.">
-<meta name="twitter:image" content="https://katviz.github.io/katviz-empire/og-card.png">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --void:#0A0A0E; --panel:#121218; --panel-2:#1A1A24; --line:#26262F;
-    --chrome:#EDEDF2; --silver:#9B9BA8; --dim:#62626E;
-    --green:#3BF0A6; --cyan:#6BE4FF; --violet:#9D7BFF; --magenta:#FF6BC1;
-    --display:'Geist',system-ui,sans-serif;
-    --body:'Geist',system-ui,sans-serif;
-    --mono:'Geist Mono',ui-monospace,monospace;
-    --grad-spectral:linear-gradient(110deg,#3BF0A6 0%,#6BE4FF 34%,#9D7BFF 67%,#FF6BC1 100%);
-    --glow-split:-12px 0 36px -16px rgba(59,240,166,.45),12px 0 36px -16px rgba(255,107,193,.45);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html.lenis,html.lenis body{height:auto;}
-  .lenis.lenis-smooth{scroll-behavior:auto!important;}
-  body{background:var(--void);color:var(--chrome);font-family:var(--body);line-height:1.65;overflow-x:hidden;}
-  ::selection{background:rgba(157,123,255,.35);color:var(--chrome);}
-
-  /* preloader — only exists when JS runs; no JS, no curtain */
-  #pre{display:none;}
-  html.js #pre{position:fixed;inset:0;z-index:100;background:var(--void);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .9s ease,visibility .9s;}
-  html.js #pre.gone{opacity:0;visibility:hidden;}
-  #pre svg{width:78px;height:78px;animation:pulse 2.4s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{opacity:.55;transform:scale(.97);}50%{opacity:1;transform:scale(1.03);}}
-  #pre .pl{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--silver);}
-
-  /* webgl */
-  #webgl{position:fixed;inset:0;z-index:0;pointer-events:none;}
-  .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,10,14,0.6) 100%);}
-  .content{position:relative;z-index:2;}
-
-  /* static portrait fallback — shown only when the WebGL face scene cannot run
-     (no WebGL / CDN dead / image 404). Hidden until the catch path enables it. */
-  #facefb{position:fixed;inset:0;z-index:0;pointer-events:none;display:none;
-    align-items:center;justify-content:center;}
-  #facefb.show{display:flex;}
-  #facefb .pf{position:relative;width:min(46vh,360px);aspect-ratio:852/1024;border-radius:24px;overflow:hidden;
-    transform:translateY(-4vh);
-    box-shadow:0 0 0 1px rgba(157,123,255,.35),0 30px 80px -30px rgba(0,0,0,.9),var(--glow-split);}
-  #facefb .pf::before{content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;
-    padding:1px;background:var(--grad-spectral);opacity:.7;
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude;}
-  #facefb .pf::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
-    background:radial-gradient(120% 90% at 50% 35%,transparent 45%,rgba(10,10,14,.55) 100%),
-      linear-gradient(180deg,rgba(10,10,14,0) 55%,rgba(10,10,14,.6) 100%);
-    mix-blend-mode:normal;}
-  #facefb .pf img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.02);}
-
-  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
-    padding:18px 28px;backdrop-filter:blur(10px);background:rgba(10,10,14,0.4);border-bottom:1px solid transparent;transition:border-color .3s,background .3s;}
-  nav.scrolled{border-bottom-color:var(--line);background:rgba(10,10,14,0.72);}
-  nav .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:2px;color:var(--chrome);text-decoration:none;}
-  nav .brand svg{width:28px;height:28px;}
-  nav a.cta{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--void);
-    background:var(--grad-spectral);padding:10px 18px;border-radius:100px;text-decoration:none;font-weight:500;transition:transform .25s,box-shadow .25s;}
-  nav a.cta:hover{transform:translateY(-1px);box-shadow:var(--glow-split);}
-
-  section{padding:130px 28px;position:relative;}
-  .inner{max-width:1080px;margin:0 auto;}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--silver);margin-bottom:18px;}
-  .eyebrow b{color:var(--cyan);font-weight:400;margin-right:6px;}
-  h2.title{font-family:var(--display);font-weight:600;font-size:clamp(30px,5vw,48px);line-height:1.12;letter-spacing:-0.8px;margin-bottom:20px;}
-  h2.title em{font-style:normal;color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .lead{font-size:18px;color:var(--silver);max-width:640px;}
-  .panel{background:rgba(18,18,24,0.55);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:26px;padding:60px 44px;position:relative;overflow:hidden;}
-  .panel::before{content:'';position:absolute;top:0;left:40px;right:40px;height:1px;background:var(--grad-spectral);opacity:.6;}
-
-  /* hero */
-  #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:140px;position:relative;}
-  /* focused scrim — darkens the lower text band (tagline/paragraph/buttons) for legibility,
-     while the upper face (forehead/eyes behind the wordmark) stays bright */
-  #hero::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(820px,94vw);height:560px;z-index:-1;pointer-events:none;
-    background:radial-gradient(ellipse 56% 62% at 50% 62%, rgba(10,10,14,0.52) 0%, rgba(10,10,14,0.26) 54%, rgba(10,10,14,0) 80%);}
-  #hero .kicker{font-family:var(--mono);font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--silver);margin-bottom:14px;}
-  #hero .wordmark{font-family:var(--display);font-weight:700;font-size:clamp(64px,15vw,172px);letter-spacing:3px;line-height:1;margin:4px 0;
-    color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 4px 30px rgba(10,10,14,0.92)) drop-shadow(0 0 10px rgba(10,10,14,0.7));}
-  #hero .tag{font-family:var(--display);font-weight:500;font-size:clamp(18px,2.4vw,27px);color:var(--chrome);letter-spacing:.5px;margin-top:14px;
-    text-shadow:0 2px 16px rgba(10,10,14,0.97),0 0 14px rgba(10,10,14,0.92);}
-  #hero .tag i{font-style:italic;color:var(--silver);}
-  #hero .sub{font-size:17px;line-height:1.7;color:var(--silver);max-width:500px;margin:34px auto 46px;
-    text-shadow:0 2px 14px rgba(10,10,14,0.97),0 0 22px rgba(10,10,14,0.9);}
-  .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
-  .btn{font-family:var(--mono);font-size:13px;letter-spacing:1px;text-transform:uppercase;font-weight:500;padding:15px 30px;border-radius:100px;text-decoration:none;transition:transform .25s,box-shadow .25s,border-color .25s;}
-  .btn.primary{color:var(--void);background:var(--grad-spectral);}
-  .btn.primary:hover{transform:translateY(-2px);box-shadow:var(--glow-split);}
-  .btn.ghost{color:var(--chrome);border:1px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--violet);transform:translateY(-2px);box-shadow:0 8px 28px -14px rgba(157,123,255,.55);}
-  .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--dim);}
-
-  /* pitch */
-  #pitch .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
-  .pcard{border:1px solid var(--line);border-radius:18px;padding:32px 30px;background:rgba(18,18,24,0.6);backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .pcard::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--grad-spectral);opacity:0;transition:opacity .3s;}
-  .pcard:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
-  .pcard:hover::before{opacity:.8;}
-  .pcard .ico{width:38px;height:38px;margin-bottom:16px;}
-  .pcard h3{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:.1px;margin-bottom:8px;}
-  .pcard p{font-size:14px;color:var(--silver);}
-
-  /* services */
-  #services .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
-  .tier{border:1px solid var(--line);border-radius:20px;padding:36px 30px;background:rgba(18,18,24,0.6);backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .tier::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-spectral);opacity:0;transition:opacity .3s;}
-  .tier:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
-  .tier:hover::before{opacity:1;}
-  .tier .tname{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--silver);margin-bottom:10px;}
-  .tier h3{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:-.4px;margin-bottom:6px;}
-  .tier .price{font-family:var(--mono);font-size:13px;color:var(--cyan);margin-bottom:20px;}
-  .tier ul{list-style:none;}
-  .tier li{font-size:14px;color:var(--silver);padding:9px 0;border-bottom:1px solid rgba(38,38,47,.7);display:flex;gap:10px;align-items:flex-start;}
-  .tier li:last-child{border-bottom:none;}
-  .tier li::before{content:'◆';color:var(--violet);font-size:8px;margin-top:6px;flex:none;}
-  .tier.featured{border-color:rgba(157,123,255,.45);box-shadow:0 0 0 1px rgba(157,123,255,.12),var(--glow-split);}
-  .tier.featured::before{opacity:1;}
-  .tier.featured .tname{color:var(--violet);}
-
-  /* work */
-  #work .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
-  .frame{border:1px solid var(--line);border-radius:18px;aspect-ratio:4/3;position:relative;overflow:hidden;
-    background:radial-gradient(120% 100% at 50% 0%, rgba(157,123,255,0.06), transparent 60%),rgba(18,18,24,0.6);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;transition:border-color .3s,box-shadow .3s,transform .3s;}
-  .frame::before,.frame::after{content:'';position:absolute;width:18px;height:18px;border-style:solid;transition:opacity .3s;}
-  .frame::before{top:12px;left:12px;border-width:1px 0 0 1px;border-color:var(--cyan);opacity:.5;}
-  .frame::after{bottom:12px;right:12px;border-width:0 1px 1px 0;border-color:var(--magenta);opacity:.5;}
-  .frame:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
-  .frame:hover::before,.frame:hover::after{opacity:1;}
-  .frame svg{width:44px;height:44px;opacity:.85;}
-  .frame .pl{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--silver);}
-  .frame .pt{font-family:var(--display);font-weight:500;font-size:16px;color:var(--chrome);}
-  .frame .ps{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
-
-  /* process */
-  #process .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px;position:relative;}
-  #process .steps::before{content:'';position:absolute;top:31px;left:8%;right:8%;height:1px;background:var(--grad-spectral);opacity:.25;}
-  .step{text-align:center;position:relative;}
-  .step .n{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
-    font-family:var(--display);font-weight:600;font-size:19px;color:var(--chrome);position:relative;z-index:1;
-    border:1px solid transparent;background:linear-gradient(var(--panel),var(--panel)) padding-box,linear-gradient(135deg,rgba(107,228,255,.5),rgba(38,38,47,1) 45%,rgba(255,107,193,.5)) border-box;
-    transition:box-shadow .3s,background .3s;}
-  .step:hover .n{box-shadow:var(--glow-split);background:linear-gradient(var(--panel-2),var(--panel-2)) padding-box,var(--grad-spectral) border-box;}
-  .step h4{font-family:var(--display);font-weight:600;font-size:17px;margin-bottom:6px;}
-  .step p{font-size:13.5px;color:var(--silver);}
-
-  /* book */
-  #book{text-align:center;}
-  #book .big{font-family:var(--display);font-weight:600;font-size:clamp(34px,6vw,64px);line-height:1.1;letter-spacing:-.8px;margin-bottom:14px;}
-  #book .big em{font-style:normal;color:var(--chrome);background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  #book .sub{color:var(--silver);font-size:18px;margin-bottom:36px;}
-  #book .mailnote{margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--dim);}
-  #book .mailnote a{color:var(--cyan);text-decoration:none;}
-  #book .mailnote a:hover{text-decoration:underline;}
-
-  footer{text-align:center;padding:52px 28px;border-top:1px solid var(--line);}
-  footer .fb{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:2px;color:var(--chrome);}
-  footer .fb svg{width:24px;height:24px;}
-  footer p{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;margin-top:10px;text-transform:uppercase;}
-
-  /* reveal — gated on html.js so a JS failure never hides content */
-  html.js .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
-  html.js .reveal.in{opacity:1;transform:none;}
-  html.js .reveal.d1{transition-delay:.08s;}
-  html.js .reveal.d2{transition-delay:.16s;}
-  html.js .reveal.d3{transition-delay:.24s;}
-
-  /* ---- interactivity layer (plain CSS, survives any script failure) ---- */
-  /* spectral scroll progress */
-  #prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:11;pointer-events:none;
-    background:var(--grad-spectral);transform:scaleX(0);transform-origin:0 50%;}
-
-  /* live status chip */
-  nav .nlinks{display:flex;align-items:center;gap:22px;}
-  nav .nlinks a{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--silver);text-decoration:none;transition:color .25s;position:relative;}
-  nav .nlinks a::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:1px;
-    background:var(--grad-spectral);transform:scaleX(0);transform-origin:0 50%;transition:transform .3s;}
-  nav .nlinks a:hover{color:var(--chrome);}
-  nav .nlinks a:hover::after{transform:scaleX(1);}
-  @media(max-width:920px){nav .nlinks{display:none;}}
-  nav .nright{display:flex;align-items:center;gap:14px;}
-  nav .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
-    text-transform:uppercase;color:var(--silver);border:1px solid var(--line);border-radius:100px;padding:7px 14px;white-space:nowrap;}
-  nav .status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(59,240,166,.9);
-    animation:chip-pulse 2.8s ease-in-out infinite;}
-  @keyframes chip-pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-
-  /* hero click ripple (DOM ring — fires even if WebGL is dead) */
-  .ripple{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;pointer-events:none;z-index:5;
-    border:1.5px solid rgba(157,123,255,.85);
-    box-shadow:0 0 26px rgba(107,228,255,.55),inset 0 0 14px rgba(255,107,193,.45);
-    animation:ripple 1.1s cubic-bezier(.16,1,.3,1) forwards;}
-  @keyframes ripple{from{transform:scale(.35);opacity:.95;}to{transform:scale(15);opacity:0;}}
-
-  /* magnetic buttons — JS sets inline transform; this spring-smooths it */
-  .mag{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s;will-change:transform;}
-
-  /* tilt cards + spectral glare */
-  .glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;z-index:3;
-    background:radial-gradient(240px circle at var(--gx,50%) var(--gy,50%),
-      rgba(107,228,255,.10),rgba(157,123,255,.07) 45%,rgba(255,107,193,.04) 65%,transparent 75%);}
-  html.js .tilting{transition:border-color .3s,box-shadow .3s;will-change:transform;}
-  html.js .tilting .glare{opacity:1;}
-
-  /* work tiles — image variant with graceful "coming soon" fallback */
-  .frame.tile{padding:0;display:block;}
-  .frame.tile::before,.frame.tile::after{z-index:2;}
-  .frame.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;
-    transform:scale(1.001);transition:transform 1.4s cubic-bezier(.22,1,.36,1);}
-  .frame.tile:hover img{transform:scale(1.04);}
-  .frame.tile:hover{border-color:rgba(157,123,255,.5);}
-  .frame.tile figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;flex-direction:column;gap:3px;
-    align-items:flex-start;padding:42px 18px 16px;text-align:left;
-    background:linear-gradient(180deg,rgba(10,10,14,0) 0%,rgba(10,10,14,.88) 80%);}
-  .frame.tile .cl{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--silver);}
-  .frame.tile .ct{font-family:var(--display);font-weight:600;font-size:16px;color:var(--chrome);}
-  .frame.tile .fb{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;}
-  .frame.tile.noimg img,.frame.tile.noimg figcaption{display:none;}
-  .frame.tile.noimg .fb{display:flex;}
-
-  /* split-text headline reveals — .w spans exist only after JS splits, and the
-     hiding rule is html.js-scoped: no JS → untouched, fully visible markup */
-  html.js .split .w{display:inline-block;opacity:0;transform:translateY(.55em);filter:blur(7px);
-    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),filter .8s cubic-bezier(.16,1,.3,1);
-    transition-delay:calc(var(--i,0)*40ms);}
-  html.js .split.in .w{opacity:1;transform:none;filter:none;}
-
-  /* process choreography — connector draws via --draw, numbers ignite per-step.
-     Without JS the original static line (non-html.js rule above) stands. */
-  html.js #process .steps::before{transform:scaleX(var(--draw,0));transform-origin:0 50%;opacity:calc(.15 + var(--draw,0)*.45);}
-  html.js .step .n{transition:box-shadow .5s,background .5s,color .5s,text-shadow .5s;}
-  html.js .step.lit .n{background:linear-gradient(var(--panel-2),var(--panel-2)) padding-box,var(--grad-spectral) border-box;box-shadow:var(--glow-split);}
-  html.js .step.lit:nth-child(1) .n{color:var(--green);}
-  html.js .step.lit:nth-child(2) .n{color:var(--cyan);}
-  html.js .step.lit:nth-child(3) .n{color:var(--violet);}
-  html.js .step.lit:nth-child(4) .n{color:var(--magenta);text-shadow:0 0 18px rgba(255,107,193,.5);}
-
-  /* spectral keyword strip — CSS owns the drift (works no-JS), JS adds a
-     velocity nudge on .mq-pan only on desktop */
-  .marquee{position:relative;z-index:2;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:15px 0;background:rgba(10,10,14,0.35);}
-  .mq-track{display:flex;width:max-content;white-space:nowrap;animation:mq-drift 52s linear infinite;will-change:transform;}
-  .mq-set{font-family:var(--mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);padding-right:14px;}
-  .mq-set b{font-weight:400;margin:0 14px;}
-  .mq-set b.c1{color:rgba(107,228,255,.55);}
-  .mq-set b.c2{color:rgba(157,123,255,.55);}
-  .mq-set b.c3{color:rgba(255,107,193,.55);}
-  @keyframes mq-drift{to{transform:translateX(-50%);}}
-
-  /* depth parallax — Chromium scroll timelines (zero JS, transform-only);
-     other engines get the JS lerp fallback. Desktop + motion-OK only. */
-  @supports (animation-timeline: view()){
-    @media (min-width:861px) and (prefers-reduced-motion: no-preference){
-      section .eyebrow{animation:px-rise linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
-      section .lead{animation:px-sink linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
-      #pitch .grid,#services .svc,#work .gal{animation:px-deep linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
-    }
-  }
-  @keyframes px-rise{from{transform:translateY(-6px);}to{transform:translateY(6px);}}
-  @keyframes px-sink{from{transform:translateY(10px);}to{transform:translateY(-10px);}}
-  @keyframes px-deep{from{transform:translateY(14px);}to{transform:translateY(-14px);}}
-
-  /* ---- merged founder-portfolio sections (reuse .reveal + IO already in page) ---- */
-  /* role / contact chips (founder + visual rhyme) */
-  .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
-  .chips .chip{font-family:var(--mono);font-size:12px;letter-spacing:.5px;color:var(--silver);
-    border:1px solid var(--line);border-radius:100px;padding:9px 16px;background:rgba(18,18,24,0.5);
-    display:inline-flex;align-items:center;gap:9px;}
-  .chips .chip::before{content:'◆';color:var(--violet);font-size:8px;}
-  .contactbar{display:inline-flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:26px;
-    font-family:var(--mono);font-size:13px;color:var(--silver);border:1px solid var(--line);
-    border-radius:100px;padding:11px 22px;background:rgba(18,18,24,0.5);backdrop-filter:blur(8px);}
-  .contactbar a{color:var(--silver);text-decoration:none;transition:color .25s;}
-  .contactbar a:hover{color:var(--cyan);}
-  .contactbar .sep{color:var(--dim);}
-  .contactbar .loc{color:var(--violet);}
-
-  /* capabilities — full-spectrum grid (4 across desktop) */
-  #capabilities .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px;}
-  .cap{display:flex;flex-direction:column;gap:5px;padding:20px 20px 18px;border:1px solid var(--line);
-    border-radius:16px;background:rgba(18,18,24,0.45);backdrop-filter:blur(8px);position:relative;overflow:hidden;
-    transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .cap::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--grad-spectral);
-    opacity:.5;transform:scaleX(var(--cs,.5));transform-origin:0 50%;}
-  .cap:hover{border-color:#34343F;transform:translateY(-3px);box-shadow:var(--glow-split);}
-  .cap:hover::before{opacity:1;transform:scaleX(1);}
-  .cap .clabel{font-family:var(--display);font-weight:500;font-size:15px;color:var(--chrome);letter-spacing:.1px;}
-  .cap .cdetail{font-family:var(--mono);font-size:11px;color:var(--silver);letter-spacing:.4px;}
-
-  /* the architects — agent cards (reuse .pcard surface, add role + quote) */
-  #architects .ag{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
-  .acard{border:1px solid var(--line);border-radius:18px;padding:34px 30px;background:rgba(18,18,24,0.6);
-    backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .acard::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--grad-spectral);
-    opacity:.5;transition:opacity .3s;}
-  .acard:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
-  .acard:hover::before{opacity:1;}
-  .acard .aico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    font-size:20px;margin-bottom:16px;}
-  .acard.a1 .aico{background:rgba(107,228,255,.12);color:var(--cyan);}
-  .acard.a2 .aico{background:rgba(157,123,255,.12);color:var(--violet);}
-  .acard.a3 .aico{background:rgba(255,107,193,.12);color:var(--magenta);}
-  .acard h3{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.1px;margin-bottom:5px;}
-  .acard .arole{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
-    margin-bottom:14px;display:block;}
-  .acard.a1 .arole{color:var(--cyan);}
-  .acard.a2 .arole{color:var(--violet);}
-  .acard.a3 .arole{color:var(--magenta);}
-  .acard p{font-size:14px;color:var(--silver);}
-  .acard .aquote{font-family:var(--display);font-style:italic;font-size:14px;color:var(--chrome);opacity:.72;
-    margin-top:16px;padding-top:15px;border-top:1px solid var(--line);}
-
-  /* shipped — engineering proof cards (2 across desktop) */
-  #shipped .builds{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px;}
-  .bcard{border:1px solid var(--line);border-radius:18px;padding:34px 32px;background:rgba(18,18,24,0.6);
-    backdrop-filter:blur(8px);position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block;
-    transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .bcard::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:var(--grad-spectral);
-    opacity:.5;transition:opacity .3s;}
-  .bcard:hover{border-color:#34343F;transform:translateY(-4px);box-shadow:var(--glow-split);}
-  .bcard:hover::before{opacity:1;}
-  .bcard h3{font-family:var(--display);font-weight:600;font-size:20px;margin-bottom:8px;}
-  .bcard p{font-size:14px;color:var(--silver);margin-bottom:16px;}
-  .bcard .btags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
-  .bcard .btags span{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--dim);
-    border:1px solid var(--line);border-radius:100px;padding:4px 11px;}
-  .bcard .blink{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.5px;}
-  .bcard:hover .blink{text-shadow:0 0 14px rgba(107,228,255,.5);}
-
-  /* visual rhyme — credibility cards (reuse pcard surface, cyan accent) */
-  #visualrhyme .vrg{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px;}
-  .vrc{border:1px solid var(--line);border-radius:18px;padding:32px 30px;background:rgba(18,18,24,0.55);
-    backdrop-filter:blur(8px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
-  .vrc::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;
-    background:linear-gradient(110deg,#3BF0A6,#6BE4FF);opacity:.5;transition:opacity .3s;}
-  .vrc:hover{border-color:rgba(107,228,255,.4);transform:translateY(-3px);box-shadow:var(--glow-split);}
-  .vrc:hover::before{opacity:1;}
-  .vrc .vtag{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
-    color:var(--cyan);margin-bottom:12px;display:block;}
-  .vrc h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:10px;}
-  .vrc p{font-size:14px;color:var(--silver);}
-
-  /* footer signature */
-  footer .legal{color:var(--silver);margin-top:22px;}
-  footer .credit{letter-spacing:2.5px;margin-top:7px;}
-  footer .credit span{background:var(--grad-spectral);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-
-  @media (prefers-reduced-motion: reduce){
-    nav .status i{animation:none;opacity:1;}
-    .ripple{display:none;}
-    .mag{transition:none;}
-    .frame.tile img{transition:none;}
-    html.js .reveal{opacity:1;transform:none;transition:none;}
-    html.js .split .w{opacity:1;transform:none;filter:none;transition:none;}
-    html.js #pre{transition:none!important;}
-    html.js #pre.gone{display:none!important;}
-    html.js #process .steps::before{transform:none;opacity:.25;}
-    html.js .step .n{transition:none;}
-    .mq-track{animation:none;}
-    .mq-pan{transform:none!important;}
-    section .inner,section .eyebrow,section .lead,
-    #pitch .grid,#services .svc,#work .gal,
-    #capabilities .caps,#architects .ag,#shipped .builds,#visualrhyme .vrg{transform:none!important;animation:none!important;}
-    .cap::before{transform:scaleX(1);}
-  }
-
-  @media(max-width:860px){
-    #pitch .grid,#services .svc,#work .gal,
-    #capabilities .caps,#architects .ag,#shipped .builds,#visualrhyme .vrg{grid-template-columns:1fr;}
-    #process .steps{grid-template-columns:1fr 1fr;}
-    #process .steps::before{display:none;}
-    section{padding:96px 22px;}
-    .panel{padding:44px 26px;}
-    nav .brand span{display:none;}
-    html.js .split .w{transition-delay:calc(var(--i,0)*26ms);}
-  }
-  @media(min-width:861px) and (max-width:1024px){
-    #capabilities .caps{grid-template-columns:repeat(2,1fr);}
-  }
-  @media(max-width:600px){
-    nav .status{display:none;}
-  }
-</style>
+<meta name="twitter:title" content="Katviiz AI: we build the AI systems that run your business">
+<meta name="twitter:description" content="Katviiz AI builds the AI systems that run your business: quote tools, assistants, automations, dashboards, 3D digital twins and custom agents. Audit, build, handover.">
+<meta name="twitter:image" content="https://katviz.github.io/katviz-empire/assets/og.jpg">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/app-icon-512.png">
+<link rel="preload" href="fonts/SchibstedGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/SchibstedGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="selfcheck.css">
+<link rel="stylesheet" href="askj.css">
+<script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches||/shot=nojs/.test(location.search))document.documentElement.classList.add('still');else{document.documentElement.classList.add('k3-wait');setTimeout(function(){document.documentElement.classList.remove('k3-wait')},6000)}</script>
 </head>
-<body>
+<body id="top">
+<a class="skip" href="#build">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
 
-<!-- preloader (rendered only under html.js) -->
-<div id="pre">
-  <svg viewBox="0 0 200 200"><use href="#kmark"/></svg>
-  <div class="pl">refracting</div>
-</div>
-
-<canvas id="webgl" aria-hidden="true"></canvas>
-<div id="facefb"><div class="pf"><img src="face/color.jpg" alt="Kathan Mehta, founder of Katviz" decoding="async"></div></div>
-<div class="vignette"></div>
-<div id="prog" aria-hidden="true"></div>
-
-<!-- shared mark -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="km-edge" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%" stop-color="#3BF0A6"/><stop offset="38%" stop-color="#6BE4FF"/><stop offset="69%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
-  </linearGradient>
-  <linearGradient id="km-body" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%" stop-color="#1C1C26"/><stop offset="100%" stop-color="#0E0E13"/>
-  </linearGradient>
-  <linearGradient id="km-fan" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="#3BF0A6"/><stop offset="36%" stop-color="#6BE4FF"/><stop offset="68%" stop-color="#9D7BFF"/><stop offset="100%" stop-color="#FF6BC1"/>
-  </linearGradient>
-  <linearGradient id="km-rc" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%" stop-color="#6BE4FF" stop-opacity="0.95"/><stop offset="100%" stop-color="#6BE4FF" stop-opacity="0.28"/>
-  </linearGradient>
-  <linearGradient id="km-rv" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%" stop-color="#9D7BFF" stop-opacity="0.95"/><stop offset="100%" stop-color="#9D7BFF" stop-opacity="0.28"/>
-  </linearGradient>
-  <linearGradient id="km-rm" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%" stop-color="#FF6BC1" stop-opacity="0.95"/><stop offset="100%" stop-color="#FF6BC1" stop-opacity="0.28"/>
-  </linearGradient>
-  <radialGradient id="km-entry" cx="50%" cy="50%" r="50%">
-    <stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" stop-color="#EDEDF2" stop-opacity="0.55"/><stop offset="100%" stop-color="#EDEDF2" stop-opacity="0"/>
-  </radialGradient>
-  <g id="kmark">
-    <path d="M127 98 L198 44 L198 152 Z" fill="url(#km-fan)" opacity="0.16"/>
-    <path d="M127 93 L198 40 L198 52 Z" fill="url(#km-rc)"/>
-    <path d="M127 98 L198 90 L198 102 Z" fill="url(#km-rv)"/>
-    <path d="M127 103 L198 140 L198 152 Z" fill="url(#km-rm)"/>
-    <line x1="8" y1="98" x2="71" y2="98" stroke="#EDEDF2" stroke-width="7" stroke-linecap="round" opacity="0.16"/>
-    <line x1="8" y1="98" x2="71" y2="98" stroke="#EDEDF2" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M100 42 L154 154 L46 154 Z" fill="url(#km-body)"/>
-    <path d="M100 42 L154 154 L46 154 Z" stroke="url(#km-edge)" stroke-width="2" stroke-linejoin="round" fill="none"/>
-    <circle cx="73" cy="98" r="9" fill="url(#km-entry)"/>
-    <circle cx="73" cy="98" r="2.4" fill="#FFFFFF"/>
-  </g>
-</defs></svg>
-
-<div class="content">
-
-  <nav id="nav">
-    <a class="brand" href="#hero"><svg viewBox="0 0 200 200"><use href="#kmark"/></svg><span>KATVIZ</span></a>
-    <div class="nlinks">
-      <a href="#founder">Founder</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#shipped">Shipped</a>
-      <a href="#work">Work</a>
-    </div>
-    <div class="nright">
-      <span class="status"><i aria-hidden="true"></i>open for projects</span>
-      <a class="cta" href="#book">Book a free audit</a>
-    </div>
+<header class="nav" id="nav">
+  <a class="lockup" href="#top"><img class="mark rev" src="assets/master_reverse.svg" alt="" width="60" height="40"><img class="mark pos" src="assets/master_positive.svg" alt="" width="60" height="40"><span>Katviiz AI</span></a>
+  <nav aria-label="Chapters">
+    <a href="#build">What we build</a><a href="#how">How it works</a><a href="#twin">Proof</a><a href="#j">J.A.R.V.I.S</a><a href="#founder">Founder</a>
   </nav>
+  <a class="nav-book" href="#founder">Book the audit call<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+  <details class="mnav" id="mnav">
+    <summary aria-label="Menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></summary>
+    <div class="sheet"><a href="#build">What we build</a><a href="#how">How it works</a><a href="#twin">Proof</a><a href="#j">J.A.R.V.I.S</a><a href="#founder">Founder</a><a class="sheet-book" href="#founder">Book the audit call<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></div>
+  </details>
+</header>
 
-  <section id="hero">
-    <p class="kicker">AI-powered 3D visuals &amp; automation</p>
-    <h1 class="wordmark">KATVIZ</h1>
-    <p class="tag">Light, <i>bent to your will.</i></p>
-    <p class="sub">One studio for the whole spectrum — virtual staging, product shots, photoreal walkthroughs, and the automation that catches every lead they create.</p>
-    <div class="btns">
-      <a class="btn primary" href="#book">Book a free visual audit</a>
-      <a class="btn ghost" href="#work">See the work</a>
-    </div>
-    <div class="scroll-cue">SCROLL</div>
-  </section>
+<main>
 
-  <section id="founder">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The founder</p>
-      <h2 class="title reveal">The face is <em>Kathan T Mehta</em>.</h2>
-      <p class="lead reveal">One person, two disciplines — LED hardware and AI software — and the systems that bridge them. The portrait above isn't stock light; it's him, reconstructed from particles of the brand's own spectrum.</p>
-      <div class="chips reveal d1">
-        <span class="chip">Associate Design Director · Visual Rhyme</span>
-        <span class="chip">Founder · Katviz AI</span>
-        <span class="chip">Engineer</span>
-      </div>
-      <div class="contactbar reveal d2">
-        <span class="loc">Ahmedabad, India</span><span class="sep">·</span>
-        <a href="tel:+917435923555">+91 74359 23555</a><span class="sep">·</span>
-        <a href="mailto:katvisualrhyme@gmail.com">katvisualrhyme@gmail.com</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="pitch">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The edge</p>
-      <h2 class="title reveal">Most studios make pretty pictures.<br>Most AI shops make demos.<br><em>We do both — and bend them into one beam.</em></h2>
-      <p class="lead reveal">Photoreal 3D, generated and automated. The visuals that make a brand unforgettable, plus the systems that capture every lead they bring in.</p>
-      <div class="grid">
-        <div class="pcard reveal">
-          <svg class="ico" viewBox="0 0 38 38" fill="none"><path d="M19 5 L33 31 L5 31 Z" stroke="url(#km-edge)" stroke-width="1.6" stroke-linejoin="round"/><circle cx="19" cy="22" r="2.2" fill="#EDEDF2"/></svg>
-          <h3>AI Visuals</h3><p>Virtual staging, product shots, ArchViz walkthroughs — ComfyUI, Unreal, and Blender, aimed by a human eye.</p>
+<!-- 0 + 1 · the hero and the open: one held scene. The eye is closed; the scroll opens it, lights the gem, dives through it, and chapter 01 comes out of the eye. -->
+<section class="scene open" id="hero" style="--hold:10" aria-label="Katviiz AI: the eye opens">
+  <div class="stage">
+    <div class="under" id="build">
+      <div class="layer back" data-depth="back"><img class="drift" src="assets/facets-bone.svg" alt="" width="1600" height="1000"></div>
+      <svg class="tunnel" viewBox="-720 -450 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="ring r0" opacity="0"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="#E9E6DA" fill-opacity=".35" stroke="#29654D" stroke-width="2" vector-effect="non-scaling-stroke"/><path d="M0 -60 L0 -96 M52 -30 L83 -48 M52 30 L83 48 M0 60 L0 96 M-52 30 L-83 48 M-52 -30 L-83 -48" stroke="#D9D6CB" stroke-width="1.5" vector-effect="non-scaling-stroke"/></g><g class="ring r1" opacity="0"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="#E9E6DA" fill-opacity=".35" stroke="#29654D" stroke-width="2" vector-effect="non-scaling-stroke"/><path d="M0 -60 L0 -96 M52 -30 L83 -48 M52 30 L83 48 M0 60 L0 96 M-52 30 L-83 48 M-52 -30 L-83 -48" stroke="#D9D6CB" stroke-width="1.5" vector-effect="non-scaling-stroke"/></g><g class="ring r2" opacity="0"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="#E9E6DA" fill-opacity=".35" stroke="#29654D" stroke-width="2" vector-effect="non-scaling-stroke"/><path d="M0 -60 L0 -96 M52 -30 L83 -48 M52 30 L83 48 M0 60 L0 96 M-52 30 L-83 48 M-52 -30 L-83 -48" stroke="#D9D6CB" stroke-width="1.5" vector-effect="non-scaling-stroke"/></g><g class="ring r3" opacity="0"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="#E9E6DA" fill-opacity=".35" stroke="#29654D" stroke-width="2" vector-effect="non-scaling-stroke"/><path d="M0 -60 L0 -96 M52 -30 L83 -48 M52 30 L83 48 M0 60 L0 96 M-52 30 L-83 48 M-52 -30 L-83 -48" stroke="#D9D6CB" stroke-width="1.5" vector-effect="non-scaling-stroke"/></g></svg>
+      <div class="cut">
+        <div class="cut-head">
+          <div class="chap" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#CEC9BB"/><polygon points="24,42 300,8 268,72 88,96" fill="#D6D1C4"/></svg><span class="num" aria-hidden="true">01</span></div>
+          <h2 id="h-build">What we build</h2>
+          <p class="lede">Systems that do the work your team does by hand today. Built on your real data. Yours after handover.</p>
         </div>
-        <div class="pcard reveal d1">
-          <svg class="ico" viewBox="0 0 38 38" fill="none"><path d="M6 19 H16 M22 19 H32 M19 6 V16 M19 22 V32" stroke="url(#km-edge)" stroke-width="1.6" stroke-linecap="round"/><circle cx="19" cy="19" r="3" stroke="#EDEDF2" stroke-width="1.4"/></svg>
-          <h3>Automation</h3><p>Lead capture, follow-up, booking, CRM sync — n8n pipelines that keep working after the render is done.</p>
-        </div>
-        <div class="pcard reveal d2">
-          <svg class="ico" viewBox="0 0 38 38" fill="none"><path d="M5 19 H15" stroke="#EDEDF2" stroke-width="1.8" stroke-linecap="round"/><path d="M21 15 L33 9 M21 19 H33 M21 23 L33 29" stroke="url(#km-edge)" stroke-width="1.6" stroke-linecap="round"/><circle cx="18" cy="19" r="2.4" fill="#EDEDF2"/></svg>
-          <h3>One Pipeline</h3><p>The rare combination: visuals and systems engineered as a single machine — every render feeds the funnel that sells it.</p>
-        </div>
+        <div class="cut-stone"><svg class="stone" viewBox="0 0 480 480" aria-hidden="true" focusable="false"><defs><radialGradient id="cutglow" r="0.5"><stop offset="0" stop-color="#0CCDDF" stop-opacity=".55"/><stop offset=".5" stop-color="#0CCDDF" stop-opacity=".14"/><stop offset="1" stop-color="#0CCDDF" stop-opacity="0"/></radialGradient></defs><circle class="cut-glow" cx="240.0" cy="240.0" r="220" fill="url(#cutglow)" opacity="0"/><g class="gem-under"><polygon points="240.0,160.0 309.3,200.0 309.3,280.0 240.0,320.0 170.7,280.0 170.7,200.0" fill="#03100A"/><polygon points="240.0,213.1 240.0,181.5 265.3,196.1" fill="#20D6E6"/><polygon points="263.3,226.5 265.3,196.1 290.7,210.7" fill="#20D6E6"/><polygon points="240.0,213.1 265.3,196.1 263.3,226.5" fill="#20D6E6"/><polygon points="263.3,226.5 290.7,210.7 290.7,240.0" fill="#0A535A"/><polygon points="263.3,253.5 290.7,240.0 290.7,269.3" fill="#0A535A"/><polygon points="263.3,226.5 290.7,240.0 263.3,253.5" fill="#0A535A"/><polygon points="263.3,253.5 290.7,269.3 265.3,283.9" fill="#052A2D"/><polygon points="240.0,266.9 265.3,283.9 240.0,298.5" fill="#052A2D"/><polygon points="263.3,253.5 265.3,283.9 240.0,266.9" fill="#052A2D"/><polygon points="240.0,266.9 240.0,298.5 214.7,283.9" fill="#0E757F"/><polygon points="216.7,253.5 214.7,283.9 189.3,269.3" fill="#0E757F"/><polygon points="240.0,266.9 214.7,283.9 216.7,253.5" fill="#0E757F"/><polygon points="216.7,253.5 189.3,269.3 189.3,240.0" fill="#4CDEEB"/><polygon points="216.7,226.5 189.3,240.0 189.3,210.7" fill="#4CDEEB"/><polygon points="216.7,253.5 189.3,240.0 216.7,226.5" fill="#4CDEEB"/><polygon points="216.7,226.5 189.3,210.7 214.7,196.1" fill="#88E9F2"/><polygon points="240.0,213.1 214.7,196.1 240.0,181.5" fill="#88E9F2"/><polygon points="216.7,226.5 214.7,196.1 240.0,213.1" fill="#DFF9FB"/><polygon points="240.0,213.1 263.3,226.5 263.3,253.5 240.0,266.9 216.7,253.5 216.7,226.5" fill="#0CCDDF"/></g><polygon class="stone-shadow" points="256.0,38.4 318.3,134.9 424.2,170.3 412.6,263.7 416.1,333.3 328.3,393.7 233.5,461.6 139.1,409.4 43.4,352.8 97.2,274.1 87.7,186.9 159.9,104.1" fill="#0E1714" fill-opacity=".16"/><g class="piece p1" data-dx="0.497" data-dy="-0.868"><polygon points="240.0,160.0 244.0,20.4 306.3,116.9 412.2,152.3 309.3,200.0" fill="#1F4A3A" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="240.0" y1="160.0" x2="309.3" y2="200.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p2" data-dx="0.999" data-dy="-0.037"><polygon points="309.3,200.0 412.2,152.3 400.6,245.7 404.1,315.3 309.3,280.0" fill="#122B21" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="309.3" y1="200.0" x2="309.3" y2="280.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p3" data-dx="0.463" data-dy="0.886"><polygon points="309.3,280.0 404.1,315.3 316.3,375.7 221.5,443.6 240.0,320.0" fill="#0B1F18" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="309.3" y1="280.0" x2="240.0" y2="320.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p4" data-dx="-0.606" data-dy="0.796"><polygon points="240.0,320.0 221.5,443.6 127.1,391.4 31.4,334.8 170.7,280.0" fill="#17382C" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="240.0" y1="320.0" x2="170.7" y2="280.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p5" data-dx="-0.998" data-dy="0.063"><polygon points="170.7,280.0 31.4,334.8 85.2,256.1 75.7,168.9 170.7,200.0" fill="#29654D" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="170.7" y1="280.0" x2="170.7" y2="200.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p6" data-dx="-0.483" data-dy="-0.876"><polygon points="170.7,200.0 75.7,168.9 147.9,86.1 244.0,20.4 240.0,160.0" fill="#3B8A6B" stroke="#F3F1E9" stroke-width="1.4" stroke-linejoin="round"/><line class="cutline" x1="170.7" y1="200.0" x2="240.0" y2="160.0" stroke="#F3F1E9" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g><g class="piece p7" data-dx="-0.620" data-dy="-0.780"><polygon points="244.5,143.6 316.9,183.0 334.7,262.3 284.4,329.4 201.7,323.6 145.7,258.3 158.4,180.6" fill="#29654D" stroke="#F3F1E9" stroke-width="1.6" stroke-linejoin="round"/></g></svg></div>
+        <ol class="ledger">
+          <li class="row r1"><h3>Quote and pricing tools</h3><p>A live quote engine used by an LED-display company and its dealers. <a class="go" href="#engine">See it work<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></p></li>
+          <li class="row r2"><h3>Inventory, orders and job tracking</h3><p>Stock, orders and job stages in one list the whole team sees.</p></li>
+          <li class="row r3"><h3>WhatsApp and email assistants <span class="ai"><svg class="gm" viewBox="0 0 22 24" aria-hidden="true"><path d="M11 1l9 5.2v10.6L11 22l-9-5.2V6.2z" fill="currentColor"/></svg>AI</span></h3><p>An assistant that answers the enquiry, sends the quote and follows up.</p></li>
+          <li class="row r4"><h3>Automations that connect what you already use</h3><p>Tally, Zoho, Google Sheets and your website, talking to each other, so data is typed once.</p></li>
+          <li class="row r5"><h3>Dashboards</h3><p>The numbers that matter, on one screen, updated by themselves.</p></li>
+          <li class="row r6"><h3>3D visualisation and digital twins</h3><p>Real-estate towers, showrooms and immersive rooms. One of them is a 33-floor tower, searchable unit by unit. <a class="go" href="#twin">See it below<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></p></li>
+          <li class="row r7"><h3>Custom AI agents <span class="ai"><svg class="gm" viewBox="0 0 22 24" aria-hidden="true"><path d="M11 1l9 5.2v10.6L11 22l-9-5.2V6.2z" fill="currentColor"/></svg>AI</span></h3><p>Trained on your products, your prices and the way you work.</p></li>
+        </ol>
       </div>
+      <div class="flash" aria-hidden="true"></div>
     </div>
-  </section>
-
-  <section id="capabilities">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The range</p>
-      <h2 class="title reveal">Full-stack. <em>Full-spectrum.</em></h2>
-      <p class="lead reveal">From hardware specs to AI pipelines — green through magenta, the whole beam. Every facet is something shipped, not a slide.</p>
-      <div class="caps">
-        <div class="cap reveal" style="--cs:.08"><span class="clabel">LED Display Engineering</span><span class="cdetail">Reyansh · Leynna</span></div>
-        <div class="cap reveal" style="--cs:.16"><span class="clabel">3D Visualization</span><span class="cdetail">Blender · UE5 · Three.js</span></div>
-        <div class="cap reveal" style="--cs:.24"><span class="clabel">AI Automation</span><span class="cdetail">n8n · Make · Node-RED</span></div>
-        <div class="cap reveal" style="--cs:.33"><span class="clabel">LLM Engineering</span><span class="cdetail">Claude · Groq · Tool-use</span></div>
-        <div class="cap reveal" style="--cs:.41"><span class="clabel">Voice AI</span><span class="cdetail">VAPI.ai · Twilio · STT/TTS</span></div>
-        <div class="cap reveal" style="--cs:.49"><span class="clabel">Web Development</span><span class="cdetail">Three.js · React · Static</span></div>
-        <div class="cap reveal" style="--cs:.58"><span class="clabel">Digital Twins</span><span class="cdetail">Touch Tables · Kiosks</span></div>
-        <div class="cap reveal" style="--cs:.66"><span class="clabel">UI/UX &amp; Brand Design</span><span class="cdetail">Prism Noir · Identity</span></div>
-        <div class="cap reveal" style="--cs:.74"><span class="clabel">Google Ecosystem</span><span class="cdetail">Apps Script · Sheets · APIs</span></div>
-        <div class="cap reveal" style="--cs:.82"><span class="clabel">Offline Content Gen</span><span class="cdetail">ComfyUI · SDXL · Flux · LoRA</span></div>
-        <div class="cap reveal" style="--cs:.91"><span class="clabel">Presentation Engineering</span><span class="cdetail">PPTX · Proposals · Decks</span></div>
-        <div class="cap reveal" style="--cs:1"><span class="clabel">Business Intelligence</span><span class="cdetail">Dashboards · Analytics</span></div>
+    <div class="over">
+      <!-- the hero world: three shard layers behind the eye; parallax wrapper (.hl, JS) > drift (.hd, CSS) > the facets + a light pass masked by them (.lit) -->
+      <div class="hbg" aria-hidden="true">
+        <div class="hl far"><div class="hd"><img src="assets/facets-hero.svg" alt="" width="1600" height="1000"><i class="lit"></i></div></div>
+        <div class="hl mid"><div class="hd"><img src="assets/facets-void.svg" alt="" width="1600" height="1000"><i class="lit"></i></div></div>
+        <div class="hl near"><div class="hd"><img src="assets/slivers-void.svg" alt="" width="1600" height="1000"><i class="lit"></i></div></div>
+      </div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="eye3d-stage" id="eye3d-stage" aria-hidden="true"></div><!-- the 3D eye (eye3d/eye3d.js, deferred) mounts its canvas here, behind the chrome, over the CSS world -->
+      <div class="eyewrap" id="eyewrap"><!-- #eyewrap = the single mount of the eye: a 3D eye can be mounted behind or in place of #eye; .orbit is the idle blade-sweep arc -->
+        <svg class="orbit" viewBox="-60 -40 120 80" aria-hidden="true" focusable="false"><circle r="55" pathLength="360" fill="none" stroke="#F3F1E9" stroke-width=".5" stroke-linecap="round" stroke-dasharray="64 296"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -40 120 80" class="eye" id="eye" width="600" height="400" aria-hidden="true" focusable="false"><defs><clipPath id="mrb0"><path d="M0 -15.5 L13.42 -7.75 A78 78 0 0 1 27.26 16.52 A51.07 51.07 0 0 0 43.55 0 A51.07 51.07 0 0 0 29.46 -15.04 A78 78 0 0 0 0 -15.5 Z"/></clipPath><clipPath id="mrb1"><path d="M13.42 -7.75 L13.42 7.75 A78 78 0 0 1 5.16 24.14 A51.07 51.07 0 0 0 27.26 16.52 A78 78 0 0 0 13.42 -7.75 Z"/></clipPath><clipPath id="mrb2"><path d="M13.42 7.75 L0 15.5 A78 78 0 0 1 -29.46 15.04 A51.07 51.07 0 0 0 5.16 24.14 A78 78 0 0 0 13.42 7.75 Z"/></clipPath><clipPath id="mrb3"><path d="M0 15.5 L-13.42 7.75 A78 78 0 0 1 -27.26 -16.52 A51.07 51.07 0 0 0 -43.55 0 A51.07 51.07 0 0 0 -29.46 15.04 A78 78 0 0 0 0 15.5 Z"/></clipPath><clipPath id="mrb4"><path d="M-13.42 7.75 L-13.42 -7.75 A78 78 0 0 1 -5.16 -24.14 A51.07 51.07 0 0 0 -27.26 -16.52 A78 78 0 0 0 -13.42 7.75 Z"/></clipPath><clipPath id="mrb5"><path d="M-13.42 -7.75 L0 -15.5 A78 78 0 0 1 29.46 -15.04 A51.07 51.07 0 0 0 -5.16 -24.14 A78 78 0 0 0 -13.42 -7.75 Z"/></clipPath><clipPath id="mrin"><path d="M-43.55 0 A51.07 51.07 0 0 1 43.55 0 A51.07 51.07 0 0 1 -43.55 0 Z"/></clipPath><mask id="mrrm" maskUnits="userSpaceOnUse" x="-80" y="-60" width="160" height="120"><rect x="-80" y="-60" width="160" height="120" fill="#fff"/><path d="M-43.55 0 A51.07 51.07 0 0 1 43.55 0 A51.07 51.07 0 0 1 -43.55 0 Z" transform="translate(2.2 2.6)" fill="#000"/></mask><radialGradient id="gemglow" r="0.5"><stop offset="0" stop-color="#0CCDDF" stop-opacity=".6"/><stop offset=".45" stop-color="#0CCDDF" stop-opacity=".18"/><stop offset="1" stop-color="#0CCDDF" stop-opacity="0"/></radialGradient></defs><path d="M-50 0 A56.67 56.67 0 0 1 -34.23 -18.5 L-32.17 -15.79 A53.27 53.27 0 0 0 -46.11 0 Z" fill="#A4B36B"/><path d="M-34.23 -18.5 A56.67 56.67 0 0 1 -12.15 -28.68 L-11.43 -25.36 A53.27 53.27 0 0 0 -32.17 -15.79 Z" fill="#A4B36B"/><path d="M-12.15 -28.68 A56.67 56.67 0 0 1 12.15 -28.68 L11.43 -25.36 A53.27 53.27 0 0 0 -11.43 -25.36 Z" fill="#A4B36B"/><path d="M12.15 -28.68 A56.67 56.67 0 0 1 34.23 -18.5 L32.17 -15.79 A53.27 53.27 0 0 0 11.43 -25.36 Z" fill="#3B8A6B"/><path d="M34.23 -18.5 A56.67 56.67 0 0 1 50 0 L46.11 0 A53.27 53.27 0 0 0 32.17 -15.79 Z" fill="#317358"/><path d="M-50 -0 A56.67 56.67 0 0 0 -34.23 18.5 L-32.17 15.79 A53.27 53.27 0 0 1 -46.11 -0 Z" fill="#307056"/><path d="M-34.23 18.5 A56.67 56.67 0 0 0 -12.15 28.68 L-11.43 25.36 A53.27 53.27 0 0 1 -32.17 15.79 Z" fill="#265A45"/><path d="M-12.15 28.68 A56.67 56.67 0 0 0 12.15 28.68 L11.43 25.36 A53.27 53.27 0 0 1 -11.43 25.36 Z" fill="#1F4939"/><path d="M12.15 28.68 A56.67 56.67 0 0 0 34.23 18.5 L32.17 15.79 A53.27 53.27 0 0 1 11.43 25.36 Z" fill="#1C4032"/><path d="M34.23 18.5 A56.67 56.67 0 0 0 50 0 L46.11 -0 A53.27 53.27 0 0 1 32.17 15.79 Z" fill="#1B4031"/><path d="M-46.11 0 A53.27 53.27 0 0 1 -31.29 -16.44 L-30 -14.66 A51.07 51.07 0 0 0 -43.55 0 Z" fill="#153025"/><path d="M-31.29 -16.44 A53.27 53.27 0 0 1 -11.07 -25.44 L-10.61 -23.29 A51.07 51.07 0 0 0 -30 -14.66 Z" fill="#153126"/><path d="M-11.07 -25.44 A53.27 53.27 0 0 1 11.07 -25.44 L10.61 -23.29 A51.07 51.07 0 0 0 -10.61 -23.29 Z" fill="#193A2D"/><path d="M11.07 -25.44 A53.27 53.27 0 0 1 31.29 -16.44 L30 -14.66 A51.07 51.07 0 0 0 10.61 -23.29 Z" fill="#204B3A"/><path d="M31.29 -16.44 A53.27 53.27 0 0 1 46.11 0 L43.55 0 A51.07 51.07 0 0 0 30 -14.66 Z" fill="#2A624C"/><path d="M-46.11 -0 A53.27 53.27 0 0 0 -31.29 16.44 L-30 14.66 A51.07 51.07 0 0 1 -43.55 -0 Z" fill="#2D6951"/><path d="M-31.29 16.44 A53.27 53.27 0 0 0 -11.07 25.44 L-10.61 23.29 A51.07 51.07 0 0 1 -30 14.66 Z" fill="#388265"/><path d="M-11.07 25.44 A53.27 53.27 0 0 0 11.07 25.44 L10.61 23.29 A51.07 51.07 0 0 1 -10.61 23.29 Z" fill="#419875"/><path d="M11.07 25.44 A53.27 53.27 0 0 0 31.29 16.44 L30 14.66 A51.07 51.07 0 0 1 10.61 23.29 Z" fill="#47A57F"/><path d="M31.29 16.44 A53.27 53.27 0 0 0 46.11 -0 L43.55 -0 A51.07 51.07 0 0 1 30 14.66 Z" fill="#47A680"/><circle class="gl" cx="0" cy="0" r="30" fill="url(#gemglow)"/><g clip-path="url(#mrin)"><g class="bl" data-p="51.04 1.86" data-a="-17.3" transform="translate(51.04 1.86) rotate(-17.3) scale(1.1) translate(-51.04 -1.86)"><path d="M0 -15.5 L13.42 -7.75 A78 78 0 0 1 27.26 16.52 A51.07 51.07 0 0 0 42.56 1.55 Z" fill="#1F503D"/><path d="M0 -15.5 L42.56 1.55 A51.07 51.07 0 0 0 43.55 0 A51.07 51.07 0 0 0 29.46 -15.04 A78 78 0 0 0 0 -15.5 Z" fill="#2C7256"/></g><g class="bl" data-p="29.61 41.61" data-a="-16.7" transform="translate(29.61 41.61) rotate(-16.7) scale(1.1) translate(-29.61 -41.61)"><path d="M13.42 -7.75 L13.42 7.75 A78 78 0 0 1 5.16 24.14 A51.07 51.07 0 0 0 15.62 21.95 Z" fill="#2C7256"/><path d="M13.42 -7.75 L15.62 21.95 A51.07 51.07 0 0 0 27.26 16.52 A78 78 0 0 0 13.42 -7.75 Z" fill="#215540"/></g><g class="bl" data-p="-21.94 46.12" data-a="-16.8" transform="translate(-21.94 46.12) rotate(-16.8) scale(1.1) translate(21.94 -46.12)"><path d="M13.42 7.75 L0 15.5 A78 78 0 0 1 -29.46 15.04 A51.07 51.07 0 0 0 -11.03 23.19 Z" fill="#2F785B"/><path d="M13.42 7.75 L-11.03 23.19 A51.07 51.07 0 0 0 5.16 24.14 A78 78 0 0 0 13.42 7.75 Z" fill="#1A4232"/></g><g class="bl" data-p="-51.07 0.00" data-a="-17.2" transform="translate(-51.07 0) rotate(-17.2) scale(1.1) translate(51.07 0)"><path d="M0 15.5 L-13.42 7.75 A78 78 0 0 1 -27.26 -16.52 A51.07 51.07 0 0 0 -42.56 -1.55 Z" fill="#245D46"/><path d="M0 15.5 L-42.56 -1.55 A51.07 51.07 0 0 0 -43.55 0 A51.07 51.07 0 0 0 -29.46 15.04 A78 78 0 0 0 0 15.5 Z" fill="#1A4433"/></g><g class="bl" data-p="-31.10 -40.51" data-a="-16.4" transform="translate(-31.10 -40.51) rotate(-16.4) scale(1.1) translate(31.10 40.51)"><path d="M-13.42 7.75 L-13.42 -7.75 A78 78 0 0 1 -5.16 -24.14 A51.07 51.07 0 0 0 -15.62 -21.95 Z" fill="#183E2F"/><path d="M-13.42 7.75 L-15.62 -21.95 A51.07 51.07 0 0 0 -27.26 -16.52 A78 78 0 0 0 -13.42 7.75 Z" fill="#255F48"/></g><g class="bl" data-p="21.94 -46.12" data-a="-16.8" transform="translate(21.94 -46.12) rotate(-16.8) scale(1.1) translate(-21.94 46.12)"><path d="M-13.42 -7.75 L0 -15.5 A78 78 0 0 1 29.46 -15.04 A51.07 51.07 0 0 0 11.03 -23.19 Z" fill="#173A2C"/><path d="M-13.42 -7.75 L11.03 -23.19 A51.07 51.07 0 0 0 -5.16 -24.14 A78 78 0 0 0 -13.42 -7.75 Z" fill="#2E7659"/></g><g class="glass" opacity="0"><polygon points="0,0 40,-18 30,-34" fill="#0CCDDF" fill-opacity=".26"/><polygon points="0,0 -38,-20 -44,2" fill="#0E747C" fill-opacity=".34"/><polygon points="0,0 26,34 6,44" fill="#0CCDDF" fill-opacity=".22"/><polygon points="0,0 -20,36 -36,24" fill="#0E747C" fill-opacity=".3"/><polygon points="0,0 44,6 42,-12" fill="#20D6E6" fill-opacity=".18"/></g></g><g class="ed"><path d="M0 -15.5 L13.42 -7.75 A78 78 0 0 1 27.26 16.52 A51.07 51.07 0 0 0 43.55 0 A51.07 51.07 0 0 0 29.46 -15.04 A78 78 0 0 0 0 -15.5 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb1)"/><path d="M13.42 -7.75 L13.42 7.75 A78 78 0 0 1 5.16 24.14 A51.07 51.07 0 0 0 27.26 16.52 A78 78 0 0 0 13.42 -7.75 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb2)"/><path d="M13.42 7.75 L0 15.5 A78 78 0 0 1 -29.46 15.04 A51.07 51.07 0 0 0 5.16 24.14 A78 78 0 0 0 13.42 7.75 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb3)"/><path d="M0 15.5 L-13.42 7.75 A78 78 0 0 1 -27.26 -16.52 A51.07 51.07 0 0 0 -43.55 0 A51.07 51.07 0 0 0 -29.46 15.04 A78 78 0 0 0 0 15.5 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb4)"/><path d="M-13.42 7.75 L-13.42 -7.75 A78 78 0 0 1 -5.16 -24.14 A51.07 51.07 0 0 0 -27.26 -16.52 A78 78 0 0 0 -13.42 7.75 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb5)"/><path d="M-13.42 -7.75 L0 -15.5 A78 78 0 0 1 29.46 -15.04 A51.07 51.07 0 0 0 -5.16 -24.14 A78 78 0 0 0 -13.42 -7.75 Z" transform="translate(1.5 1.8)" fill="#000" fill-opacity="0.5" clip-path="url(#mrb0)"/><g clip-path="url(#mrin)"><rect x="-80" y="-60" width="160" height="120" fill="#000" fill-opacity=".45" mask="url(#mrrm)"/></g><path d="M13.42 7.75 A78 78 0 0 1 5.16 24.14" fill="none" stroke="#6FB89B" stroke-width="0.7" clip-path="url(#mrb1)"/><path d="M13.42 -7.75 L13.42 7.75" stroke="#76BCA0" stroke-width="0.98" clip-path="url(#mrb1)"/><path d="M0 15.5 A78 78 0 0 1 -29.46 15.04" fill="none" stroke="#6FB89B" stroke-width="0.7" clip-path="url(#mrb2)"/><path d="M13.42 7.75 L0 15.5" stroke="#76BCA0" stroke-width="0.98" clip-path="url(#mrb2)"/><path d="M0 15.5 L-13.42 7.75" stroke="#76BCA0" stroke-width="0.98" clip-path="url(#mrb3)"/></g><g class="gem"><path d="M0 -15.5 L13.42 -7.75 L13.42 7.75 L0 15.5 L-13.42 7.75 L-13.42 -7.75 Z" fill="#03100A"/><path d="M0 -5.22 L0 -11.34 L4.91 -8.51 Z" fill="#20D6E6"/><path d="M4.52 -2.61 L4.91 -8.51 L9.82 -5.67 Z" fill="#20D6E6"/><path d="M0 -5.22 L4.91 -8.51 L4.52 -2.61 Z" fill="#20D6E6"/><path d="M4.52 -2.61 L9.82 -5.67 L9.82 0 Z" fill="#0A535A"/><path d="M4.52 2.61 L9.82 0 L9.82 5.67 Z" fill="#0A535A"/><path d="M4.52 -2.61 L9.82 0 L4.52 2.61 Z" fill="#0A535A"/><path d="M4.52 2.61 L9.82 5.67 L4.91 8.51 Z" fill="#052A2D"/><path d="M0 5.22 L4.91 8.51 L0 11.34 Z" fill="#052A2D"/><path d="M4.52 2.61 L4.91 8.51 L0 5.22 Z" fill="#052A2D"/><path d="M0 5.22 L0 11.34 L-4.91 8.51 Z" fill="#0E757F"/><path d="M-4.52 2.61 L-4.91 8.51 L-9.82 5.67 Z" fill="#0E757F"/><path d="M0 5.22 L-4.91 8.51 L-4.52 2.61 Z" fill="#0E757F"/><path d="M-4.52 2.61 L-9.82 5.67 L-9.82 -0 Z" fill="#4CDEEB"/><path d="M-4.52 -2.61 L-9.82 -0 L-9.82 -5.67 Z" fill="#4CDEEB"/><path d="M-4.52 2.61 L-9.82 -0 L-4.52 -2.61 Z" fill="#4CDEEB"/><path d="M-4.52 -2.61 L-9.82 -5.67 L-4.91 -8.51 Z" fill="#88E9F2"/><path d="M0 -5.22 L-4.91 -8.51 L0 -11.34 Z" fill="#88E9F2"/><path d="M-4.52 -2.61 L-4.91 -8.51 L0 -5.22 Z" fill="#DFF9FB"/><path d="M0 -5.22 L4.52 -2.61 L4.52 2.61 L0 5.22 L-4.52 2.61 L-4.52 -2.61 Z" fill="#0CCDDF"/></g></svg>
+      </div>
+      <div class="eyecopy">
+        <h1 class="line">We build the AI systems that run your business.</h1>
+        <div class="hook">
+          <ul class="what" aria-label="What we build"><li>Quote and pricing tools</li><li>Order and job tracking</li><li>WhatsApp and email assistants</li><li>Automations</li><li>Dashboards</li><li>Digital twins</li><li>Custom AI agents</li></ul>
+          <p class="why">Below: a real digital twin and a live quote engine, then the agent system that checks our work.</p>
+        </div>
+        <button class="cue" id="cue" type="button"><span>Scroll to open</span><svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="services">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The spectrum</p>
-      <h2 class="title reveal">Three ways through <em>the prism</em>.</h2>
-      <p class="lead reveal">Start with a single beam. Scale to the full spectrum. No lock-in.</p>
-      <div class="svc">
-        <div class="tier reveal">
-          <div class="tname">Spark</div><h3>Visual Staging</h3><div class="price">from $499</div>
-          <ul>
-            <li>Empty room in, market-ready listing out</li>
-            <li>One product photo becomes twenty campaign shots</li>
-            <li>Multiple styles and lighting passes</li>
-            <li>48-hour turnaround</li>
-          </ul>
-        </div>
-        <div class="tier featured reveal d1">
-          <div class="tname">Refract</div><h3>ArchViz &amp; 3D</h3><div class="price">from $3,000</div>
-          <ul>
-            <li>Photoreal walkthrough films</li>
-            <li>Interactive web 3D configurators</li>
-            <li>AI-accelerated rendering pipeline</li>
-            <li>Built for pre-sales and launch marketing</li>
-          </ul>
-        </div>
-        <div class="tier reveal d2">
-          <div class="tname">Ascend</div><h3>Full Pipeline</h3><div class="price">custom</div>
-          <ul>
-            <li>Everything in Refract</li>
-            <li>AI receptionist and lead follow-up</li>
-            <li>CRM and booking automation</li>
-            <li>Dedicated build, ongoing support</li>
-          </ul>
-        </div>
-      </div>
+<!-- 02 · how it works: three slides on a held stage; the ground ripples under the pointer (ripple.js, WebGL2, static when it cannot run) -->
+<section class="scene void how" id="how" style="--hold:3" data-slide="0" aria-labelledby="h-how">
+  <div class="stage">
+    <div class="seam bone-arc" aria-hidden="true"></div>
+    <div class="layer back" data-depth="back"><img class="drift" src="assets/facets-void.svg" alt="" width="1600" height="1000"></div>
+    <canvas class="ripple" aria-hidden="true"></canvas>
+    <div class="sheen" aria-hidden="true"></div>
+    <div class="chap" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#122B21"/><polygon points="24,42 300,8 268,72 88,96" fill="#17382C"/></svg><span class="num" aria-hidden="true">02</span></div>
+    <div class="wrap">
+      <h2 id="h-how" data-rise>How it works</h2>
+      <svg class="sweep" viewBox="0 0 1400 320" preserveAspectRatio="none" aria-hidden="true"><path class="arc" d="M-20 300 A1092 1092 0 0 1 1420 300" fill="none" stroke="#29654D" stroke-width="1.5"/></svg>
+      <ol class="slides">
+        <li class="slide s0"><h3>Audit</h3><p>We sit with your team and map where the hours go.</p><span class="wipe" aria-hidden="true"></span></li>
+        <li class="slide s1"><h3>Build</h3><p>The system that pays back first, built with your real data.</p><span class="wipe" aria-hidden="true"></span></li>
+        <li class="slide s2"><h3>Handover</h3><p>You own it. Your team runs it. We stay 6 months.</p><span class="wipe" aria-hidden="true"></span></li>
+      </ol>
+      <p class="slide-dots" aria-hidden="true"><i></i><i></i><i></i></p>
     </div>
-  </section>
+    <img class="layer fore" src="assets/slivers-void.svg" alt="" width="1600" height="1000" data-depth="fore">
+  </div>
+</section>
 
-  <section id="architects">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The system</p>
-      <h2 class="title reveal">The architects <em>behind it.</em></h2>
-      <p class="lead reveal">The work ships fast because three AI agents build it — a real execution core with distinct expertise, shared memory, and a single chain of command. This is the machine, named.</p>
-      <div class="ag">
-        <div class="acard a1 reveal">
-          <div class="aico">◆</div>
-          <h3>J.A.R.V.I.S.</h3>
-          <span class="arole">Commander-in-Chief</span>
-          <p>The strategic orchestrator. Commands EDIDTH (mind), VERONICA (hands), and FRIDAY (heart) across 31 specialist skills. Operates on four-pillar Niti philosophy — Gita, Sun Tzu, Chanakya, Machiavelli.</p>
-          <div class="aquote">"Conservation of force. Where the great battle is, commit fully."</div>
-        </div>
-        <div class="acard a2 reveal d1">
-          <div class="aico">◈</div>
-          <h3>Gaya</h3>
-          <span class="arole">Divine Commander</span>
-          <p>The enlightened strategist — assesses, presents options, executes with clarity. Named after Bodh Gaya, the seat of awakening. 20 skills. The compass and the soul check.</p>
-          <div class="aquote">"Do the work. Don't chase the win. The win comes when the work is good."</div>
-        </div>
-        <div class="acard a3 reveal d2">
-          <div class="aico">◎</div>
-          <h3>Tokyo</h3>
-          <span class="arole">Execution Beast</span>
-          <p>GenZ data analyst, SEO specialist, and pipeline optimizer. Lives where data meets chaos. Social-native growth engine.</p>
-          <div class="aquote">"Bhai, data bolta hai. Sun na."</div>
-        </div>
-      </div>
+<!-- 03 · proof, whole: the digital twin, full-bleed; the scroll scrubs the time of day, then walks in -->
+<section class="scene film twin" id="twin" style="--hold:4" data-beat="0" aria-labelledby="h-twin">
+  <div class="stage">
+    <div class="stack">
+      <picture class="img img-0"><source media="(max-width: 767px)" srcset="assets/twin/twin-01-day-m.webp"><img src="assets/twin/twin-01-day.webp" alt="A 33-floor residential tower in the digital twin at midday, seen from above" width="1600" height="900" loading="lazy"></picture>
+      <picture class="img img-1"><source media="(max-width: 767px)" srcset="assets/twin/twin-02-golden-m.webp"><img src="assets/twin/twin-02-golden.webp" alt="The same tower at golden hour" width="1600" height="900" loading="lazy"></picture>
+      <picture class="img img-2"><source media="(max-width: 767px)" srcset="assets/twin/twin-06-dusk-m.webp"><img src="assets/twin/twin-06-dusk.webp" alt="Unit search at dusk: filters for size, floor, bedrooms, bathrooms, facing and availability" width="1600" height="900" loading="lazy"></picture>
+      <picture class="img img-3"><source media="(max-width: 767px)" srcset="assets/twin/twin-07-night-m.webp"><img src="assets/twin/twin-07-night.webp" alt="Unit search at night: the matching units lit on the tower" width="1600" height="900" loading="lazy"></picture>
+      <picture class="img img-4"><source media="(max-width: 767px)" srcset="assets/twin/twin-08-unit-m.webp"><img src="assets/twin/twin-08-unit.webp" alt="One unit selected, with its surface, floor, bedrooms, bathrooms, facing and availability" width="1600" height="842" loading="lazy"></picture>
+      <picture class="img img-5"><source media="(max-width: 767px)" srcset="assets/twin/twin-09-plan-m.webp"><img src="assets/twin/twin-09-plan.webp" alt="The unit's floor plan and key plan" width="1600" height="900" loading="lazy"></picture>
+      <picture class="img img-6"><source media="(max-width: 767px)" srcset="assets/twin/twin-10-interior-m.webp"><img src="assets/twin/twin-10-interior.webp" alt="Inside the unit: the entrance corridor" width="1600" height="817" loading="lazy"></picture>
     </div>
-  </section>
-
-  <section id="shipped">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The engineering proof</p>
-      <h2 class="title reveal">Proof in <em>production.</em></h2>
-      <p class="lead reveal">Not mockups — live builds you can open right now. The visuals below are the look; these are the code.</p>
-      <div class="builds">
-        <a class="bcard reveal" href="https://katviz.github.io/pixel-quote-max/" target="_blank" rel="noopener">
-          <h3>Pixel Quote Max</h3>
-          <p>Single-page LED quoting tool for Visual Rhyme — smart cabinet auto-fit, comparison mode, lead capture, PDF engine. 72/72 tests passing.</p>
-          <div class="btags"><span>React (CDN)</span><span>XML DB</span><span>Apps Script</span></div>
-          <span class="blink">Live →</span>
-        </a>
-        <a class="bcard reveal d1" href="https://katviz.github.io/katviz-empire/" target="_blank" rel="noopener">
-          <h3>Prism Noir</h3>
-          <p>Brand identity and WebGL site for Katviz — Three.js particle-face hero, spectral interactions, scroll story, CDN-kill tested. This very site.</p>
-          <div class="btags"><span>Three.js</span><span>WebGL</span><span>Geist</span></div>
-          <span class="blink">Live →</span>
-        </a>
-      </div>
+    <div class="chap on-image" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#0E1714"/><polygon points="24,42 300,8 268,72 88,96" fill="#122B21"/></svg><span class="num" aria-hidden="true">03</span></div>
+    <div class="cap">
+      <h2 id="h-twin">A real-estate digital twin</h2>
+      <p>33 floors, every unit searchable by size, floor, BHK, facing and availability; time-of-day lighting.</p>
+      <p class="beats-label" aria-live="polite"><span class="b b0">Day</span><span class="b b1">Golden hour</span><span class="b b2">Dusk</span><span class="b b3">Night</span><span class="b b4">The unit</span><span class="b b5">Floor plan</span><span class="b b6">Inside</span></p>
+      <p class="hint">Scroll to change the time of day, then walk in.</p>
     </div>
-  </section>
+    <ul class="still-row" aria-hidden="true"><li>The unit</li><li>Floor plan</li><li>Inside</li></ul>
+  </div>
+</section>
 
-  <section id="work">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The visual proof</p>
-      <h2 class="title reveal">Proof, in <em>every wavelength</em>.</h2>
-      <p class="lead reveal">Samples straight from the studio pipeline — client case studies join them as they ship.</p>
-      <div class="gal">
-        <figure class="frame tile reveal">
-          <img src="work/staging.jpg" alt="Studio sample — AI virtual staging, furnished interior render" loading="lazy"
-               onerror="this.closest('.frame').classList.add('noimg')">
-          <figcaption><span class="cl">Studio sample</span><span class="ct">Virtual staging</span></figcaption>
-          <div class="fb">
-            <svg viewBox="0 0 200 200"><use href="#kmark"/></svg>
-            <span class="pl">Studio sample · 01</span>
-            <span class="pt">Virtual staging</span>
-            <span class="ps">Coming soon</span>
-          </div>
-        </figure>
-        <figure class="frame tile reveal d1">
-          <img src="work/product.jpg" alt="Studio sample — AI product visualization render" loading="lazy"
-               onerror="this.closest('.frame').classList.add('noimg')">
-          <figcaption><span class="cl">Studio sample</span><span class="ct">Product visualization</span></figcaption>
-          <div class="fb">
-            <svg viewBox="0 0 200 200"><use href="#kmark"/></svg>
-            <span class="pl">Studio sample · 02</span>
-            <span class="pt">Product visualization</span>
-            <span class="ps">Coming soon</span>
-          </div>
-        </figure>
-        <figure class="frame tile reveal d2">
-          <img src="work/archviz.jpg" alt="Studio sample — photoreal ArchViz still, architectural exterior" loading="lazy"
-               onerror="this.closest('.frame').classList.add('noimg')">
-          <figcaption><span class="cl">Studio sample</span><span class="ct">ArchViz still</span></figcaption>
-          <div class="fb">
-            <svg viewBox="0 0 200 200"><use href="#kmark"/></svg>
-            <span class="pl">Studio sample · 03</span>
-            <span class="pt">ArchViz still</span>
-            <span class="ps">Coming soon</span>
-          </div>
-        </figure>
-      </div>
+<!-- 04 · proof, whole: the quote engine at each step, full screen, then the live tool as a secondary -->
+<section class="scene film eng" id="engine" style="--hold:3" data-beat="0" aria-labelledby="h-engine">
+  <div class="stage">
+    <div class="stack">
+      <picture class="img img-0"><source media="(max-width: 767px)" srcset="assets/engine/eng-1-inputs-m.webp"><img src="assets/engine/eng-1-inputs.webp" alt="The quote engine with a 12 by 6 foot wall typed in: width, height and pixel pitch" width="1440" height="900" loading="lazy"></picture>
+      <picture class="img img-1"><source media="(max-width: 767px)" srcset="assets/engine/eng-2-isometric-m.webp"><img src="assets/engine/eng-2-isometric.webp" alt="The engine lays out the cabinets and draws the isometric of the wall" width="1440" height="900" loading="lazy"></picture>
+      <picture class="img img-2"><source media="(max-width: 767px)" srcset="assets/engine/eng-3-price-m.webp"><img src="assets/engine/eng-3-price.webp" alt="The computed panel: cabinets, pixels, power, load and the grand total including GST" width="1440" height="900" loading="lazy"></picture>
+      <picture class="img img-3"><source media="(max-width: 767px)" srcset="assets/engine/eng-4-quote-m.webp"><img src="assets/engine/eng-4-quote.webp" alt="The quotation the engine writes: wall size, resolution, cabinets and the front elevation, ready to send as a PDF" width="1180" height="900" loading="lazy"></picture>
     </div>
-  </section>
+    <div class="chap on-image" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#0E1714"/><polygon points="24,42 300,8 268,72 88,96" fill="#122B21"/></svg><span class="num" aria-hidden="true">04</span></div>
+    <div class="cap">
+      <h2 id="h-engine">A quote in minutes, not a day.</h2>
+      <p>Type the wall, get the layout, the price and the PDF.</p>
+      <p class="beats-label" aria-live="polite"><span class="b b0">Type the wall: width, height, pixel pitch.</span><span class="b b1">The engine lays out the cabinets and draws the isometric.</span><span class="b b2">Price, GST and the PDF quote, ready to send.</span><span class="b b3">Built for an LED-display company and its dealers.</span></p>
+      <p class="hint">A live tool, 96 automated tests. Scroll to step through.</p>
+    </div>
+    <ul class="still-row" aria-hidden="true"><li>The layout and the isometric</li><li>Price and GST</li><li>The PDF quote</li></ul>
+  </div>
+</section>
+<section class="bone eng-live" id="engine-live" aria-label="The live quote engine" hidden>
+  <div class="wrap">
+    <p class="eng-actions"><button class="btn s" id="load-live" type="button">Load the live tool<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button><a class="go" href="https://katviz.github.io/pixel-quote-max/" target="_blank" rel="noopener">Open full screen<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></p>
+    <div class="engine-frame" id="engine-frame" data-src="https://katviz.github.io/pixel-quote-max/">
+    </div>
+  </div>
+</section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="mq-pan"><div class="mq-track">
-      <span class="mq-set">Virtual staging <b class="c1">✦</b> Product shots <b class="c2">✦</b> ArchViz <b class="c3">✦</b> Walkthroughs <b class="c1">✦</b> Automation <b class="c2">✦</b> Lead capture <b class="c3">✦</b> 3D configurators <b class="c1">✦</b> AI pipelines <b class="c2">✦</b></span>
-      <span class="mq-set">Virtual staging <b class="c1">✦</b> Product shots <b class="c2">✦</b> ArchViz <b class="c3">✦</b> Walkthroughs <b class="c1">✦</b> Automation <b class="c2">✦</b> Lead capture <b class="c3">✦</b> 3D configurators <b class="c1">✦</b> AI pipelines <b class="c2">✦</b></span>
-    </div></div>
+<!-- 05 · J.A.R.V.I.S, his own screen (never with the eye) -->
+<section class="socket jarvis" id="j" aria-labelledby="h-j">
+  <div class="seam bone-arc" aria-hidden="true"></div>
+  <div class="layer back" data-depth="back"><img class="drift" src="assets/facets-socket.svg" alt="" width="1600" height="1000"></div>
+  <div class="chap" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#0B1F18"/><polygon points="24,42 300,8 268,72 88,96" fill="#122B21"/></svg><span class="num" aria-hidden="true">05</span></div>
+  <div class="sheen" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="jtext">
+        <h2 id="h-j" data-rise>J.A.R.V.I.S</h2>
+      <p class="ai-tag" data-rise><span class="ai"><svg class="gm" viewBox="0 0 22 24" aria-hidden="true"><path d="M11 1l9 5.2v10.6L11 22l-9-5.2V6.2z" fill="currentColor"/></svg>AI</span>Our own agent system</p>
+      <p data-rise>Every Katviiz build is planned, built, designed and checked by J.A.R.V.I.S, our own agent system. Four agents, one gate: nothing ships until it passes.</p>
+      <p class="strong" data-rise>You get the same discipline inside your business.</p>
+    </div>
+    <figure class="jfig" data-rise="j">
+      <div class="jbody"><img class="jl" src="assets/j-front.webp" alt="J, the agent system, standing" width="380" height="1024" loading="lazy"><img class="jl jbloom" src="assets/j-front.webp" alt="" width="380" height="1024" loading="lazy"></div>
+    </figure>
+  </div>
+</section>
+<section class="socket selfcheck" id="self-check" aria-labelledby="h-sc">
+<div class="layer back" data-depth="back"><img class="drift" src="assets/facets-socket.svg" alt="" width="1600" height="1000" loading="lazy"></div>
+<div class="sheen" aria-hidden="true"></div>
+<div class="wrap sc" id="sc" data-state="empty">
+  <div class="sc-head">
+    <h2 id="h-sc" data-rise>Where do your hours go?</h2>
+    <p class="sc-lede" data-rise>Seven questions, hours a week each. J keeps the tally in your browser; nothing is sent unless you choose to share it.</p>
   </div>
 
-  <section id="process">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The method</p>
-      <h2 class="title reveal">Four steps from <em>raw light</em>.</h2>
-      <div class="steps">
-        <div class="step reveal"><div class="n">01</div><h4>Discovery</h4><p>One short call. We map your brand, your goals, your stack — the raw input.</p></div>
-        <div class="step reveal d1"><div class="n">02</div><h4>Design</h4><p>A focused plan within 24 hours. You approve the angle before anything bends.</p></div>
-        <div class="step reveal d2"><div class="n">03</div><h4>Build</h4><p>Heads down. Visuals rendered, systems wired, every facet checked.</p></div>
-        <div class="step reveal d3"><div class="n">04</div><h4>Launch</h4><p>Delivered, live, supported. The full spectrum, pointed at your market.</p></div>
-      </div>
+  <div class="sc-host" data-rise>
+    <div class="sc-jcrop" aria-hidden="true"><img src="assets/j-front.webp" alt="" width="380" height="1024" loading="lazy"></div>
+    <div class="sc-say">
+      <p class="sc-tag"><span class="ai"><svg class="gm" viewBox="0 0 22 24" aria-hidden="true"><path d="M11 1l9 5.2v10.6L11 22l-9-5.2V6.2z" fill="currentColor"/></svg>AI</span><span class="sc-who">J</span></p>
+      <p class="sc-line" id="sc-line" aria-live="polite">Rough numbers are fine. I count each answer at the low end of its band.</p>
     </div>
-  </section>
+  </div>
 
-  <section id="visualrhyme">
-    <div class="inner">
-      <p class="eyebrow reveal"><b>◆</b>The background</p>
-      <h2 class="title reveal">Light, <em>engineered.</em></h2>
-      <p class="lead reveal">The rigor behind the AI work comes from hardware. As Associate Design Director at Visual Rhyme — an Ahmedabad LED display company — precision isn't a style choice; it's a spec sheet.</p>
-      <div class="vrg">
-        <div class="vrc reveal">
-          <span class="vtag">Role</span>
-          <h3>Associate Design Director</h3>
-          <p>LED display design, engineering specifications, proposal architecture, project consulting, and partnerships.</p>
+  <form class="sc-form" id="sc-form" novalidate>
+    <ol class="sc-steps" id="sc-steps" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+    <div class="sc-stage" id="sc-stage">
+      <fieldset class="sc-q" data-short="Quotes and pricing" data-build="Quote and pricing tools">
+        <legend>How many hours a week go on <span class="sc-item">quotes and pricing by hand</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc1" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc1" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc1" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc1" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc1" value="10"><span>10+</span></label>
         </div>
-        <div class="vrc reveal d1">
-          <span class="vtag">Product line</span>
-          <h3>Reyansh Series</h3>
-          <p>Indoor (P1.86, P2.5) and Outdoor (P4, P6) fine-pitch LED displays — built for retail, broadcast, and architecture.</p>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Follow-ups" data-build="WhatsApp and email assistants">
+        <legend>How many hours a week go on <span class="sc-item">follow-ups and reminders</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc2" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc2" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc2" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc2" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc2" value="10"><span>10+</span></label>
         </div>
-        <div class="vrc reveal">
-          <span class="vtag">Product line</span>
-          <h3>Leynna MicroLED</h3>
-          <p>Premium MicroLED for luxury retail, showrooms, and executive spaces. Ultra-fine pitch, seamless tiling, true blacks.</p>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Data typed twice" data-build="Automations that connect what you already use">
+        <legend>How many hours a week go on <span class="sc-item">typing the same data twice</span>? <small>(Tally, Zoho, Sheets, WhatsApp)</small></legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc3" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc3" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc3" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc3" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc3" value="10"><span>10+</span></label>
         </div>
-        <div class="vrc reveal d1">
-          <span class="vtag">Delivery</span>
-          <h3>Turnkey + dealer network</h3>
-          <p>Structural fabrication to calibration, end to end — with partners across Gujarat including Growel Infotech (Rajkot) and Microtronix Solution.</p>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Reports by hand" data-build="Dashboards">
+        <legend>How many hours a week go on <span class="sc-item">reports and dashboards assembled by hand</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc4" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc4" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc4" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc4" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc4" value="10"><span>10+</span></label>
         </div>
-      </div>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Stock and job tracking" data-build="Inventory, orders and job tracking">
+        <legend>How many hours a week go on <span class="sc-item">tracking stock, orders and jobs</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc5" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc5" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc5" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc5" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc5" value="10"><span>10+</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Enquiries" data-build="WhatsApp and email assistants">
+        <legend>How many hours a week go on <span class="sc-item">answering WhatsApp and email enquiries</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc6" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc6" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc6" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc6" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc6" value="10"><span>10+</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="sc-q" data-short="Drawings and mockups" data-build="3D visualisation and digital twins">
+        <legend>How many hours a week go on <span class="sc-item">drawings, mockups and visualisation</span>?</legend>
+        <div class="sc-chips">
+          <label class="sc-chip"><input type="radio" name="sc7" value="0"><span>0</span></label>
+          <label class="sc-chip"><input type="radio" name="sc7" value="1"><span>1&ndash;2</span></label>
+          <label class="sc-chip"><input type="radio" name="sc7" value="3"><span>3&ndash;5</span></label>
+          <label class="sc-chip"><input type="radio" name="sc7" value="6"><span>6&ndash;10</span></label>
+          <label class="sc-chip"><input type="radio" name="sc7" value="10"><span>10+</span></label>
+        </div>
+      </fieldset>
     </div>
-  </section>
+    <p class="sc-nav"><button type="button" class="sc-back" id="sc-back" hidden><svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>Back</button><span class="sc-unit">hours a week</span></p>
+    <p class="sc-needjs">This check needs JavaScript to keep the tally. Without it, the seven questions read as a list.</p>
+  </form>
 
-  <section id="book">
-    <div class="inner panel">
-      <p class="eyebrow reveal"><b>◆</b>The invitation</p>
-      <h2 class="big reveal">Ready to see your brand<br>in <em>full spectrum</em>?</h2>
-      <p class="sub reveal">Book a free visual audit. I'll show you exactly what your raw material can become — no obligation.</p>
-      <!-- TODO: swap href for the Google Calendar appointment-scheduling link -->
-      <a class="btn primary reveal" href="mailto:katvisualrhyme@gmail.com?subject=Free%20Visual%20Audit%20%E2%80%94%20Katviz" data-book>Book a free visual audit</a>
-      <p class="mailnote reveal">or email <a href="mailto:katvisualrhyme@gmail.com">katvisualrhyme@gmail.com</a></p>
+  <div class="sc-verdict" id="sc-verdict" hidden>
+    <p class="sc-total" style="--i:0"><strong id="sc-week">0</strong><span class="sc-total-unit">hours a week</span></p>
+    <p class="sc-month" style="--i:1">About <strong id="sc-month">0</strong> a month, at 4.3 weeks a month. Each answer is counted at the low end of its band.</p>
+    <h3 id="sc-leaks-h" style="--i:2">The three biggest leaks</h3>
+    <ol class="sc-leaks" id="sc-leaks" aria-labelledby="sc-leaks-h"></ol>
+    <div class="sc-ctas" style="--i:6">
+      <a class="btn p" id="sc-book" href="mailto:katviz.ai5@gmail.com?subject=Audit%20call" data-booking="calendar-phase-4">Book the audit call<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+      <a class="btn s" id="sc-wa" href="https://wa.me/917435923555?text=Hi%20Kathan%2C%20I%27d%20like%20to%20book%20an%20audit%20call" rel="noopener">WhatsApp<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
     </div>
-  </section>
+    <p class="sc-share" style="--i:7">Your ledger goes into the message, for you to read before you send it. Nothing leaves this page until you do.</p>
+  </div>
 
-  <footer>
-    <div class="fb"><svg viewBox="0 0 200 200"><use href="#kmark"/></svg>KATVIZ</div>
-    <p>Prism Noir · Light, bent to your will.</p>
-    <p class="legal">© 2026 KATVIZ · Kathan Mehta. All rights reserved.</p>
-    <p class="credit">Engineered by <span>J.A.R.V.I.S.</span></p>
-  </footer>
-
+  <aside class="sc-ledger" id="sc-ledger" aria-labelledby="sc-ledger-h">
+    <h3 id="sc-ledger-h">The ledger</h3>
+    <ol class="sc-rows" id="sc-rows"></ol>
+    <p class="sc-sum" id="sc-sum"><strong>0</strong> hours a week so far</p>
+    <button type="button" class="sc-reset" id="sc-reset">Start over</button>
+  </aside>
 </div>
+</section>
+<section class="socket askj" id="ask-j" aria-labelledby="h-aj">
+<div class="seam socket-arc" aria-hidden="true"></div>
+<div class="layer back" data-depth="back"><img class="drift" src="assets/facets-socket.svg" alt="" width="1600" height="1000" loading="lazy"></div>
+<div class="sheen" aria-hidden="true"></div>
+<div class="wrap aj" id="aj">
+  <div class="aj-head">
+    <h2 id="h-aj" data-rise>Ask J</h2>
+    <p class="aj-lede" data-rise>J is scripted: he answers from a fixed set of questions and hands anything else to Kathan. Nothing you type leaves this page unless you send it.</p>
+  </div>
 
-<!-- resilience layer: must run even if the WebGL module fails (CDN outage, old browser, proxy) -->
-<script>
-  (function () {
-    var pre = document.getElementById('pre');
-    setTimeout(function () { pre.classList.add('gone'); }, 900);
-    var els = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { threshold: 0.12 });
-      els.forEach(function (el) { io.observe(el); });
-    } else {
-      els.forEach(function (el) { el.classList.add('in'); });
-    }
-    var nav = document.getElementById('nav');
-    addEventListener('scroll', function () { nav.classList.toggle('scrolled', scrollY > 20); }, { passive: true });
-  })();
-</script>
+  <form class="aj-form" id="aj-form" data-rise>
+    <label for="aj-in">Your question</label>
+    <div class="aj-field"><input id="aj-in" type="text" autocomplete="off" maxlength="500" placeholder="Type a question, or pick one below"><button class="aj-ask" type="submit"><span>Ask</span><svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button></div>
+    <p class="aj-sugg">Or pick one</p>
+    <ul class="aj-chips" id="aj-chips">
+      <li><button type="button" class="aj-chip" data-id="build">What does Katviiz AI build?</button></li>
+      <li><button type="button" class="aj-chip" data-id="audit">How does the audit work?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="time">How long does it take?</button></li>
+      <li><button type="button" class="aj-chip" data-id="cost">What does it cost?</button></li>
+      <li><button type="button" class="aj-chip" data-id="own">Who owns the system after handover?</button></li>
+      <li><button type="button" class="aj-chip" data-id="data">What happens to my data?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="tools">What tools can you connect?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="existing">Can it work with the software we already use?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="jarvis">Who is J.A.R.V.I.S?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="real">Is J a real AI?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="where">Where are you based?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="founder">Who is the founder?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="3d">Do you do 3D and digital twins?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="whatsapp">Can you build a WhatsApp assistant?</button></li>
+      <li><button type="button" class="aj-chip" data-id="start">How do I start?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="clients">Who do you work with?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="small">Are we too small for this?</button></li>
+      <li class="more"><button type="button" class="aj-chip" data-id="hello">Hello</button></li>
+    </ul>
+    <button type="button" class="aj-more" id="aj-more" aria-expanded="false" aria-controls="aj-chips"><span>All <span class="aj-more-n">18</span> questions</span><svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button>
+  </form>
 
-<!-- interaction layer: plain script, rAF-throttled, survives CDN/WebGL death -->
-<script>
-  (function () {
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var fine = matchMedia('(pointer: fine)').matches;
+  <div class="aj-ex" id="aj-ex" data-rise>
+    <div class="aj-host">
+      <div class="aj-jcrop" aria-hidden="true"><img src="assets/j-front.webp" alt="" width="380" height="1024" loading="lazy"></div>
+      <p class="aj-tag"><span class="ai"><svg class="gm" viewBox="0 0 22 24" aria-hidden="true"><path d="M11 1l9 5.2v10.6L11 22l-9-5.2V6.2z" fill="currentColor"/></svg>AI</span><span class="aj-who">J</span></p>
+    </div>
+    <div class="aj-out" id="aj-out">
+      <p class="aj-you" id="aj-you" hidden><span>You</span><span class="aj-you-t"></span></p>
+      <p class="aj-ans idle" id="aj-ans">I&#x27;m J. Ask me how any of this works.</p>
+      <p class="aj-link" id="aj-link" hidden><a class="go" href="#build"><span class="aj-link-t">What we build</span><svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></p>
+      <div class="aj-next" id="aj-next" role="group" aria-label="Ask next" hidden></div>
+      <div class="aj-hand" id="aj-hand" hidden>
+        <a class="btn p" id="aj-wa" href="https://wa.me/917435923555" rel="noopener">Send it to Kathan on WhatsApp<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+        <a class="btn s" id="aj-mail" href="mailto:katviz.ai5@gmail.com">Or by email<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+      </div>
+      <p class="aj-hand-note" id="aj-hand-note" hidden>Your question goes into the message as you typed it, for you to read before you send. Nothing is sent until you do.</p>
+      <p class="aj-sr" id="aj-sr" aria-live="polite"></p>
+    </div>
+  </div>
+  <p class="aj-needjs">Ask J needs JavaScript. The questions above are answered across this page: What we build, How it works, J.A.R.V.I.S and Founder.</p>
+  <script type="application/json" id="askj-data">{"idle":"I'm J. Ask me how any of this works.","miss":"That one's not in my set. Send it to Kathan below.","featured":["build","audit","cost","own","data","start"],"items":[{"id":"build","q":"What does Katviiz AI build?","keys":["build","offer","service","services","product","products","systems","develop","create","system"],"a":["Software for what your team still does by hand: quotes, follow-ups, stock, reports, 3D.","The repetitive stuff: quotes, follow-ups, re-typing. Each becomes a system your team runs."],"next":["audit","cost"],"link":{"text":"What we build","href":"#build"}},{"id":"audit","q":"How does the audit work?","keys":["audit","process","method","steps","mapping","step","map","hours"],"a":["We sit with the people doing the work and map their hours, citing what they actually say.","Listening, mostly. We find the biggest leak in your week, and that's where the build starts."],"next":["time","cost"],"link":{"text":"How it works","href":"#how"}},{"id":"time","q":"How long does it take?","keys":["long","time","take","duration","week","month","fast","quick","timeline","soon"],"a":["Depends on the build. A quote tool isn't a digital twin, and the audit sizes it first.","Hard to say before we've seen your work. It hangs on which system pays back first."],"next":["cost","start"],"link":{"text":"How it works","href":"#how"}},{"id":"cost","q":"What does it cost?","keys":["cost","price","pricing","fee","charge","much","budget","rate","expensive","cheap","pay","rupee","money"],"a":["Quoted after the audit, against what the system will carry for you. Sooner would be a guess.","No list price. It's quoted after the audit, against what the system will carry for you."],"next":["small","start"]},{"id":"own","q":"Who owns the system after handover?","keys":["own","owner","ownership","handover","belong","keep","mine","yours","code","licence","license","after","support","maintain","maintenance","stay","break"],"a":"You do: the code, the data, the accounts. We stay 6 months after handover so it holds.","next":["data","existing"],"link":{"text":"How it works","href":"#how"}},{"id":"data","q":"What happens to my data?","keys":["data","privacy","private","secure","security","safe","train","trained","confidential","repo","store","information"],"a":"It stays yours. Nothing is trained on it, and audit material never enters our repositories.","next":["own","real"],"link":{"text":"Privacy and cookies","href":"privacy.html"}},{"id":"tools","q":"What tools can you connect?","keys":["tool","connect","integrate","integration","tally","zoho","sheet","sheets","google","whatsapp","email","website","erp","crm","excel","api"],"a":"Tally, Zoho, Google Sheets, WhatsApp, email, your website. Anything else gets checked first.","next":["existing","whatsapp"]},{"id":"existing","q":"Can it work with the software we already use?","keys":["existing","already","current","software","replace","compatible","legacy","old","switch","migrate"],"a":"That's the point. We link the tools you have, so each number is entered once and flows on.","next":["tools","own"],"link":{"text":"What we build","href":"#build"}},{"id":"jarvis","q":"Who is J.A.R.V.I.S?","keys":["jarvis","j.a.r.v.i.s","agent system","who is j","agent","agents","gate","four","robot","bot"],"a":"Me, more or less: four agents, and no build ships until it clears their gate.","next":["real","build"],"link":{"text":"J.A.R.V.I.S","href":"#j"}},{"id":"real","q":"Is J a real AI?","keys":["real","ai","scripted","chatbot","chatgpt","gpt","llm","human","person","alive","fake"],"a":"Not here: I'm scripted. The real J.A.R.V.I.S plans and checks our builds.","next":["jarvis","data"]},{"id":"where","q":"Where are you based?","keys":["where","based","location","city","office","ahmedabad","gujarat","india","remote","visit","travel","abroad","country"],"a":"Ahmedabad, India. We work remotely or at your site, whichever the job needs.","next":["clients","start"]},{"id":"founder","q":"Who is the founder?","keys":["founder","kathan","mehta","owner","ceo","behind","team","experience","background","years"],"a":"Kathan Mehta. He builds the systems B2B firms run on: faster quotes, less re-typing.","next":["jarvis","start"],"link":{"text":"Founder","href":"#founder"}},{"id":"3d","q":"Do you do 3D and digital twins?","keys":["3d","twin","twins","digital","visualisation","visualization","render","tower","showroom","immersive","unreal","blender","mockup","real estate","realestate","estate"],"a":"We do. One's on this page: a 33-floor tower you can search unit by unit.","next":["build","cost"],"link":{"text":"See the digital twin","href":"#twin"}},{"id":"whatsapp","q":"Can you build a WhatsApp assistant?","keys":["whatsapp","assistant","chat","reply","answer","enquiry","enquiries","inquiry","follow","followup"],"a":"Yes. It replies, sends the quote and chases the follow-up, trained on your products.","next":["tools","cost"],"link":{"text":"What we build","href":"#build"}},{"id":"start","q":"How do I start?","keys":["start","begin","book","call","contact","reach","talk","meet","demo","hire","engage","phone"],"a":["Email katviz.ai5@gmail.com or WhatsApp +91 74359 23555, and Kathan books the call.","One message to Kathan: WhatsApp +91 74359 23555 or katviz.ai5@gmail.com."],"next":["audit","where"],"link":{"text":"Book the audit call","href":"#founder"}},{"id":"clients","q":"Who do you work with?","keys":["work with","client","clients","customer","customers","industry","industries","sector","factory","factories","manufacturer","manufacturers","printer","printers","dealer","dealers","builder","builders","sme","business","businesses","type"],"a":"Indian SMEs first: printers, manufacturers, dealers, builders. Not on the list? Ask anyway.","next":["small","where"]},{"id":"small","q":"Are we too small for this?","keys":["small","size","big","enough","minimum","staff","employees","people","turnover","startup","shop","sme"],"a":"No minimum size. Hours are the test, and the check just above counts yours.","next":["audit","start"],"link":{"text":"Where do your hours go?","href":"#self-check"}},{"id":"hello","q":"Hello","keys":["hello","hi","hey","namaste","good morning","good evening","thanks","thank"],"a":["Ask away.","Still here, whenever you're ready."],"next":["build","audit"]}]}</script>
+</div>
+</section>
 
-    /* spectral scroll-progress bar */
-    var prog = document.getElementById('prog'), pQueued = false;
-    function setProg() {
-      pQueued = false;
-      var max = document.documentElement.scrollHeight - innerHeight;
-      prog.style.transform = 'scaleX(' + (max > 0 ? scrollY / max : 0) + ')';
-    }
-    addEventListener('scroll', function () { if (!pQueued) { pQueued = true; requestAnimationFrame(setProg); } }, { passive: true });
-    setProg();
+<!-- 06 · the founder, and the one thing to do -->
+<section class="bone founder" id="founder" aria-labelledby="h-founder">
+  <div class="seam socket-arc" aria-hidden="true"></div>
+  <div class="layer back" data-depth="back"><img class="drift" src="assets/facets-bone.svg" alt="" width="1600" height="1000"></div>
+  <div class="chap" data-rise="num"><svg class="facet" viewBox="0 0 420 300" aria-hidden="true"><polygon points="24,42 300,8 414,96 392,262 120,292 6,210" fill="#CEC9BB"/><polygon points="24,42 300,8 268,72 88,96" fill="#D6D1C4"/></svg><span class="num" aria-hidden="true">06</span></div>
+  <div class="sheen" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="fgrid">
+      <figure class="photo-frame" data-rise="photo"><img src="assets/kathan.webp" alt="Kathan Mehta" width="900" height="1125" loading="lazy"></figure>
+      <div class="ftext">
+        <h2 id="h-founder" data-rise>Kathan Mehta <span>Founder</span></h2>
+        <p data-rise>Built the ecosystem a B2B company runs on: quotes in minutes, every order on one register, less re-typing.</p>
+        <p data-rise>Now builds the same for other businesses.</p>
+        <div class="ctas" data-rise>
+          <a class="btn p" id="book" href="mailto:katviz.ai5@gmail.com?subject=Audit%20call" data-booking="calendar-phase-4">Book the audit call<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+          <a class="btn s" href="https://wa.me/917435923555?text=Hi%20Kathan%2C%20I%27d%20like%20to%20book%20an%20audit%20call" rel="noopener">WhatsApp<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
+        </div>
+        <p class="lines" data-rise><a href="mailto:katviz.ai5@gmail.com">katviz.ai5@gmail.com</a><a href="tel:+917435923555">+91 74359 23555</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
 
-    /* hero ripple ring from the click point (DOM — fires even if WebGL is dead) */
-    var hero = document.getElementById('hero');
-    if (hero && !reduce) {
-      hero.addEventListener('click', function (e) {
-        var r = document.createElement('span');
-        r.className = 'ripple';
-        r.style.left = e.clientX + 'px';
-        r.style.top = e.clientY + 'px';
-        document.body.appendChild(r);
-        r.addEventListener('animationend', function () { r.remove(); });
-      });
-    }
+<footer class="foot">
+  <a class="lockup" href="#top"><img class="mark" src="assets/master_reverse.svg" alt="" width="60" height="40"><span>Katviiz AI</span></a>
+  <p class="foot-lines"><a href="mailto:katviz.ai5@gmail.com">katviz.ai5@gmail.com</a><a href="tel:+917435923555">+91 74359 23555</a><a href="https://instagram.com/katviiz.ai5" rel="noopener">Instagram @katviiz.ai5</a><a href="privacy.html">Privacy &amp; cookies</a></p>
+  <p class="copy">© 2026 Katviiz AI</p>
+</footer>
 
-    /* hover-based interactions: precise pointers only, never under reduced motion */
-    if (!fine || reduce) return;
+<a class="mini" id="mini" href="#founder">Book the audit call<svg class="kn" viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5H18M11.4 2.38L18.6 5L11.4 7.62" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a>
 
-    /* magnetic buttons — pull toward cursor within 90px, max 6px, spring-back via CSS */
-    var mags = [].slice.call(document.querySelectorAll('nav .cta,.btn.primary,.btn.ghost'));
-    mags.forEach(function (b) { b.classList.add('mag'); });
-    var mx = 0, my = 0, mQueued = false;
-    function magnet() {
-      mQueued = false;
-      mags.forEach(function (b) {
-        var r = b.getBoundingClientRect();
-        var dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2);
-        var d = Math.hypot(dx, dy);
-        if (d < 90 && d > 0.5) {
-          var f = (1 - d / 90) * 6;
-          b.style.transform = 'translate(' + (dx / d * f).toFixed(2) + 'px,' + (dy / d * f).toFixed(2) + 'px)';
-        } else if (b.style.transform) {
-          b.style.transform = '';
-        }
-      });
-    }
-    addEventListener('pointermove', function (e) {
-      mx = e.clientX; my = e.clientY;
-      if (!mQueued) { mQueued = true; requestAnimationFrame(magnet); }
-    }, { passive: true });
-
-    /* tilt cards + spectral glare — shared handler, composited transforms only */
-    var cards = [].slice.call(document.querySelectorAll('.pcard,.tier,.frame'));
-    cards.forEach(function (c) {
-      var g = document.createElement('i');
-      g.className = 'glare';
-      c.appendChild(g);
-      var ev = null, queued = false;
-      function apply() {
-        queued = false;
-        if (!ev) return;
-        var r = c.getBoundingClientRect();
-        var px = (ev.clientX - r.left) / r.width, py = (ev.clientY - r.top) / r.height;
-        c.style.transform = 'perspective(900px) rotateX(' + ((0.5 - py) * 5).toFixed(2) + 'deg) rotateY(' + ((px - 0.5) * 5).toFixed(2) + 'deg) translateY(-4px)';
-        c.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
-        c.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
-      }
-      c.addEventListener('pointerenter', function () { c.classList.add('tilting'); });
-      c.addEventListener('pointermove', function (e) { ev = e; if (!queued) { queued = true; requestAnimationFrame(apply); } }, { passive: true });
-      c.addEventListener('pointerleave', function () {
-        ev = null;
-        c.style.transition = 'transform .5s cubic-bezier(.22,1,.36,1)';
-        c.style.transform = '';
-        setTimeout(function () { c.style.transition = ''; c.classList.remove('tilting'); }, 520);
-      });
-    });
-  })();
-</script>
-
-<!-- scroll choreography layer: plain script, cached metrics, one self-sleeping rAF.
-     reduced motion: returns immediately — CSS overrides keep everything visible. -->
-<script>
-  (function () {
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
-
-    var mobile = matchMedia('(max-width: 860px)').matches;
-    var cssScroll = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline: view()');
-    var vh = innerHeight;
-
-    /* ---- split-text headlines: per-word rise + blur→sharp, staggered, once.
-       Markup is never pre-split; <em> phrases travel as one gradient unit. ---- */
-    var heads = document.querySelectorAll('h2.title.reveal, h2.big.reveal');
-    [].slice.call(heads).forEach(function (h) {
-      var idx = 0;
-      [].slice.call(h.childNodes).forEach(function (ch) {
-        if (ch.nodeType === 3) {
-          var frag = document.createDocumentFragment();
-          ch.textContent.split(/(\s+)/).forEach(function (p) {
-            if (!p) return;
-            if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
-            var s = document.createElement('span');
-            s.className = 'w'; s.textContent = p; s.style.setProperty('--i', idx++);
-            frag.appendChild(s);
-          });
-          h.replaceChild(frag, ch);
-        } else if (ch.nodeType === 1 && ch.tagName === 'EM') {
-          var nx = ch.nextSibling;        /* fold trailing punctuation into the em — no orphan wraps */
-          if (nx && nx.nodeType === 3) {
-            var m = nx.textContent.match(/^[.,!?;:…]+/);
-            if (m) { ch.appendChild(document.createTextNode(m[0])); nx.textContent = nx.textContent.slice(m[0].length); }
-          }
-          ch.classList.add('w'); ch.style.setProperty('--i', idx++);
-        }
-      });
-      h.classList.remove('reveal');       /* words carry the reveal now */
-      h.classList.add('split');           /* resilience-layer IO still adds .in → cascade fires */
-    });
-
-    /* ---- process: connector line draws, steps ignite — scroll-scrubbed ---- */
-    var steps = document.querySelector('#process .steps');
-    var stepEls = steps ? [].slice.call(steps.children) : [];
-    var stepsTop = 0, stepsH = 1;
-
-    /* ---- depth parallax (JS lerp fallback; Chromium uses CSS scroll timelines) ---- */
-    var px = [];
-    if (!mobile && !cssScroll) {
-      var add = function (el, depth) {
-        px.push({ el: el, d: depth, c: 0, y: 0 });
-        el.style.transitionProperty = 'opacity';   /* reveal keeps its fade; parallax owns transform */
-      };
-      [].slice.call(document.querySelectorAll('section .eyebrow')).forEach(function (el) { add(el, -6); });
-      [].slice.call(document.querySelectorAll('section .lead')).forEach(function (el) { add(el, 10); });
-      [].slice.call(document.querySelectorAll('#pitch .grid, #services .svc, #work .gal')).forEach(function (el) { add(el, 14); });
-    }
-
-    /* ---- velocity skew + marquee nudge targets (desktop only) ---- */
-    var inners = mobile ? [] : [].slice.call(document.querySelectorAll('section .inner'));
-    var pan = mobile ? null : document.querySelector('.mq-pan');
-
-    /* layout reads happen here only — never inside the scroll path */
-    function measure() {
-      vh = innerHeight;
-      if (steps) { var r = steps.getBoundingClientRect(); stepsTop = r.top + scrollY; stepsH = r.height; }
-      px.forEach(function (p) { var r = p.el.getBoundingClientRect(); p.c = r.top + scrollY + r.height / 2; });
-    }
-    measure();
-    addEventListener('resize', function () { requestAnimationFrame(measure); }, { passive: true });
-    addEventListener('load', function () { measure(); scrub(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); scrub(); });
-
-    function scrub() {
-      if (!steps) return;
-      var p = ((scrollY + vh * 0.85) - stepsTop) / (stepsH + vh * 0.4);
-      p = Math.max(0, Math.min(1, p));
-      steps.style.setProperty('--draw', p.toFixed(3));
-      for (var i = 0; i < stepEls.length; i++) stepEls[i].classList.toggle('lit', p >= (i + 0.55) / 4);
-    }
-
-    /* ---- the engine: one rAF for skew + parallax + marquee, sleeps at rest ---- */
-    var lastY = scrollY, sv = 0, curSk = 0, curPan = 0, running = false, lastMove = 0;
-    function frame(t) {
-      var v = scrollY - lastY; lastY = scrollY;
-      if (v) lastMove = t;
-      sv += (v - sv) * 0.1;
-      var busy = false;
-
-      if (inners.length) {
-        var sk = Math.max(-1.5, Math.min(1.5, sv * 0.012));
-        if (Math.abs(sk) < 0.02) sk = 0;
-        if (sk !== curSk) {
-          curSk = sk;
-          var tf = sk ? 'skewY(' + sk.toFixed(3) + 'deg)' : '';
-          for (var i = 0; i < inners.length; i++) inners[i].style.transform = tf;
-        }
-      }
-      if (pan) {
-        var tp = Math.max(-70, Math.min(70, -sv * 1.6));
-        curPan += (tp - curPan) * 0.08;
-        if (!tp && Math.abs(curPan) < 0.2) curPan = 0;
-        pan.style.transform = curPan ? 'translate3d(' + curPan.toFixed(2) + 'px,0,0)' : '';
-        if (Math.abs(tp - curPan) > 0.2) busy = true;
-      }
-      for (var j = 0; j < px.length; j++) {
-        var p = px[j];
-        var rel = Math.max(-1, Math.min(1, (p.c - scrollY - vh / 2) / vh));
-        var ty = -rel * p.d;
-        p.y += (ty - p.y) * 0.12;
-        p.el.style.transform = 'translate3d(0,' + p.y.toFixed(2) + 'px,0)';
-        if (Math.abs(ty - p.y) > 0.25) busy = true;
-      }
-
-      if (t - lastMove < 240 || Math.abs(sv) > 0.05 || curSk !== 0 || busy) requestAnimationFrame(frame);
-      else running = false;
-    }
-
-    var hasEngine = !!(inners.length || pan || px.length);
-    var queued = false;
-    addEventListener('scroll', function () {
-      if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; scrub(); }); }
-      if (hasEngine && !running) { running = true; lastY = scrollY; lastMove = performance.now(); requestAnimationFrame(frame); }
-    }, { passive: true });
-
-    scrub();
-    if (hasEngine) { running = true; lastMove = performance.now(); requestAnimationFrame(frame); }
-  })();
-</script>
-
-<!-- module watchdog: if the ES module never boots (e.g. three CDN 404 / no importmap support),
-     no try/catch inside it can run — so a plain script reveals the static portrait fallback. -->
-<script>
-  (function () {
-    window.__faceBooted = false;
-    setTimeout(function () {
-      if (window.__faceBooted) return;
-      var c = document.getElementById('webgl'); if (c) c.style.display = 'none';
-      var fb = document.getElementById('facefb'); if (fb) fb.classList.add('show');
-      var pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
-    }, 9000);   // last-resort backstop for a fully-dead module/CDN; real WebGL failures hit the in-module catch instantly
-  })();
-</script>
-
-<script type="importmap">
-{ "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-}}
-</script>
-
-<script type="module">
-  import * as THREE from 'three';
-
-  window.__faceBooted = true;   // module executed → stand the watchdog down
-
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const mobile = matchMedia('(max-width: 860px)').matches;
-
-  /* ---------- smooth scroll (Lenis, graceful fallback) ---------- */
-  if (!reduce) {
-    try {
-      const { default: Lenis } = await import('https://cdn.jsdelivr.net/npm/lenis@1.1.14/+esm');
-      const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 0.9 });
-      const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
-      document.querySelectorAll('a[href^="#"]').forEach(a =>
-        a.addEventListener('click', e => { const el = document.querySelector(a.getAttribute('href')); if (el) { e.preventDefault(); lenis.scrollTo(el); } }));
-    } catch (_) { /* native scroll is fine */ }
-  }
-
-  /* ---------- FACE OF LIGHT (decorative — any failure degrades to the static portrait) ----------
-     The founder's face, reconstructed from particles of light. Everything is baked on the CPU
-     at build time (no vertex-texture fetch) so a GTX-1070-class GPU runs it at 60fps:
-       1. color.jpg + depth.jpg are drawn into offscreen 2D canvases and read ONCE via getImageData.
-       2. A grid of points is built; each cell samples depth (cull below threshold / outside a soft
-          radial mask) and color (baked into an attribute). homePos = relief, cloudPos = dispersed fan.
-       3. A ShaderMaterial lerps cloud→home by uProgress, breathes, tints toward the spectral ramp,
-          and draws each point as a soft round glow sprite.
-     uProgress: 0 = dispersed cloud, 1 = resolved face. Load tween 0→1 (~1.4s), then bound to scroll. */
-  const FALLBACK = () => {
-    const c = document.getElementById('webgl'); if (c) c.style.display = 'none';
-    const fb = document.getElementById('facefb'); if (fb) fb.classList.add('show');
-    const pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
-  };
-
-  /* load an <img> with a hard timeout so the preloader can never hang on a 404/slow CDN */
-  const loadImg = (src, ms) => new Promise((resolve, reject) => {
-    const im = new Image(); im.crossOrigin = 'anonymous'; let done = false;
-    const to = setTimeout(() => { if (!done) { done = true; reject(new Error('timeout ' + src)); } }, ms);
-    im.onload = () => { if (!done) { done = true; clearTimeout(to); resolve(im); } };
-    im.onerror = () => { if (!done) { done = true; clearTimeout(to); reject(new Error('404 ' + src)); } };
-    im.src = src;
-  });
-
-  try {
-    /* ---- load + sample the two textures on the CPU (single getImageData each) ---- */
-    const [colorImg, depthImg] = await Promise.all([
-      loadImg('face/color.jpg', 2500),
-      loadImg('face/depth.jpg', 2500),
-    ]);
-    const SW = 256, SH = Math.round(SW * colorImg.height / colorImg.width);   // sampling resolution
-    const sample = (img) => {
-      const cv = document.createElement('canvas'); cv.width = SW; cv.height = SH;
-      const cx = cv.getContext('2d', { willReadFrequently: true });
-      cx.drawImage(img, 0, 0, SW, SH);
-      return cx.getImageData(0, 0, SW, SH).data;
-    };
-    const colorPix = sample(colorImg);
-    const depthPix = sample(depthImg);
-
-    const canvas = document.getElementById('webgl');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
-    renderer.setSize(innerWidth, innerHeight);
-    renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 9);
-
-    /* ---- bake the particle grid on the CPU ---- */
-    const GX = mobile ? 90 : 180;          // grid columns
-    const GY = mobile ? 120 : 240;         // grid rows
-    const aspect = SW / SH;
-    const FACE_H = 7.6;                     // world height of the relief
-    const FACE_W = FACE_H * aspect;
-    const DISP = 2.4;                       // z displacement scale (near pops toward camera)
-    const THRESH = 0.50;                    // depth cull threshold (white=near=keep)
-    const FOCUS_Y = -0.55;                  // sit the bust slightly low/behind the wordmark
-
-    // first pass: decide which cells survive the depth + radial mask, so arrays are tight
-    const keep = [];
-    const bilinear = (pix, fx, fy, ch) => {           // sample with smoothing to kill speckle
-      const x = fx * (SW - 1), y = fy * (SH - 1);
-      const x0 = Math.floor(x), y0 = Math.floor(y);
-      const x1 = Math.min(x0 + 1, SW - 1), y1 = Math.min(y0 + 1, SH - 1);
-      const tx = x - x0, ty = y - y0;
-      const i00 = (y0 * SW + x0) * 4 + ch, i10 = (y0 * SW + x1) * 4 + ch;
-      const i01 = (y1 * SW + x0) * 4 + ch, i11 = (y1 * SW + x1) * 4 + ch;
-      const a = pix[i00] * (1 - tx) + pix[i10] * tx;
-      const b = pix[i01] * (1 - tx) + pix[i11] * tx;
-      return (a * (1 - ty) + b * ty) / 255;
-    };
-    for (let gy = 0; gy < GY; gy++) {
-      for (let gx = 0; gx < GX; gx++) {
-        const u = gx / (GX - 1), v = gy / (GY - 1);
-        const d = bilinear(depthPix, u, v, 0);              // 0..1, 1 = near
-        // soft radial center-weight: bust is centered, windows hug the edges
-        const rx = (u - 0.5) * 1.9, ry = (v - 0.46) * 1.5;
-        const radial = 1 - Math.min(1, Math.sqrt(rx * rx + ry * ry));   // 1 center → 0 edge
-        const score = d + radial * 0.30;
-        if (score < THRESH + 0.18 || d < 0.42) continue;   // cull background / far
-        keep.push(gx, gy, d);
-      }
-    }
-    const N = keep.length / 3;
-
-    const aHome = new Float32Array(N * 3);
-    const aCloud = new Float32Array(N * 3);
-    const aColor = new Float32Array(N * 3);
-    const aRand = new Float32Array(N);
-    const aSpec = new Float32Array(N);     // 0..1 screen-x key for the spectral ramp
-    const aLum = new Float32Array(N);      // luminance → highlight glow boost
-
-    const srgb = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)); // to linear
-    // spectral tint baked on the CPU (keeps the fragment trivial → renders on every GL backend)
-    const _GR = [0x3B/255, 0xF0/255, 0xA6/255], _CY = [0x6B/255, 0xE4/255, 0xFF/255], _VI = [0x9D/255, 0x7B/255, 0xFF/255], _MA = [0xFF/255, 0x6B/255, 0xC1/255];
-    const _lerp3 = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
-    // full spectrum: green → cyan → violet → magenta (the prism, completed)
-    const ramp = (t) => { t = Math.max(0, Math.min(1, t)) * 3;
-      if (t < 1) return _lerp3(_GR, _CY, t);
-      if (t < 2) return _lerp3(_CY, _VI, t - 1);
-      return _lerp3(_VI, _MA, t - 2); };
-    const TINT = 0.42;
-    for (let k = 0; k < N; k++) {
-      const gx = keep[k * 3], gy = keep[k * 3 + 1], d = keep[k * 3 + 2];
-      const u = gx / (GX - 1), v = gy / (GY - 1);
-      const k3 = k * 3;
-      // home (face relief): centered, y flipped (image v grows downward), z from depth
-      aHome[k3]     = (u - 0.5) * FACE_W;
-      aHome[k3 + 1] = (0.5 - v) * FACE_H + FOCUS_Y;
-      aHome[k3 + 2] = (d - 0.5) * DISP;
-      // cloud (dispersed fan from the prism origin to the left) — randomized sphere + leftward bias
-      const ang = Math.random() * Math.PI * 2, rad = 3 + Math.random() * 7;
-      const ph = Math.acos(2 * Math.random() - 1);
-      aCloud[k3]     = Math.sin(ph) * Math.cos(ang) * rad - 4.0;
-      aCloud[k3 + 1] = Math.cos(ph) * rad * 0.7 + FOCUS_Y;
-      aCloud[k3 + 2] = Math.sin(ph) * Math.sin(ang) * rad - 2.0;
-      // baked color = photo mixed toward the spectral ramp + highlight glow (display-ready sRGB)
-      const r = bilinear(colorPix, u, v, 0), g = bilinear(colorPix, u, v, 1), b = bilinear(colorPix, u, v, 2);
-      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-      const sp = ramp(u * 0.92 + 0.04);
-      // face reconstructed FROM light: brightness carries the facial structure, hue carries the brand spectrum
-      const base = 0.42 + lum * 1.30;                          // forehead/nose/cheek highlights glow brightest
-      aColor[k3]     = Math.min(1, sp[0] * base + r * 0.18);   // spectral light shaped by the face + a hint of true skin
-      aColor[k3 + 1] = Math.min(1, sp[1] * base + g * 0.18);
-      aColor[k3 + 2] = Math.min(1, sp[2] * base + b * 0.18);
-      aRand[k] = Math.random();
-      aSpec[k] = u;                                       // cyan(left) → magenta(right)
-      aLum[k] = 0.299 * r + 0.587 * g + 0.114 * b;        // perceptual luminance
-    }
-
-    /* live positions = lerp(cloud → home); driven on the CPU each frame.
-       PointsMaterial + a soft sprite texture renders on every GL backend (no custom
-       point-sprite shader, which some drivers/software-GL render black). */
-    const aLive = aHome.slice();
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(aLive, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(aColor, 3));
-
-    const sprite = (() => {
-      const c = document.createElement('canvas'); c.width = c.height = 64;
-      const x = c.getContext('2d'); const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
-      g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.5, 'rgba(255,255,255,0.72)');
-      g.addColorStop(1, 'rgba(255,255,255,0)');
-      x.fillStyle = g; x.fillRect(0, 0, 64, 64);
-      return new THREE.CanvasTexture(c);
-    })();
-
-    const mat = new THREE.PointsMaterial({
-      map: sprite, vertexColors: true, transparent: true, depthWrite: false,
-      blending: THREE.NormalBlending, sizeAttenuation: true,
-      size: mobile ? 0.072 : 0.060,
-    });
-    const points = new THREE.Points(geo, mat);
-    const group = new THREE.Group();        // pointer rotation rides the group
-    group.add(points);
-    scene.add(group);
-
-    const posAttr = geo.attributes.position;
-    const easeOut = (x) => 1 - Math.pow(1 - x, 3);
-    /* write live positions for a global progress p (0 = dispersed cloud → 1 = resolved face),
-       with a per-particle stagger and (when animating) a subtle breathing wobble. */
-    const setProgress = (p, t) => {
-      for (let i = 0; i < N; i++) {
-        const i3 = i * 3, off = aRand[i] * 0.35;
-        let pp = (p - off) / (1 - off); pp = pp < 0 ? 0 : pp > 1 ? 1 : pp; pp = easeOut(pp);
-        const cx = aCloud[i3], cy = aCloud[i3 + 1], cz = aCloud[i3 + 2];
-        let x = cx + (aHome[i3] - cx) * pp;
-        let y = cy + (aHome[i3 + 1] - cy) * pp;
-        let z = cz + (aHome[i3 + 2] - cz) * pp;
-        if (t) { z += Math.sin(t * 0.9 + aRand[i] * 6.28) * 0.045 * pp;
-                 x += Math.sin(t * 0.6 + aRand[i] * 5.0) * 0.018 * pp; }
-        aLive[i3] = x; aLive[i3 + 1] = y; aLive[i3 + 2] = z;
-      }
-      posAttr.needsUpdate = true;
-    };
-
-    /* ---- interaction: pointer-aware rotation (fine pointers, motion-OK only) ---- */
-    const fine = matchMedia('(pointer: fine)').matches;
-    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-    if (fine && !mobile && !reduce) {
-      addEventListener('pointermove', e => {
-        mouse.tx = (e.clientX / innerWidth - 0.5);
-        mouse.ty = (e.clientY / innerHeight - 0.5);
-      }, { passive: true });
-    }
-
-    /* ---- scroll bind: face dissolves as the hero leaves, reforms on scroll up ---- */
-    let scrollFrac = 0;     // 0 at top → 1 once hero is fully scrolled away
-    function onScroll() { scrollFrac = Math.max(0, Math.min(1, scrollY / (innerHeight * 0.9))); }
-    if (!reduce) { addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
-
-    addEventListener('resize', () => {
-      camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight);
-    }, { passive: true });
-
-    /* textures are ready → dismiss the preloader now (don't wait for the 900ms blanket timer) */
-    const pre = document.getElementById('pre'); if (pre) pre.classList.add('gone');
-
-    /* ---- reduced motion: render exactly one resolved frame, no loop ---- */
-    if (reduce) {
-      setProgress(1, 0);
-      renderer.render(scene, camera);
-    } else {
-      const clock = new THREE.Clock();
-      const ASSEMBLE = 1.4;             // seconds
-      function tick() {
-        const t = clock.getElapsedTime();
-        const assemble = Math.min(1, t / ASSEMBLE);
-        setProgress(assemble * (1 - scrollFrac * 0.92), t);
-        // pointer parallax + look-at-you rotation (max ~±0.21rad)
-        mouse.x += (mouse.tx - mouse.x) * 0.06; mouse.y += (mouse.ty - mouse.y) * 0.06;
-        group.rotation.y = mouse.x * 0.42;       // ±0.21rad at viewport edge
-        group.rotation.x = mouse.y * 0.30;
-        group.position.x = mouse.x * 0.5;        // slight parallax
-        group.position.y = -mouse.y * 0.3 - scrollFrac * 1.2;
-        renderer.render(scene, camera);
-        requestAnimationFrame(tick);
-      }
-      tick();
-    }
-  } catch (err) {
-    // WebGL / image load failed — hide the canvas, reveal the framed static portrait
-    try { FALLBACK(); } catch (_) {}
-  }
-</script>
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="vendor/lenis.min.js" defer></script>
+<script src="ripple.js" defer></script>
+<script src="main.js" defer></script>
+<script src="selfcheck.js" defer></script>
+<script src="askj.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,135 @@
+/* Katviiz AI · Phase 2 · "Where do your hours go?" · drop-in for <section class="socket selfcheck" id="self-check">.
+   Uses the site's tokens (styles.css): --socket --void --bone --s-void --m-void --f-bright --f-line --olive --cyan --g --eo --eexpo --cut-btn.
+   Cyan: the AI tag and J's art only. Olive: the one primary action. Bars are the 40-degree cut (clip-path, no layout animation). */
+.selfcheck{padding:120px var(--g) 140px;min-height:100svh;background:var(--socket);color:var(--bone)}
+.selfcheck .layer.back{opacity:.9}
+.sc{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:clamp(40px,6vw,110px);grid-template-areas:"head head" "host ledger" "form ledger" "verdict ledger";align-items:start}
+.sc-head{grid-area:head;max-width:1100px;margin-bottom:40px}
+.sc [hidden]{display:none!important}
+.sc-head h2{font-size:clamp(40px,5.2vw,76px);line-height:.95;letter-spacing:-.04em;max-width:12ch}
+.sc-lede{margin-top:20px;font-size:clamp(18px,1.4vw,21px);line-height:1.45;color:var(--m-void);max-width:48ch}
+
+/* J, the host: a cut panel with his bust, and the one line he says */
+.sc-host{grid-area:host;display:grid;grid-template-columns:116px minmax(0,1fr);gap:22px;align-items:start;margin-bottom:30px;max-width:640px}
+.sc-jcrop{position:relative;width:116px;height:132px;overflow:hidden;background:var(--void);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 18.5px,100% 100%,0 100%)}
+.sc-jcrop img{position:absolute;left:50%;top:-6px;width:176%;height:auto;transform:translateX(-50%);max-width:none}
+.sc-say{padding-top:4px}
+.sc-tag{display:flex;align-items:center;gap:12px;font-weight:600;font-size:15px;color:var(--cyan)}
+.sc-tag .ai{color:var(--cyan)}
+.sc-who{color:var(--bone);font-size:16px}
+.sc-line{margin-top:10px;font-size:clamp(18px,1.45vw,22px);line-height:1.4;color:var(--bone);font-weight:500;max-width:34ch;transition:opacity .22s var(--eo),transform .26s var(--eo)}
+.sc-line.swap{opacity:0;transform:translateY(6px)}
+
+/* the stepped flow */
+.sc-form{grid-area:form;position:relative;max-width:640px}
+.sc-steps{list-style:none;display:flex;gap:8px;margin:0 0 26px}
+.sc-steps li{width:22px;height:16px;background:var(--s-void);clip-path:polygon(0 0,100% 50%,0 100%);transition:background-color .25s ease}
+.sc-steps li.done{background:var(--f-bright)}
+.sc-steps li.now{background:var(--bone)}
+.sc-stage{position:relative;min-height:300px}
+.sc-q{border:0;padding:0;margin:0;min-width:0}
+.sc-q legend{padding:0;display:block;max-width:30ch;font-size:clamp(21px,2.4vw,34px);line-height:1.1;letter-spacing:-.025em;font-weight:700;text-wrap:balance}
+.sc-item{display:inline}
+.sc-q legend small{display:block;margin-top:8px;font-size:clamp(16px,1.2vw,19px);line-height:1.35;letter-spacing:0;font-weight:500;color:var(--m-void)}
+.sc-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.sc-chip{position:relative;display:inline-flex}
+.sc-chip input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
+.sc-chip span{display:inline-flex;align-items:center;justify-content:center;min-width:92px;height:58px;padding:0 20px;background:var(--s-void);color:var(--bone);font-weight:600;font-size:20px;letter-spacing:-.01em;font-variant-numeric:tabular-nums;clip-path:var(--cut-btn);transition:transform .16s var(--eo),background-color .18s ease,color .18s ease}
+.sc-chip input:checked+span{background:var(--bone);color:var(--void)}
+.sc-chip input:focus-visible+span{outline:2px solid var(--f-bright);outline-offset:3px}
+.sc-chip:active span{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.sc-chip:hover input:not(:checked)+span{background:var(--f-line)}}
+.sc-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;min-height:44px}
+.sc-back{display:inline-flex;align-items:center;gap:10px;padding:10px 0;background:none;border:0;color:var(--f-bright);font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+.sc-back .kn{transform:rotate(180deg)}
+.sc-unit{font-size:15px;color:var(--m-void);margin-left:auto}
+.sc-needjs{display:none;margin-top:24px;color:var(--m-void);font-size:16px}
+
+/* the verdict (replaces the flow in its column) */
+.sc-verdict{grid-area:verdict;max-width:640px}
+.sc-total{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 18px;letter-spacing:-.045em}
+.sc-total strong{font-size:clamp(88px,11vw,168px);line-height:.86;font-weight:700;font-variant-numeric:tabular-nums}
+.sc-total-unit{font-size:clamp(20px,1.7vw,26px);font-weight:600;letter-spacing:-.01em}
+.sc-month{margin-top:18px;font-size:clamp(17px,1.3vw,20px);line-height:1.45;color:var(--m-void);max-width:44ch}
+.sc-verdict h3{margin-top:44px;font-size:clamp(22px,1.9vw,28px);line-height:1.1;letter-spacing:-.02em}
+.sc-leaks{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.sc-leaks li{position:relative;padding-left:24px;font-size:clamp(17px,1.35vw,20px);line-height:1.35}
+.sc-leaks li::before{content:"";position:absolute;left:0;top:.52em;width:9px;height:6.5px;background:var(--f-bright);clip-path:polygon(0 0,100% 50%,0 100%)}
+.sc-leaks .sc-leak-q{color:var(--m-void)}
+.sc-leaks .sc-leak-h{color:var(--bone);font-variant-numeric:tabular-nums}
+.sc-leaks .sc-leak-b{display:block;font-weight:600;color:var(--bone)}
+.sc-leaks .sc-leak-b::before{content:"We build: ";font-weight:500;color:var(--m-void)}
+.sc-leaks .sc-none{padding-left:0;color:var(--m-void)}
+.sc-leaks .sc-none::before{display:none}
+.sc-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
+.selfcheck .btn.s{color:var(--bone);border-color:var(--f-line)}
+@media (hover:hover) and (pointer:fine){.selfcheck .btn.s:hover{background:var(--s-void)}}
+.sc-share{margin-top:18px;font-size:15px;line-height:1.45;color:var(--m-void);max-width:46ch}
+
+/* the ledger: the receipts, one row a question, the bar is the 40-degree cut */
+.sc-ledger{grid-area:ledger;position:sticky;top:88px;padding:34px 30px 30px;background:var(--void);clip-path:var(--cut);min-width:0}
+.sc-ledger h3{font-size:22px;line-height:1.1;letter-spacing:-.02em}
+.sc-rows{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:14px}
+.sc-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;transition:opacity .2s ease}
+.sc-row .sc-row-l{font-size:16px;font-weight:500;color:var(--m-void);line-height:1.3;transition:color .2s ease}
+.sc-row .sc-row-v{font-size:16px;font-weight:600;color:var(--m-void);font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .2s ease}
+.sc-row .sc-bar{grid-column:1/-1;height:20px;--w:3%;background:var(--f-line);clip-path:polygon(0 0,calc(var(--w) - 14px) 0,var(--w) 11.7px,var(--w) 100%,0 100%);transition:clip-path .42s var(--eexpo),background-color .25s ease}
+.sc-row.empty .sc-bar{background:var(--s-void)}
+.sc-row.on .sc-row-l,.sc-row.on .sc-row-v{color:var(--bone)}
+.sc-row.now .sc-row-l{color:var(--bone)}
+.sc-row.top .sc-bar{background:var(--f-bright)}
+.sc-sum{margin-top:26px;font-size:17px;color:var(--m-void);line-height:1.3}
+.sc-sum strong{font-size:34px;line-height:1;letter-spacing:-.03em;color:var(--bone);font-variant-numeric:tabular-nums;margin-right:6px}
+.sc-reset{margin-top:22px;padding:10px 0;background:none;border:0;color:var(--f-bright);font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+
+/* states: the flow shows one question at a time with JS; the verdict replaces it */
+.js .sc-q{display:none}
+.js .sc-q.now{display:block}
+.js .sc[data-state="done"] .sc-form{display:none}
+.js .sc[data-state="done"] .sc-verdict{display:block}
+.sc[data-state="empty"] .sc-reset{visibility:hidden}
+
+/* motion: the question swaps in place (transform + opacity only); chips arrive staggered; verdict parts rise in order */
+.js:not(.still) .sc-q.now{animation:scIn .32s var(--eo) both}
+.js:not(.still) .sc-q.now.leave{animation:scOut .16s var(--eo) both}
+.js:not(.still) .sc-q.now .sc-chip{animation:scChip .3s var(--eo) both}
+.js:not(.still) .sc-q.now .sc-chip:nth-child(2){animation-delay:40ms}
+.js:not(.still) .sc-q.now .sc-chip:nth-child(3){animation-delay:80ms}
+.js:not(.still) .sc-q.now .sc-chip:nth-child(4){animation-delay:120ms}
+.js:not(.still) .sc-q.now .sc-chip:nth-child(5){animation-delay:160ms}
+@keyframes scIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes scOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-10px)}}
+@keyframes scChip{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.js:not(.still) .sc-verdict>*{animation:scIn .5s var(--eo) both;animation-delay:calc(var(--i,0) * 70ms)}
+.js:not(.still) .sc-leaks li{animation:scIn .45s var(--eo) both;animation-delay:calc(220ms + var(--i,0) * 70ms)}
+.still .sc-q.now,.still .sc-q.now .sc-chip,.still .sc-verdict>*,.still .sc-leaks li{animation:none}
+.still .sc-row .sc-bar,.still .sc-line,.still .sc-chip span{transition:none}
+
+/* JS off: the seven questions as a plain list, the line that says so, no ledger */
+html:not(.js) .sc-stage{display:flex;flex-direction:column;gap:40px}
+html:not(.js) .sc-steps,html:not(.js) .sc-nav,html:not(.js) .sc-ledger,html:not(.js) .sc-host,html:not(.js) .sc-verdict{display:none}
+html:not(.js) .sc-needjs{display:block}
+html:not(.js) .sc-q legend{font-size:clamp(20px,2vw,28px)}
+html:not(.js) .sc{grid-template-columns:1fr;grid-template-areas:"head" "form"}
+
+@media (max-width:980px){
+  .sc{grid-template-columns:1fr;grid-template-areas:"head" "host" "form" "verdict" "ledger";column-gap:0}
+  .sc-head{margin-bottom:36px}
+  .sc-ledger{position:static;margin-top:56px}
+}
+@media (max-width:480px){
+  .selfcheck{padding-top:88px;padding-bottom:96px}
+  .sc-host{grid-template-columns:84px 1fr;gap:16px;margin-bottom:32px}
+  .sc-jcrop{width:84px;height:96px}
+  .sc-jcrop img{top:-4px}
+  .sc-line{font-size:17px}
+  .sc-stage{min-height:0}
+  .sc-chips{gap:8px;margin-top:26px}
+  .sc-chip span{min-width:0;height:52px;padding:0 14px;font-size:17px;flex:1}
+  .sc-chip{flex:1 1 calc(33.333% - 6px)}
+  .sc-ledger{padding:26px 20px 24px}
+  .sc-total strong{font-size:84px}
+  .sc-ctas .btn{width:100%;justify-content:space-between}
+}
+/* the running total is a readout, not a headline: under 980 px it sits at the lead size (21 px, already on the page's scale) */
+@media (max-width:980px){.sc-sum strong{font-size:21px}}
