@@ -278,6 +278,35 @@
       ]
     },
     {
+      "id": "diff",
+      "q": "How are you different from just using AI?",
+      "keys": [
+        "different",
+        "difference",
+        "differ",
+        "compare",
+        "comparison",
+        "versus",
+        "vs",
+        "diy",
+        "myself",
+        "ourselves",
+        "yourself",
+        "instead",
+        "prompt",
+        "prompts"
+      ],
+      "a": "A chat app helps whoever is typing. We connect your company desk by desk, enquiry to payment.",
+      "next": [
+        "audit",
+        "own"
+      ],
+      "link": {
+        "text": "Follow one order",
+        "href": "#one-order"
+      }
+    },
+    {
       "id": "where",
       "q": "Where are you based?",
       "keys": [
@@ -372,7 +401,7 @@
         "follow",
         "followup"
       ],
-      "a": "Yes. It replies, sends the quote and chases the follow-up, trained on your products.",
+      "a": "Yes. It replies, sends the quote and chases the follow-up, set up for your products.",
       "next": [
         "tools",
         "cost"

@@ -406,3 +406,126 @@ html:not(.js) .mini{display:none}
 .p404 h1{font-size:clamp(32px,4.6vw,64px);line-height:.98;letter-spacing:-.035em;max-width:14ch}
 .p404 p{color:var(--m-void);font-size:clamp(17px,1.5vw,21px)}
 .p404 .go{color:var(--bone);margin-top:8px}
+
+/* ---------- 05b · follow one order (R11 C1 rev 5): socket ground, oo- classes only. Seven desks on one path down the left, then the owner's screen; every desk always shows both lines with their labels and tools. The radio switch is read on the root with :has: one line lit (a forest-dark slab with the knife cut, the same for both states), the other muted, and the path dashed by hand or solid with one running pulse on the system. Without :has both lines sit at equal weight. ---------- */
+.oo{--hex:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);--slab:polygon(0 0,calc(100% - 22px) 0,100% 18.5px,100% 100%,0 100%);--path:var(--f-line);--node:var(--m-void);--core:var(--socket);padding:120px var(--g) 136px}
+.oo-head{max-width:1100px;margin-bottom:64px}
+.oo-head h2{font-size:clamp(40px,5.2vw,76px);line-height:.95;letter-spacing:-.04em;max-width:20ch}
+.oo-intro{--i:1;margin-top:22px;font-size:clamp(18px,1.4vw,21px);line-height:1.45;color:var(--m-void);max-width:50ch}
+.oo-run{position:relative;display:grid;grid-template-columns:minmax(232px,272px) minmax(0,1fr);gap:0 clamp(40px,5vw,80px);align-items:start}
+/* the switch: real radios, clipped (never display:none), each label the hit area; sticky under the 60 px nav, opaque so the path passes under it cleanly */
+.oo-switch{position:sticky;top:72px;z-index:40;min-width:0;margin:0;padding:0;border:0;background:var(--socket)}
+.oo-switch legend{float:left;width:100%;padding:0 0 12px;font-weight:600;font-size:16px;line-height:1.3;color:var(--m-void)}
+.oo-opts{clear:both;position:relative;display:grid;gap:6px;padding:6px;background:var(--void)}
+.oo-opts input{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.oo-opts label{position:relative;display:flex;align-items:center;min-height:52px;padding:12px 16px 12px 46px;font-weight:600;font-size:18px;line-height:1.25;color:var(--m-void);cursor:pointer;transition:background-color .25s ease,color .25s ease}
+.oo-opts label::before,.oo-opts label::after{content:"";position:absolute;top:50%;clip-path:var(--hex)}
+.oo-opts label::before{left:16px;width:16px;height:18px;margin-top:-9px;background:var(--m-void)}
+.oo-opts label::after{left:18.5px;width:11px;height:12.5px;margin-top:-6.25px;background:var(--void)}
+.oo-opts input:checked+label{background:var(--forest);color:var(--bone)}
+.oo-opts input:checked+label::before{background:var(--bone)}
+.oo-opts input:checked+label::after{background:var(--bone)}
+.oo-opts input:focus-visible+label{outline:2px solid var(--f-bright);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){.oo-opts input:not(:checked)+label:hover{color:var(--bone)}}
+/* the path: a segment from each desk's node to the next, the node a hexagon (outline by hand, filled on the system) */
+.oo-route{position:relative;min-width:0;max-width:1040px}
+.oo-track{position:relative}
+.oo-path{list-style:none}
+.oo-stop{position:relative;padding:0 0 52px 64px}
+.oo-stop::before{content:"";position:absolute;left:11px;top:16px;bottom:-16px;width:2px;background:var(--path)} /* taste-skill-ignore: the order's route is the content */
+.oo-stop::after,.oo-screen::after{content:"";position:absolute;z-index:0;left:3px;top:6px;width:18px;height:20px;background:var(--node);clip-path:var(--hex)}
+.oo-desk{font-size:28px;line-height:1.15;letter-spacing:-.02em;color:var(--bone)}
+.oo-desk::before{content:"";position:absolute;z-index:1;left:6px;top:9.5px;width:12px;height:13px;background:var(--core);clip-path:var(--hex)}
+/* the pulse: one small dot and its tail; the wrapper is the track's height, so translateY(-100% -> 0) carries the dot from the first desk to the last (transform and opacity only) */
+.oo-pulse{position:absolute;z-index:2;left:7px;top:0;width:10px;height:100%;pointer-events:none;opacity:0;transform:translateY(-100%)}
+.oo-pulse::before{content:"";position:absolute;left:4px;bottom:6px;width:2px;height:64px;background:var(--bone);opacity:.5}
+.oo-pulse::after{content:"";position:absolute;left:0;bottom:0;width:10px;height:10px;border-radius:50%;background:var(--bone)}
+@keyframes oo-run{0%{transform:translateY(-100%);opacity:0}4%{opacity:1}84%{opacity:1}88%{transform:translateY(0);opacity:0}100%{transform:translateY(0);opacity:0}}
+/* the two lines: each carries its state label and the tool it runs through; the arm on its left is dashed by hand, solid on the system */
+.oo-lines{display:grid;gap:12px;margin-top:18px}
+.oo-line{--ax:22px;position:relative;padding:14px 20px 16px 40px;color:var(--bone)}
+.oo-line::before{content:"";position:absolute;left:18px;top:18px;bottom:18px;width:2px;background:var(--arm)}
+.oo-by{--arm:var(--m-void)}
+.oo-sys{--arm:var(--f-bright)}
+.oo-by::before{background:repeating-linear-gradient(to bottom,var(--arm) 0 5px,transparent 5px 10px)} /* taste-skill-ignore: the order's route is the content */
+.oo-k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-weight:600;font-size:16px;line-height:1.3}
+.oo-sep{display:none}
+.oo-tag{display:inline-block;padding:2px 10px 3px;font-weight:500;font-size:16px;line-height:1.35}
+.oo-by .oo-tag{background:var(--r-void);color:var(--m-void)}
+.oo-sys .oo-tag{background:var(--s-void);color:var(--bone)}
+.oo-t{margin-top:8px;font-size:18px;line-height:1.45}
+/* desk 07: the system line's arm forks into Paid? and Not yet? */
+.oo-fork::before{display:none}
+.oo-fork .oo-k{position:relative}
+.oo-fork .oo-k::before{content:"";position:absolute;left:calc(-1 * var(--ax));top:4px;bottom:-8px;width:2px;background:var(--arm)}
+.oo-branch{list-style:none}
+.oo-branch li{position:relative}
+.oo-branch li:not(:last-child){padding-bottom:10px}
+.oo-branch li::before{content:"";position:absolute;left:calc(-1 * var(--ax));top:0;bottom:0;width:2px;background:var(--arm)}
+.oo-branch li:last-child::before{bottom:auto;height:.75em}
+.oo-branch li::after{content:"";position:absolute;left:calc(-1 * var(--ax));top:.75em;width:calc(var(--ax) - 8px);height:2px;background:var(--arm)}
+.oo-if{font-weight:600}
+/* 08 · the owner's screen: a calm panel at the end of the path, three of the owner's questions and what the screen shows */
+.oo-screen{position:relative;padding-left:64px}
+.oo-panel{margin-top:18px;padding:22px 28px 26px;background:var(--void);color:var(--bone)}
+.oo-panel .oo-k::before{content:"";width:9px;height:10px;background:var(--f-bright);clip-path:var(--hex)}
+.oo-qs{display:grid;gap:18px;margin-top:20px}
+.oo-q dt{font-weight:600;font-size:16px;line-height:1.35;color:var(--m-void)}
+.oo-q dd{margin-top:6px;font-size:18px;line-height:1.4}
+.oo-end{margin-top:96px;max-width:1100px}
+.oo-last{font-weight:700;font-size:clamp(28px,3vw,48px);line-height:1.05;letter-spacing:-.03em;max-width:20ch}
+.oo-note{margin-top:18px;font-size:17px;line-height:1.5;color:var(--m-void);max-width:62ch}
+.oo-note .go{gap:8px;min-height:44px}
+/* emphasis, never hiding: the checked state's line lit (bone, full size, the slab), the other muted (--m-void, 16 px); the same for the owner's screen */
+@supports selector(:has(*)){
+  .oo:has(#oo-hand:checked){--path:repeating-linear-gradient(to bottom,var(--m-void) 0 6px,transparent 6px 14px)} /* taste-skill-ignore: the order's route is the content */
+  .oo:has(#oo-auto:checked){--path:var(--f-bright);--node:var(--f-bright);--core:var(--f-bright)}
+  .oo-line,.oo-panel{color:var(--m-void);transition:background-color .3s ease,color .3s ease}
+  .oo-line .oo-t,.oo-q dd{font-size:16px}
+  .oo:has(#oo-hand:checked) .oo-by,.oo:has(#oo-auto:checked) .oo-sys{background:var(--s-void);color:var(--bone);clip-path:var(--slab)}
+  .oo:has(#oo-hand:checked) .oo-by .oo-t,.oo:has(#oo-auto:checked) .oo-sys .oo-t{font-size:20px}
+  .oo:has(#oo-auto:checked) .oo-by,.oo:has(#oo-hand:checked) .oo-sys{--arm:var(--f-line)}
+  .oo:has(#oo-hand:checked) .oo-sys .oo-tag{color:var(--m-void)}
+  .oo:has(#oo-auto:checked) .oo-sys .oo-tag{background:var(--forest)}
+  .oo:has(#oo-auto:checked) .oo-sys .oo-if{color:var(--f-bright)}
+  .oo:has(#oo-auto:checked) .oo-panel{background:var(--s-void);color:var(--bone);clip-path:var(--cut)}
+  .oo:has(#oo-auto:checked) .oo-q dd{font-size:20px}
+  .oo:has(#oo-hand:checked) .oo-panel .oo-k::before{background:var(--f-line)}
+  .oo:has(#oo-auto:checked) .oo-pulse{animation:oo-run 8s linear infinite}
+}
+.still .oo-pulse{animation:none!important;display:none}
+@media (prefers-reduced-motion:reduce){.oo-pulse{animation:none!important;display:none}.oo-line,.oo-panel,.oo-opts label{transition:none}}
+/* wide: the two lines side by side, the screen's three questions in one row */
+@media (min-width:1180px),(min-width:768px) and (max-width:979px){
+  .oo-lines{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oo-qs{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 40px}
+}
+/* tablet and phone: the switch is a bar across the top of the path, sticky the same way; a 12 px strip above it covers the gap under the nav */
+@media (max-width:979px){
+  .oo-run{display:block}
+  .oo-switch{margin:0 calc(-1 * var(--g)) 36px;padding:10px var(--g) 12px}
+  .oo-switch::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:12px;background:var(--socket)}
+  .oo-switch legend{padding-bottom:8px;font-size:15px}
+  .oo-opts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oo-opts label{min-height:48px;padding:8px 12px 8px 40px;font-size:16px}
+  .oo-opts label::before{left:14px}
+  .oo-opts label::after{left:16.5px}
+}
+/* phone: the path down the left edge, the desks full width, the lines stacked */
+@media (max-width:767px){
+  .oo{padding:88px var(--g) 104px}
+  .oo-head{margin-bottom:40px}
+  .oo-stop{padding:0 0 44px 40px}
+  .oo-stop::before{left:9px;top:13px;bottom:-13px}
+  .oo-stop::after,.oo-screen::after{left:1px;top:3px}
+  .oo-desk{font-size:22px}
+  .oo-desk::before{left:4px;top:6.5px}
+  .oo-pulse{left:5px}
+  .oo-lines{margin-top:12px;gap:8px}
+  .oo-line{--ax:18px;padding:12px 16px 14px 32px}
+  .oo-line::before{left:14px;top:16px;bottom:16px}
+  .oo-screen{padding-left:40px}
+  .oo-panel{padding:16px 18px 18px}
+  @supports selector(:has(*)){.oo:has(#oo-hand:checked) .oo-by .oo-t,.oo:has(#oo-auto:checked) .oo-sys .oo-t,.oo:has(#oo-auto:checked) .oo-q dd{font-size:18px}}
+  .oo-end{margin-top:72px}
+}
