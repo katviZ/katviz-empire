@@ -84,14 +84,28 @@
     if (cur.length) outp.push(cur.join(' '));
     return outp;
   }
+  /* round 12b (go-live A7/A8): the email and the WhatsApp number in J's answers are real links. Built with createElement /
+     textContent only; the text is always J's own data, never the visitor's. A token cut across two phrases stays plain text. */
+  var LINKS = /(katviz\.ai5@gmail\.com|\+91 74359 23555)/;
+  function fill(el, text) {
+    var parts = String(text).split(LINKS);
+    for (var k = 0; k < parts.length; k++) {
+      var t = parts[k]; if (!t) continue;
+      if (k % 2) {
+        var a = d.createElement('a'); a.textContent = t;
+        if (t.indexOf('@') > 0) a.href = 'mailto:katviz.ai5@gmail.com'; else { a.href = 'https://wa.me/917435923555'; a.rel = 'noopener'; }
+        el.appendChild(a);
+      } else el.appendChild(d.createTextNode(t));
+    }
+  }
   function typeOut(text, my, done) {
     ans.textContent = '';
-    if (whole) { ans.textContent = text; done(); return; }
+    if (whole) { fill(ans, text); done(); return; }
     var ps = phrases(text), i = 0, caret = d.createElement('i'); caret.className = 'cursor'; caret.setAttribute('aria-hidden', 'true');
     ans.appendChild(caret);
     (function step() {
       if (my !== token) return;
-      var p = ps[i], s = d.createElement('span'); s.className = 'ph'; s.textContent = (i ? ' ' : '') + p;
+      var p = ps[i], s = d.createElement('span'); s.className = 'ph'; fill(s, (i ? ' ' : '') + p);
       ans.insertBefore(s, caret); i++;
       if (i >= ps.length) { caret.remove(); done(); return; }
       var tail = p.charAt(p.length - 1), ms = (70 + 22 * p.split(' ').length) * (0.8 + Math.random() * 0.4) + (/[.!?]/.test(tail) ? 150 : /[,:;]/.test(tail) ? 60 : 0);

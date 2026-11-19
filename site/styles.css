@@ -759,3 +759,7 @@ html:not(.js) .mini{display:none}
 #how .layer.back,#how .ripple{top:auto;bottom:0;left:50%;width:auto;height:max(calc(100vw / 1.6),calc(100% / .568));aspect-ratio:16/10;transform:translate(-50%,43.2%)}
 #how .layer.back .drift{width:100%;height:100%;object-fit:cover}
 #how .layer.fore,#how .sweep{display:none}
+
+/* Round 12b (go-live H, tap targets): the founder email / phone links and the phone "All 19 questions" button reach 44 px */
+#founder .lines a{display:inline-flex;align-items:center;min-height:44px}
+@media (max-width:767px){#ask-j .aj-more{min-height:44px}}
