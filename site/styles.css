@@ -275,12 +275,12 @@ html:not(.js) .eye .bl,.still .eye .bl{transform:none}
 /* the still page: the three beats as a row */
 .still .how,html:not(.js) .how{padding:0}
 .still .how .stage,html:not(.js) .how .stage{padding-bottom:160px}
-.still .slides,html:not(.js) .slides{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;min-height:0;margin-top:-5vw}
-.still .slide,html:not(.js) .slide{position:static;display:block;overflow:visible}
+.still .slides,html:not(.js) .slides,.js #how .slides{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;min-height:0;margin-top:-5vw} /* R12 A1: the JS page shows the three beats together too */
+.still .slide,html:not(.js) .slide,.js #how .slide{position:static;display:block;overflow:visible}
 .still .slide h3,html:not(.js) .slide h3{font-size:clamp(40px,5.2vw,76px);line-height:.95}
 .still .slide p,html:not(.js) .slide p{margin-top:18px;font-size:clamp(18px,1.5vw,21px)}
-.still .wipe,.still .slide-dots,.still .ripple,html:not(.js) .wipe,html:not(.js) .slide-dots,html:not(.js) .ripple{display:none}
-@media (max-width:980px){.still .slides,html:not(.js) .slides{grid-template-columns:1fr;gap:36px;margin-top:8px}}
+.still .wipe,.still .slide-dots,.still .ripple,html:not(.js) .wipe,html:not(.js) .slide-dots,html:not(.js) .ripple,.js #how .wipe,.js #how .slide-dots{display:none}
+@media (max-width:980px){.still .slides,html:not(.js) .slides,.js #how .slides{grid-template-columns:1fr;gap:36px;margin-top:8px}}
 
 /* ---------- 03 · the digital twin, full-bleed; the scroll scrubs the time of day, then walks in ---------- */
 .film .stage{background:var(--void)}
@@ -481,15 +481,12 @@ html:not(.js) .mini{display:none}
   .oo:has(#oo-hand:checked){--path:repeating-linear-gradient(to bottom,var(--m-void) 0 6px,transparent 6px 14px)} /* taste-skill-ignore: the order's route is the content */
   .oo:has(#oo-auto:checked){--path:var(--f-bright);--node:var(--f-bright);--core:var(--f-bright)}
   .oo-line,.oo-panel{color:var(--m-void);transition:background-color .3s ease,color .3s ease}
-  .oo-line .oo-t,.oo-q dd{font-size:16px}
   .oo:has(#oo-hand:checked) .oo-by,.oo:has(#oo-auto:checked) .oo-sys{background:var(--s-void);color:var(--bone);clip-path:var(--slab)}
-  .oo:has(#oo-hand:checked) .oo-by .oo-t,.oo:has(#oo-auto:checked) .oo-sys .oo-t{font-size:20px}
   .oo:has(#oo-auto:checked) .oo-by,.oo:has(#oo-hand:checked) .oo-sys{--arm:var(--f-line)}
   .oo:has(#oo-hand:checked) .oo-sys .oo-tag{color:var(--m-void)}
   .oo:has(#oo-auto:checked) .oo-sys .oo-tag{background:var(--forest)}
   .oo:has(#oo-auto:checked) .oo-sys .oo-if{color:var(--f-bright)}
   .oo:has(#oo-auto:checked) .oo-panel{background:var(--s-void);color:var(--bone);clip-path:var(--cut)}
-  .oo:has(#oo-auto:checked) .oo-q dd{font-size:20px}
   .oo:has(#oo-hand:checked) .oo-panel .oo-k::before{background:var(--f-line)}
   .oo:has(#oo-auto:checked) .oo-pulse{animation:oo-run 8s linear infinite}
 }
@@ -526,6 +523,239 @@ html:not(.js) .mini{display:none}
   .oo-line::before{left:14px;top:16px;bottom:16px}
   .oo-screen{padding-left:40px}
   .oo-panel{padding:16px 18px 18px}
-  @supports selector(:has(*)){.oo:has(#oo-hand:checked) .oo-by .oo-t,.oo:has(#oo-auto:checked) .oo-sys .oo-t,.oo:has(#oo-auto:checked) .oo-q dd{font-size:18px}}
   .oo-end{margin-top:72px}
 }
+
+/* ==========================================================================================================
+   Round 12 · reading comfort. One frame (.wrap 1400 + --g), one second grid line (X2 = frame left + --c1 + --gut),
+   four sizes (48 / 24 / 18 / 15 desktop, 28 / 20 / 17 / 15 phone), paragraphs held to about 66 characters.
+   Every rule below is scoped by section id; the shared .scene / .chap rules above stay as written.
+   ========================================================================================================== */
+#how,#twin,#engine,#one-order,#self-check,#ask-j,#founder,.foot{--fw:min(1400px,calc(100vw - 2 * var(--g)));--gut:48px;--c1:max(380px,calc((var(--fw) - var(--gut)) / 3));--num-scale:1;--numz:calc(48px * var(--num-scale));--h2:48px;--h3:24px;--body:18px;--small:15px;--measure:32em}
+@media (max-width:767px){#how,#twin,#engine,#one-order,#self-check,#ask-j,#founder,.foot{--numz:calc(28px * var(--num-scale));--h2:28px;--h3:20px;--body:17px}}
+#how .sheen,#self-check .sheen,#ask-j .sheen,#founder .sheen{display:none}
+
+/* chapter numerals 02 03 04 06: heading size, beside the heading on its baseline, never over a picture */
+.r12-hd{display:flex;align-items:baseline;gap:0 .5em}
+#how .chap,#twin .chap,#engine .chap,#founder .chap{position:static;left:auto;top:auto;width:auto;flex:none;z-index:auto}
+#how .chap .facet,#twin .chap .facet,#engine .chap .facet,#founder .chap .facet{display:none}
+#how .chap .num,#twin .chap .num,#engine .chap .num,#founder .chap .num{position:static;display:block;transform:none;font-size:var(--numz);line-height:1;letter-spacing:-.03em;color:var(--m-void)}
+#founder .chap .num{color:var(--m-bone)}
+/* the films: the numeral follows the heading's last word */
+#twin .r12-hd,#engine .r12-hd{display:block}
+#twin .r12-hd h2,#engine .r12-hd h2{display:inline}
+#twin .r12-hd .chap,#engine .r12-hd .chap{display:inline-block;margin-left:.3em;vertical-align:baseline}
+#twin .chap .num,#engine .chap .num{display:inline}
+
+/* ---------- 02 · how it works: the three beats together at every width (A1); the columns are the still-mode slide grid above ---------- */
+#how h2{font-size:var(--h2);line-height:1;letter-spacing:-.03em;max-width:none;padding-left:0}
+#how .slide h3{font-size:var(--h3);line-height:1.15;letter-spacing:-.02em}
+#how .slide p{font-size:var(--body);line-height:1.45;max-width:var(--measure);padding-bottom:0;margin-top:8px}
+.js:not(.still) #how{height:auto}
+.js:not(.still) #how>.stage{position:relative;height:auto}
+#how .stage{padding:calc(7vw + 72px) var(--g) 128px}
+#how.how .slides{margin-top:40px}
+#how .sweep{position:absolute;left:0;right:0;bottom:-104px;width:100%;height:min(300px,24vw);margin:0;z-index:-1;pointer-events:none}
+@media (max-width:767px){#how .stage{padding:calc(7vw + 64px) var(--g) 72px}#how.how .slides{margin-top:28px;gap:28px}#how .slide p{margin-top:6px}}
+
+/* ---------- 03 + 04 · the films: the picture inside the frame, the caption block beside it (below it on the phone) ---------- */
+#twin .cap,#engine .cap{position:relative;left:auto;right:auto;bottom:auto;z-index:1;max-width:none;background:none;color:var(--bone);padding:0;clip-path:none}
+#twin .cap h2,#engine .cap h2{font-size:var(--h2);line-height:1.04;letter-spacing:-.03em}
+#twin .cap>p,#engine .cap>p{margin-top:16px;font-size:var(--body);line-height:1.45;max-width:var(--measure)}
+#twin .beats-label,#engine .beats-label{margin-top:24px;font-size:var(--small);height:1.4em;letter-spacing:0;font-weight:600}
+#engine .beats-label{height:2.9em}
+#twin .hint,#engine .hint{margin-top:8px;font-size:var(--small)}
+#twin .still-row,#engine .still-row{font-size:var(--small)}
+#twin .pic,#engine .pic{position:relative;overflow:hidden;background:var(--socket)}
+.js:not(.still) #twin .stage,.js:not(.still) #engine .stage{display:flex;align-items:center;padding:76px var(--g) 28px}
+.js:not(.still) #twin .fr,.js:not(.still) #engine .fr{width:100%}
+@media (min-width:1280px){
+  .js:not(.still) #twin .fr,.js:not(.still) #engine .fr{display:grid;grid-template-columns:480px minmax(0,1fr);column-gap:40px;align-items:start}
+  .js:not(.still) #twin .pic,.js:not(.still) #engine .pic{width:100%;height:clamp(60svh,calc((var(--fw) - 520px) / 1.6),76svh)}
+  .js:not(.still) #engine .pic{height:clamp(60svh,calc((var(--fw) - 480px) / 1.6),76svh)}
+}
+/* 768-1279: the caption above, the picture 16/10 under it, as tall as the screen allows, from the frame's left edge */
+@media (min-width:768px) and (max-width:1279px){
+  .js:not(.still) #twin .stage,.js:not(.still) #engine .stage{display:block;padding:84px var(--g) 24px}
+  .js:not(.still) #twin .fr,.js:not(.still) #engine .fr{display:grid;grid-template-rows:auto minmax(0,1fr);grid-template-columns:minmax(0,1fr);row-gap:24px;height:100%}
+  .js:not(.still) #twin .pic,.js:not(.still) #engine .pic{height:100%;width:auto;aspect-ratio:16/10;max-width:100%;max-height:calc(var(--fw) / 1.6);justify-self:start;align-self:start}
+  .js:not(.still) #twin .still-row,.js:not(.still) #engine .still-row{display:none}
+}
+@media (max-width:767px){
+  .js:not(.still) #twin .stage,.js:not(.still) #engine .stage{padding:72px var(--g) 20px}
+  .js:not(.still) #twin .fr,.js:not(.still) #engine .fr{display:flex;flex-direction:column;gap:20px}
+  .js:not(.still) #twin .pic,.js:not(.still) #engine .pic{order:-1;height:50svh;flex:none}
+  #twin .cap>p,#engine .cap>p{margin-top:10px}
+  #twin .beats-label,#engine .beats-label{margin-top:14px}
+}
+/* the still page (reduced motion / no script): caption, then the pictures as whole frames, in the frame */
+.still #twin .stage,html:not(.js) #twin .stage,.still #engine .stage,html:not(.js) #engine .stage{display:block;padding:140px var(--g) 120px}
+.still #twin .fr,html:not(.js) #twin .fr,.still #engine .fr,html:not(.js) #engine .fr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.still #twin .pic,html:not(.js) #twin .pic,.still #engine .pic,html:not(.js) #engine .pic{display:contents}
+.still #engine .stack,html:not(.js) #engine .stack{position:static;display:contents}
+.still #engine .img,html:not(.js) #engine .img{position:static;opacity:1}
+.still #engine .cap,html:not(.js) #engine .cap{order:-1;grid-column:1/-1;padding:0 0 24px}
+.still #engine .beats-label,.still #engine .hint,html:not(.js) #engine .beats-label{display:none}
+.still #engine .still-row,html:not(.js) #engine .still-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;grid-column:1/-1;list-style:none;color:var(--m-void)}
+@media (max-width:767px){.still #twin .fr,html:not(.js) #twin .fr,.still #engine .fr,html:not(.js) #engine .fr{grid-template-columns:1fr}.still #engine .still-row,html:not(.js) #engine .still-row{display:none}}
+
+/* ---------- 05b · follow one order: the switch heads the two columns it lights; the path hangs in the margin ---------- */
+#one-order{padding:171px var(--g) 80px}
+#one-order .oo-head{max-width:none;margin-bottom:40px}
+#one-order .oo-head h2{font-size:var(--h2);line-height:1;letter-spacing:-.03em;max-width:none}
+#one-order .oo-intro{font-size:var(--body);max-width:var(--measure)}
+#one-order .oo-switch legend{font-size:var(--small)}
+#one-order .oo-opts label{font-size:var(--body)}
+#one-order .oo-desk{font-size:var(--h3);line-height:1.15}
+#one-order .oo-k,#one-order .oo-tag{font-size:var(--small)}
+#one-order .oo-t,#one-order .oo-q dd{font-size:var(--body)}
+#one-order .oo-q dt{font-size:var(--small)}
+#one-order .oo-last{font-size:var(--h3);line-height:1.15;letter-spacing:-.02em;max-width:none}
+#one-order .oo-note{font-size:var(--body);max-width:var(--measure)}
+#one-order .oo-end{margin-top:64px;max-width:none}
+#one-order .oo-line{background:var(--void);padding:12px 16px 14px 24px;--ax:14px}
+#one-order .oo-line::before{left:10px;top:16px;bottom:16px}
+#one-order .oo-panel{padding:20px 20px 22px 24px}
+@media (min-width:1024px){
+  #one-order .oo-run{display:block}
+  #one-order .oo-route{max-width:none}
+  #one-order .oo-switch{top:60px;margin:0 0 16px;padding:10px 0 0;background:var(--socket)}
+  #one-order .oo-switch::before{content:"";position:absolute;left:calc(-1 * var(--g));right:calc(-1 * var(--g));top:0;bottom:0;background:var(--socket);z-index:-1}
+  #one-order .oo-switch legend{padding:0 0 10px}
+  #one-order .oo-opts{grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);padding:0;background:none}
+  #one-order .oo-opts label{min-height:48px;padding:10px 16px 10px 46px;background:var(--void)}
+  #one-order .oo-opts input:checked+label{background:var(--forest)}
+  #one-order .oo-stop{display:grid;grid-template-columns:var(--c1) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:var(--gut);row-gap:10px;padding:0 0 40px}
+  #one-order .oo-lines{display:contents}
+  #one-order .oo-desk{grid-column:1;grid-row:1}
+  #one-order .oo-by{grid-column:1;grid-row:2;align-self:start}
+  #one-order .oo-sys{grid-column:2;grid-row:1 / span 2;align-self:start}
+  #one-order .oo-stop::before{left:-33px;top:14px;bottom:-14px}
+  #one-order .oo-stop::after,#one-order .oo-screen::after{left:-41px;top:4px}
+  #one-order .oo-desk::before{left:-38px;top:7.5px}
+  #one-order .oo-pulse{left:-38px}
+  #one-order .oo-screen{display:grid;grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);padding-left:0}
+  #one-order .oo-panel{margin-top:0}
+  #one-order .oo-qs{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 32px}
+}
+@media (max-width:1023px){#one-order .oo-switch{margin-bottom:32px}}
+@media (max-width:767px){#one-order{padding:102px var(--g) 48px}#one-order .oo-head{margin-bottom:32px}#one-order .oo-stop{padding:0 0 40px 40px}#one-order .oo-end{margin-top:48px}}
+
+/* ---------- self-check: J's receipt in the first column, the question beside it ---------- */
+#self-check.selfcheck{padding:80px var(--g);min-height:0}
+#self-check .sc-head h2{font-size:var(--h2);line-height:1;letter-spacing:-.03em;max-width:none}
+#self-check .sc-lede,#self-check .sc-line,#self-check .sc-month,#self-check .sc-share,#self-check .sc-sum,#self-check .sc-leaks li{font-size:var(--body);max-width:var(--measure)}
+#self-check .sc-line{line-height:1.45}
+#self-check .sc-q legend{font-size:var(--h3);line-height:1.2;letter-spacing:-.02em;max-width:28em}
+#self-check .sc-q legend small{font-size:var(--body);font-weight:500}
+#self-check .sc-chip span{font-size:var(--body);min-width:76px;height:52px;padding:0 16px}
+#self-check .sc-tag,#self-check .sc-who,#self-check .ai,#self-check .sc-unit,#self-check .sc-back,#self-check .sc-reset,#self-check .sc-needjs,#self-check .sc-row-l,#self-check .sc-row-v{font-size:var(--small)}
+#self-check .sc-total strong{font-size:var(--h2);line-height:1}
+#self-check .sc-total-unit,#self-check .sc-sum strong,#self-check .sc-ledger h3,#self-check .sc-verdict h3{font-size:var(--h3);line-height:1.15}
+#self-check .btn{font-size:var(--body)}
+#self-check .btn.s,#ask-j .btn.s{border-color:transparent;background:var(--s-void)}
+#self-check .sc-ledger{padding:28px 24px 24px}
+#self-check .sc-nav{justify-content:flex-start}
+#self-check .sc-unit{margin-left:0}
+#self-check .sc-back:not([hidden])+.sc-unit{margin-left:auto}
+@media (min-width:1024px){
+  #self-check .sc{grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);grid-template-areas:"head head" "crop say" "ledger form" "ledger verdict"}
+  .js #self-check .sc-host{display:contents}
+  #self-check .sc-jcrop{grid-area:crop;justify-self:end;margin-bottom:32px}
+  #self-check .sc-say{grid-area:say;padding-top:6px}
+  #self-check .sc-ledger{top:84px}
+}
+@media (max-width:767px){#self-check.selfcheck{padding:48px var(--g)}}
+
+/* ---------- Ask J: a two-column form (what each row is | the row), J's answer straight under the questions ---------- */
+#ask-j.askj{padding:80px var(--g) max(8px,calc(128px - 7vw));min-height:0}
+#ask-j .aj-head{margin-bottom:40px}
+#ask-j .aj-head h2{font-size:var(--h2);line-height:1;letter-spacing:-.03em}
+#ask-j .aj-lede{font-size:var(--body);max-width:var(--measure)}
+#ask-j .aj-form label,#ask-j .aj-sugg,#ask-j .aj-more,#ask-j .aj-tag,#ask-j .aj-who,#ask-j .ai,#ask-j .aj-fu,#ask-j .aj-hand-note,#ask-j .aj-needjs{font-size:var(--small)}
+#ask-j .aj-field input,#ask-j .aj-ask,#ask-j .aj-chip,#ask-j .aj-you,#ask-j .aj-link,#ask-j .btn{font-size:var(--body)}
+#ask-j .aj-ans{font-size:var(--body);line-height:1.45;letter-spacing:0;max-width:var(--measure);min-height:0}
+@media (min-width:1024px){
+  .js #ask-j .aj{grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);row-gap:24px;grid-template-areas:"head head" "label field" "sugg chips" "more chips" "host out"}
+  .js #ask-j .aj-form,.js #ask-j .aj-ex{display:contents}
+  #ask-j .aj-head{grid-area:head;margin-bottom:16px}
+  #ask-j .aj-form>label{grid-area:label;align-self:center}
+  #ask-j .aj-field{grid-area:field;margin-top:0;max-width:640px}
+  #ask-j .aj-sugg{grid-area:sugg;margin-top:0;align-self:start;padding-top:12px}
+  #ask-j .aj-chips{grid-area:chips;margin-top:0;align-self:start}
+  #ask-j .aj-more{grid-area:more;margin-top:0;align-self:start;justify-self:start}
+  #ask-j .aj-host{grid-area:host}
+  #ask-j .aj-out{grid-area:out;padding-top:0}
+  #ask-j .aj-ans{margin-top:0}
+  #ask-j .aj-you+.aj-ans{margin-top:10px}
+}
+@media (max-width:767px){#ask-j.askj{padding:48px var(--g) max(8px,calc(64px - 7vw))}}
+
+/* ---------- 06 · the founder ---------- */
+#founder.founder{padding:calc(7vw + 32px) var(--g) 112px}
+#founder .ftext h2{font-size:var(--h2);line-height:1;letter-spacing:-.03em}
+#founder .ftext h2 span{font-size:var(--h3);line-height:1.15;margin-top:8px}
+#founder .ftext p:not(.lines){font-size:var(--body);line-height:1.45;max-width:var(--measure);margin-top:20px}
+#founder .lines,#founder .btn{font-size:var(--body)}
+#founder .btn.s{border-color:transparent;background:var(--s-bone)}
+#founder .ctas{margin-top:32px}
+#founder .lines{margin-top:20px}
+@media (min-width:1024px){#founder .fgrid{grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);padding-left:0}}
+@media (max-width:767px){#founder.founder{padding:calc(7vw + 32px) var(--g) 48px}}
+
+/* ---------- footer: the frame, the links in the first column, the name beside them ---------- */
+.foot{display:block}
+.foot-in{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px}
+@media (min-width:1024px){
+  .foot-in{display:grid;grid-template-columns:var(--c1) minmax(0,1fr);column-gap:var(--gut);row-gap:6px;grid-template-areas:"lines lock" "lines copy";align-items:center}
+  .foot-in .foot-lines{grid-area:lines}
+  .foot-in .lockup{grid-area:lock;justify-self:start}
+  .foot-in .copy{grid-area:copy}
+}
+/* R12 fixes, pass 2 */
+#one-order .oo-t{max-width:var(--measure)}
+#one-order .oo-note .go{display:flex;width:max-content;margin-top:8px}
+#founder .btn,#self-check .btn,#ask-j .btn{padding-left:23px}
+#self-check .sc[data-state="empty"] .sc-reset{display:none}
+#self-check .sc-jcrop img,#ask-j .aj-jcrop img{position:static;left:auto;top:auto;width:100%;height:100%;transform:none;object-fit:cover;object-position:50% 0}
+@media (min-width:1024px){
+  #self-check .sc-tag .ai,#ask-j .aj-tag .ai{margin-left:-18px}
+  #self-check .sc-jcrop,#ask-j .aj-jcrop{width:150px;height:172px}
+  #self-check .sc-host,#ask-j .aj-ex{grid-template-columns:150px minmax(0,1fr)}
+}
+@media (max-width:767px){#founder.founder{padding-bottom:28px}}
+@media (max-width:767px){#self-check.selfcheck{padding-bottom:27px}}
+/* R12 pass 3: no hairline on the in-scope seam arcs (the ground sweep stays); the founder stacks below 1024 */
+#how .seam,#ask-j .seam,#founder .seam{border:0}
+@media (min-width:768px) and (max-width:1023px){#founder .fgrid{grid-template-columns:1fr;gap:40px;padding-left:0}#founder .photo-frame{max-width:340px}}
+
+/* R12 amendment rev 3a */
+@media (min-width:1280px){.js:not(.still) #engine .fr{grid-template-columns:440px minmax(0,1fr)}}
+/* A3 · Ask J: each label straight above its control, "All 19 questions" right after the chips, J beside his answer (the #self-check pattern) */
+@media (min-width:1024px){
+  .js #ask-j .aj{grid-template-areas:"head head" ". label" ". field" ". sugg" ". chips" ". tag" "crop out";row-gap:0}
+  .js #ask-j .aj-form>label{grid-area:label;align-self:end}
+  .js #ask-j .aj-field{grid-area:field;margin-top:10px;max-width:640px}
+  .js #ask-j .aj-sugg{grid-area:sugg;margin-top:24px;padding-top:0;align-self:end}
+  .js #ask-j .aj-chips{grid-area:chips;margin-top:10px}
+  .js #ask-j .aj-more{grid-area:tag;justify-self:end;align-self:center;margin:2px 0 0;padding:4px 0;min-height:32px}
+  .js #ask-j .aj-host{display:contents}
+  #ask-j .aj-jcrop{grid-area:crop;justify-self:end;align-self:start;margin-top:16px}
+  #ask-j .aj-tag{grid-area:tag;margin-top:6px;padding-top:0;align-self:center;justify-self:start}
+  #ask-j .aj-out{grid-area:out;padding-top:2px}
+  #ask-j .aj-jcrop{margin-top:6px}
+  #ask-j .aj-ask span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #ask-j .aj-ask{padding:0 20px}
+}
+/* A4 · self-check: "hours a week" stays with the answers; no stub bar on an unanswered ledger row */
+#self-check .sc-stage{min-height:0}
+#self-check .sc-back:not([hidden])+.sc-unit{margin-left:16px}
+#self-check .sc-row.empty .sc-bar{visibility:hidden}
+/* A5 · the sticky action on the frame's own margin */
+.mini{right:var(--g)}
+/* R12 · #how stacked: the facet ground ends inside the section (the facets-void field has a clear band at y 510-626 of 1000;
+   the layer is a 16:10 box anchored so y 568 sits on the section's bottom edge, at least as tall as the section needs),
+   and nothing drawn runs through the beats: the sweep arc and the stroked slivers sit out, like the wipes */
+#how .layer.back,#how .ripple{top:auto;bottom:0;left:50%;width:auto;height:max(calc(100vw / 1.6),calc(100% / .568));aspect-ratio:16/10;transform:translate(-50%,43.2%)}
+#how .layer.back .drift{width:100%;height:100%;object-fit:cover}
+#how .layer.fore,#how .sweep{display:none}

@@ -3,7 +3,7 @@
    Shot hooks: ?shot=aj:idle | aj:match | aj:miss | aj:all | aj:v2 (any ?shot shows answers whole, as reduced motion does). */
 (function () {
   var d = document, H = d.documentElement, root = d.getElementById('aj'); if (!root || !H.classList.contains('js')) return; /* the site sets html.js inline; without it the section stays in its JS-off form */
-  var q0 = new URLSearchParams(location.search).get('shot') || '';
+  var q0 = '';
   var still = H.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches;
   var whole = still || !!q0; /* reduced motion or a render: no typing */
   var shot = q0.indexOf('aj:') === 0 ? q0 : '';

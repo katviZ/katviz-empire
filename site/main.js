@@ -1,6 +1,6 @@
 /* Katviiz AI · Phase 1b motion. Progressive enhancement: the page reads fully without this file (?shot=nojs). */
 (function () {
-  var d = document, H = d.documentElement, q = new URLSearchParams(location.search), shot = q.get('shot') || '';
+  var d = document, H = d.documentElement, q = new URLSearchParams(location.search), shot = '';
   var still = H.classList.contains('still');
   var K3 = { on: false, state: 'idle', inst: null, pending: null, reason: null }; /* the 3D eye (set up after the open timeline); K3.on = the canvas is live, the DOM open/dive is bypassed */
   var $ = function (s, r) { return (r || d).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || d).querySelectorAll(s)); };
@@ -326,8 +326,10 @@
 
   /* ---- 02 · the slides: each beat enters from the right behind a blade wipe, the last leaves left, the copy a beat behind ---- */
   var how = $('#how'), slides = $$('.how .slide'), th = null, ripple = null;
+  var howStack = matchMedia('all').matches; /* R12 A1: the three beats show together at every width (no held timeline); to bring back the desktop blade wipe, set this query back to '(max-width:767px)' */
   if (how && slides.length === 3) {
     var h3s = slides.map(function (s) { return $('h3', s); }), ps = slides.map(function (s) { return $('p', s); }), wipes = slides.map(function (s) { return $('.wipe', s); });
+    if (!howStack) {
     gsap.set(h3s.slice(1), { xPercent: 36, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' });
     gsap.set(ps.slice(1), { xPercent: 24, opacity: 0 });
     gsap.set(wipes, { x: 0, xPercent: 320 }); /* GSAP owns the wipe's transform: the CSS translateX(320%) would otherwise be read as a fixed px offset and the wedge would park over the copy */
@@ -343,6 +345,7 @@
         .to(ps[i + 1], { xPercent: 0, opacity: 1, duration: 0.08, ease: 'power2.out' }, t + 0.055);
     });
     if (th.duration() < 1) th.to({}, { duration: 1 - th.duration() }, th.duration());
+    }
     /* the ripple ground: WebGL2 under the pointer; static facet field when it cannot run; asleep while 02 is off screen */
     var rcv = $('.ripple', how), gimg = $('.layer.back img', how);
     if (rcv && gimg && window.KVRipple && !shot) {
@@ -388,9 +391,9 @@
     else if (shot.indexOf('eng:') === 0) toProgress(te.scrollTrigger, +shot.slice(4));
     else if (shot === 'ch:1') toProgress(open.scrollTrigger, 0.8 * T);
     else if (shot === 'ch:2') toProgress(open.scrollTrigger, CUT0 + 3 * STEP + 0.075);
-    else if (shot === 'ch:3') toProgress(th.scrollTrigger, 0.16);
-    else if (shot.indexOf('how:') === 0) toProgress(th.scrollTrigger, [0.16, 0.5, 0.84][+shot.slice(4) - 1] || 0.16);
-    else if (shot === 'ripple') toProgress(th.scrollTrigger, 0.5);
+    else if (shot === 'ch:3') { if (th) toProgress(th.scrollTrigger, 0.16); else toTop('#how'); }
+    else if (shot.indexOf('how:') === 0) { if (th) toProgress(th.scrollTrigger, [0.16, 0.5, 0.84][+shot.slice(4) - 1] || 0.16); else toTop('#how'); }
+    else if (shot === 'ripple') { if (th) toProgress(th.scrollTrigger, 0.5); else toTop('#how'); }
     else if (shot === 'ch:4') toProgress(tt.scrollTrigger, 0.45);
     else if (shot === 'ch:4b') toProgress(te.scrollTrigger, 0.4);
     else if (shot === 'ch:4c') toTop('#engine-live', -40);

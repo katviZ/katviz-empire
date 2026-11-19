@@ -5,7 +5,7 @@
   var KEY = 'kv.selfcheck.v1', BANDS = { 0: '0', 1: '1–2', 3: '3–5', 6: '6–10', 10: '10+' }, ALLOWED = [0, 1, 3, 6, 10];
   var d = document, H = d.documentElement, root = d.getElementById('sc'); if (!root || !H.classList.contains('js')) return; /* the site sets html.js inline; without it the section stays in its JS-off form */
   var still = H.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var shot = (new URLSearchParams(location.search).get('shot') || ''); if (shot.indexOf('sc:') !== 0) shot = '';
+  var shot = ''; if (shot.indexOf('sc:') !== 0) shot = '';
   var $ = function (s, r) { return (r || root).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || root).querySelectorAll(s)); };
   var qs = $$('.sc-q'), N = qs.length, steps = $$('#sc-steps li'), stage = $('#sc-stage'), back = $('#sc-back'), line = $('#sc-line');
   var verdict = $('#sc-verdict'), weekEl = $('#sc-week'), monthEl = $('#sc-month'), leaksEl = $('#sc-leaks'), book = $('#sc-book'), wa = $('#sc-wa');
