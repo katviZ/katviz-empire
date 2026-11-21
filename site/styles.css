@@ -763,3 +763,5 @@ html:not(.js) .mini{display:none}
 /* Round 12b (go-live H, tap targets): the founder email / phone links and the phone "All 19 questions" button reach 44 px */
 #founder .lines a{display:inline-flex;align-items:center;min-height:44px}
 @media (max-width:767px){#ask-j .aj-more{min-height:44px}}
+/* Round 13 (go-live H, tap targets): the self-check Back and Start over buttons reach 44 px */
+#self-check .sc-back,#self-check .sc-reset{min-height:44px}
